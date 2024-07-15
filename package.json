@@ -1,0 +1,31 @@
+{
+  "name": "ballog_backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/Ball-log/backend",
+  "author": "김성준 <bandalgomim@naver.com>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.7.0",
+    "@jest/globals": "^29.7.0",
+    "@stylistic/eslint-plugin": "^2.3.0",
+    "eslint": "^9.7.0",
+    "jest": "^29.7.0",
+    "nodemon": "^3.1.4",
+    "ts-jest": "^29.2.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.3",
+    "typescript-eslint": "^7.16.0"
+  },
+  "scripts": {
+    "clear": "rmdir /s /q dist",
+    "lint": "eslint src/**/*.ts --fix",
+    "prebuild": "yarn run clear & yarn run lint",
+    "build": "tsc",
+    "start": "node dist/main.js",
+    "start:dev": "nodemon"
+  }
+}

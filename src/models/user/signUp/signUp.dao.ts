@@ -7,7 +7,7 @@ import { ResultSetHeader, RowDataPacket } from "mysql2/promise";
 
 // import { ApiError } from "../../../config/error";
 
-export const PostSignUpDao = async (user: req_signUp): Promise<string | number> => {
+export const PostSignUpDao = async (user: req_signUp): Promise<number> => {
     const connection = await getPool().getConnection();
     try {
         const [ CheckEamil ] = await connection.query<RowDataPacket[]>(CheckEmailSql, user.email);
@@ -20,7 +20,7 @@ export const PostSignUpDao = async (user: req_signUp): Promise<string | number> 
         const [ result ] = await connection.query<ResultSetHeader>(PostSignUpSql,
             [ user.email, user.password, user.team_id ]);
         connection.release();
-        return result.info;
+        return result.insertId;
 
     } catch (e) {
         console.log(e);

@@ -1,7 +1,8 @@
-POST http://localhost:3000/user/login
+POST http://localhost:3000/user/signUp
 Content-Type: application/json
 
 {
-    "email": "bandalgomim@naver.com",
-    "password": "qksekfrha1!"
+    "email": "test001@naver.com",
+    "password": "test001",
+    "team_id": 1
 }

@@ -1,0 +1,1 @@
+export const PostSignUpSql = `insert into user (emil, password, team_id) values (?, ?, ?)`;

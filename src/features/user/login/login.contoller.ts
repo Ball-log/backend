@@ -1,13 +1,13 @@
 import { Request, Response } from "express";
-import { PostLoginService, GetLoginService } from "./login.service";
+import { postLoginService, getLoginService } from "./login.service";
 
 
-export const PostLoginContoller = async (req: Request, res: Response) => {
-    const result = await PostLoginService(req.body);
+export const postLoginContoller = async (req: Request, res: Response) => {
+    const result = await postLoginService(req.body);
     res.send(result);
 };
 
-export const GetLoginContoller = async (req: Request, res: Response) => {
-    const result = await GetLoginService(req.body);
+export const getLoginContoller = async (req: Request, res: Response) => {
+    const result = await getLoginService(req.body);
     res.send(result);
 };

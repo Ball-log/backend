@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { PostSignUpService } from "./signUp.service";
+import { postSignUpService } from "./signUp.service";
 
-export const PostSignUpController = async (req: Request, res: Response) => {
-    const result = await PostSignUpService(req.body);
+export const postSignUpController = async (req: Request, res: Response) => {
+    const result = await postSignUpService(req.body);
     res.status(201).send(result);
 };

@@ -1,32 +1,32 @@
-import { sign, refresh } from "./../../../../utils/jwt.utils";
-import redisCl from "../../../../utils/redis";
-import { req_login } from "../../../interface/user/login.interface";
+import { sign, refresh } from "../../../utils/jwt.utils";
+import redisClient from "../../../utils/redis";
+import { postLoginReqDto, JWT } from "../../../models/user/login/login.dto";
+import { BaseApiResponse } from "../../../../config/response";
+import { status } from "../../../../config/response.status";
+import { ApiError } from "../../../../config/error";
+import { postLoginDao } from "../../../models/user/login/login.dao";
 
-export const PostLoginService = async (req: req_login) => {
-    const success = true;
-    const user = req;
-    console.log(user);
+export const postLoginService = async (req: postLoginReqDto) => {
+    const success = await postLoginDao(req);
     if (success) {
-        const accessToken = sign(user);
+        const accessToken = sign(req);
         const refreshToken = refresh();
-        redisCl.set(user.email, refreshToken);
+        redisClient.set(req.email, refreshToken);
 
-        return {
-            ok: true,
-            data: {
+        const body: BaseApiResponse<JWT> = {
+            ...status.SUCCESS.body,
+            result: {
                 accessToken,
                 refreshToken
             }
         };
+        return body;
     } else {
-        return {
-            ok: false,
-            message: "password is incorrect"
-        };
+        throw new ApiError(status.PASSWORD_UNMATCHED);
     }
 };
 
-export const GetLoginService = async (req: req_login) => {
+export const getLoginService = async (req: postLoginReqDto) => {
     console.log(req);
     return "test";
 };

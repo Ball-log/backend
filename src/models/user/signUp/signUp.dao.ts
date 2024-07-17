@@ -1,5 +1,5 @@
-import { req_signUp } from "./signUp.dto";
-import { PostSignUpSql, CheckEmailSql } from "./signUp.sql";
+import { postSignUpReqDto } from "./signUp.dto";
+import { postSignUpSql, checkEmailSql } from "./signUp.sql";
 import { getPool }  from "./../../../../config/db.pool";
 import { ResultSetHeader, RowDataPacket } from "mysql2/promise";
 
@@ -7,17 +7,17 @@ import { ResultSetHeader, RowDataPacket } from "mysql2/promise";
 
 // import { ApiError } from "../../../config/error";
 
-export const PostSignUpDao = async (user: req_signUp): Promise<number> => {
+export const postSignUpDao = async (user: postSignUpReqDto): Promise<number> => {
     const connection = await getPool().getConnection();
     try {
-        const [ CheckEamil ] = await connection.query<RowDataPacket[]>(CheckEmailSql, user.email);
+        const [ CheckEamil ] = await connection.query<RowDataPacket[]>(checkEmailSql, user.email);
         const isEmailExist = CheckEamil[0].isExistEmail;
 
         if (isEmailExist) {
             connection.release();
             return -1;
         }
-        const [ result ] = await connection.query<ResultSetHeader>(PostSignUpSql,
+        const [ result ] = await connection.query<ResultSetHeader>(postSignUpSql,
             [ user.email, user.password, user.team_id ]);
         connection.release();
         return result.insertId;

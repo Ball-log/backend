@@ -1,7 +1,7 @@
 import { StatusCodes } from "http-status-codes";
 import { BaseApiResponse } from "./response";
 
-export type ResponseType = "SUCCESS" | "NOT_FOUND" | "EMAIL_ALREADY_EXIST"  
+export type ResponseType = "SUCCESS" | "NOT_FOUND" | "EMAIL_ALREADY_EXIST" | "PASSWORD_UNMATCHED";
 
 
 export type ResponseWithStatus = {
@@ -24,4 +24,9 @@ export const status: Record<ResponseType, ResponseWithStatus> = {
 
         body: { isSuccess: false, code: "400", message: "email already exist." }
     },
+    PASSWORD_UNMATCHED :{
+        status: StatusCodes.BAD_REQUEST,
+
+        body: { isSuccess: false, code: "400", message: "password unmatched." }
+    }
 };

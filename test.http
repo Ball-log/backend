@@ -1,8 +1,7 @@
-POST http://localhost:3000/user/signUp
+POST http://localhost:3000/user/login
 Content-Type: application/json
 
 {
     "email": "test001@naver.com",
-    "password": "test001",
-    "team_id": 1
+    "password": "test001"
 }

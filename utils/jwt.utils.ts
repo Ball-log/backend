@@ -6,8 +6,7 @@ import { req_login } from '../src/interface/user/login.interface';
 
 config();
 
-const secret: Secret = process.env.SECRET as string;
-
+const secret: string | undefined = process.env.SECRET
 if (!secret) {
   throw new Error("JWT secret is not defined in environment variables");
 }

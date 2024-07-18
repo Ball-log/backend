@@ -1,5 +1,5 @@
 import { sign, refresh } from "../../../utils/jwt.utils";
-import redisClient from "../../../utils/redis";
+import redisClient from "./../../../../config/db.redis";
 import { postLoginReqDto, JWT } from "../../../models/user/login/login.dto";
 import { BaseApiResponse } from "../../../../config/response";
 import { status } from "../../../../config/response.status";

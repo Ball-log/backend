@@ -1,8 +1,6 @@
-import { promisify } from "util";
 import jwt, { JwtPayload  } from "jsonwebtoken";
-import redisClient from "./redis";
+import redisClient from "./../../config/db.redis";
 import { config } from "dotenv";
-import { postLoginReqDto } from "./../models/user/login/login.dto";
 
 config();
 
@@ -11,10 +9,10 @@ if (!secret) {
     throw new Error("JWT secret is not defined in environment variables");
 }
 
-const sign = (user: postLoginReqDto) => { // access token 발급
-    const payload = { // access token에 들어갈 payload
-        email: user.email,
-        password: user.password
+const sign = (user: string) => { // access token 발급
+    const payload = {
+        iss: "https://www.ballog.com",
+        sub: user
     };
 
     return jwt.sign(payload, secret, { // secret으로 sign하여 발급하고 return
@@ -28,14 +26,17 @@ const verify = (token: string) => {
         const decoded = jwt.verify(token, secret) as JwtPayload;
         return {
             ok: true,
-            email: decoded.email,
-            password: decoded.password
+            sub: decoded.sub
         };
     } catch (err) {
-        return {
-            ok: false,
-            message: err
-        };
+        if (err instanceof Error) {
+            return {
+                ok: false,
+                message: err.message
+            };
+        } else {
+            throw new Error("Unknown error occurred");
+        }
     }
 };
 
@@ -46,25 +47,25 @@ const refresh = () => { // refresh token 발급
     });
 };
 
-const refreshVerify = async (token: string, userId: string) => { // refresh token 검증
-    /* redis 모듈은 기본적으로 promise를 반환하지 않으므로,
-     promisify를 이용하여 promise를 반환하게 해줍니다.*/
-    const getAsync = promisify(redisClient.get).bind(redisClient);
+const refreshVerify = async (token: string, userId: string) => {
 
     try {
-        const data = await getAsync(userId);
+        const data = await redisClient.get(userId);
         if (token === data) {
             try {
+                // JWT 토큰 검증
                 jwt.verify(token, secret);
                 return true;
             } catch (err) {
+                console.error("JWT verification failed:", err);
                 return false;
             }
         } else {
-            return false;
+            return false; // 토큰이 Redis에 저장된 값과 일치하지 않을 경우
         }
     } catch (err) {
-        return false;
+        console.error("Error retrieving data from Redis:", err);
+        return false; // Redis에서 데이터를 가져오지 못한 경우
     }
 };
 

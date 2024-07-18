@@ -4,6 +4,5 @@ export interface postLoginReqDto {
 }
 
 export interface JWT {
-    accessToken: string,
-    refreshToken: string
+    accessToken: string
 }

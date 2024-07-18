@@ -1,7 +1,8 @@
 import { StatusCodes } from "http-status-codes";
 import { BaseApiResponse } from "./response";
 
-export type ResponseType = "SUCCESS" | "NOT_FOUND" | "EMAIL_ALREADY_EXIST" | "PASSWORD_UNMATCHED";
+export type ResponseType = "SUCCESS" | "NOT_FOUND" | "EMAIL_ALREADY_EXIST" | "PASSWORD_UNMATCHED" | "ACCESS_TOKEN_EXPIRED" | "REFRESH_TOKEN_EXPIRED" |
+                            "ACCESS_TOKEN_IS_VALID" | "ACCESS_TOKEN_UNMATCHED" | "THERE_IS_NO_ACCESS_TOKEN" | "THERE_IS_NO_REFRESH_TOKEN" | "THERE_IS_NO_TOKEN";
 
 
 export type ResponseWithStatus = {
@@ -16,17 +17,42 @@ export const status: Record<ResponseType, ResponseWithStatus> = {
     },
     NOT_FOUND: {
         status: StatusCodes.NOT_FOUND,
-
         body: { isSuccess: false, code: "404", message: "Not Found." }
     },
     EMAIL_ALREADY_EXIST: {
         status: StatusCodes.BAD_REQUEST,
-
         body: { isSuccess: false, code: "400", message: "email already exist." }
     },
     PASSWORD_UNMATCHED :{
         status: StatusCodes.BAD_REQUEST,
-
         body: { isSuccess: false, code: "400", message: "password unmatched." }
+    },
+    ACCESS_TOKEN_EXPIRED: {
+        status: StatusCodes.UNAUTHORIZED,
+        body: { isSuccess: false, code: "401", message: "access token expired."}
+    },
+    REFRESH_TOKEN_EXPIRED: {
+        status: StatusCodes.UNAUTHORIZED,
+        body: { isSuccess: false, code: "401", message: "refresh token expired."}
+    },
+    ACCESS_TOKEN_IS_VALID: {
+        status: StatusCodes.BAD_REQUEST,
+        body: { isSuccess: false, code: "400", message: "access token is valid." }
+    },
+    ACCESS_TOKEN_UNMATCHED: {
+        status: StatusCodes.UNAUTHORIZED,
+        body: { isSuccess: false, code: "401", message: "access token unmatched."}
+    },
+    THERE_IS_NO_ACCESS_TOKEN: {
+        status: StatusCodes.UNAUTHORIZED,
+        body: { isSuccess: false, code: "401", message: "there is no access token."}
+    },
+    THERE_IS_NO_REFRESH_TOKEN: {
+        status: StatusCodes.UNAUTHORIZED,
+        body: { isSuccess: false, code: "401", message: "there is no refresh token."}
+    },
+    THERE_IS_NO_TOKEN: {
+        status: StatusCodes.UNAUTHORIZED,
+        body: { isSuccess: false, code: "401", message: "there is no token."}
     }
 };

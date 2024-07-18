@@ -9,18 +9,17 @@ import { postLoginDao } from "../../../models/user/login/login.dao";
 export const postLoginService = async (req: postLoginReqDto) => {
     const success = await postLoginDao(req);
     if (success) {
-        const accessToken = sign(req);
+        const accessToken = sign(req.email);
         const refreshToken = refresh();
         redisClient.set(req.email, refreshToken);
 
         const body: BaseApiResponse<JWT> = {
             ...status.SUCCESS.body,
             result: {
-                accessToken,
-                refreshToken
+                accessToken
             }
         };
-        return body;
+        return [ body, refreshToken ];
     } else {
         throw new ApiError(status.PASSWORD_UNMATCHED);
     }

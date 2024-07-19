@@ -5,7 +5,7 @@ import { BaseApiResponse } from "../../../../config/response";
 import { status } from "../../../../config/response.status";
 
 // import { ApiError } from "../../../../config/error";
-import { JWT } from "../../../models/user/login/login.dto";
+import { JWT } from "../../../models/auth/login/login.dto";
 
 export const postRefreshTokenService = async (body: body, headers: headers) => {
     if (headers.accessToken && headers.refreshToken) {

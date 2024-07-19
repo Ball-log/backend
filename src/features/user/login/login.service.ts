@@ -21,7 +21,7 @@ export const postLoginService = async (req: postLoginReqDto) => {
         };
         return [ body, refreshToken ];
     } else {
-        throw new ApiError(status.PASSWORD_UNMATCHED);
+        throw new ApiError(status.LOGIN_INFO_UNMATCHED);
     }
 };
 

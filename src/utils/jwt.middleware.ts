@@ -8,7 +8,6 @@ export const authAccessTokenMiddleware = (req: Request, res: Response, next: Nex
         const token = accessToken.split(" ")[1];
         const result = verify(token); // token을 검증합니다.
 
-        // param 혹은 다양한 걸 통해 email과 토큰이 매치되는지를 판단
         if (result.ok) {
             next();
         } else {

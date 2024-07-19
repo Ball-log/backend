@@ -25,7 +25,7 @@ export const postRefreshTokenService = async (body: body, headers: headers) => {
         if (authResult.ok === false && authResult.message === "jwt expired") {
             // 1. access token이 만료되고, refresh token도 만료 된 경우 => 새로 로그인해야합니다.
             if (refreshResult === false) {
-                return status.REFRESH_TOKEN_EXPIRED.body;
+                return status.REFRESH_TOKEN_UNMATCHED.body;
             } else {
                 // 2. access token이 만료되고, refresh token은 만료되지 않은 경우 => 새로운 access token을 발급
                 const newAccessToken = sign(decoded.sub as string);

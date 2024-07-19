@@ -1,7 +1,7 @@
 import { StatusCodes } from "http-status-codes";
 import { BaseApiResponse } from "./response";
 
-export type ResponseType = "SUCCESS" | "NOT_FOUND" | "EMAIL_ALREADY_EXIST" | "LOGIN_INFO_UNMATCHED" | "ACCESS_TOKEN_EXPIRED" | "REFRESH_TOKEN_EXPIRED" |
+export type ResponseType = "SUCCESS" | "NOT_FOUND" | "EMAIL_ALREADY_EXIST" | "LOGIN_INFO_UNMATCHED" | "ACCESS_TOKEN_EXPIRED" | "REFRESH_TOKEN_UNMATCHED" |
                             "ACCESS_TOKEN_IS_VALID" | "ACCESS_TOKEN_UNMATCHED" | "THERE_IS_NO_ACCESS_TOKEN" | "THERE_IS_NO_REFRESH_TOKEN" | "THERE_IS_NO_TOKEN";
 
 
@@ -31,9 +31,9 @@ export const status: Record<ResponseType, ResponseWithStatus> = {
         status: StatusCodes.UNAUTHORIZED,
         body: { isSuccess: false, code: "401", message: "access token expired."}
     },
-    REFRESH_TOKEN_EXPIRED: {
+    REFRESH_TOKEN_UNMATCHED: {
         status: StatusCodes.UNAUTHORIZED,
-        body: { isSuccess: false, code: "401", message: "refresh token expired."}
+        body: { isSuccess: false, code: "401", message: "refresh token unmatched."}
     },
     ACCESS_TOKEN_IS_VALID: {
         status: StatusCodes.BAD_REQUEST,

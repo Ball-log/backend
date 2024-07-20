@@ -1,7 +1,5 @@
-POST http://localhost:3000/user/login
+POST http://localhost:3000/auth/refreshToken
 Content-Type: application/json
+accessToken: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL3d3dy5iYWxsb2cuY29tIiwic3ViIjoidGVzdDAwNEBuYXZlci5jb20iLCJpYXQiOjE3MjEzMTYwOTQsImV4cCI6MTcyMTMxOTY5NH0.XvXV4_-JlWb7qlqDHcj7qUJonP39Vvw3MhUvzZ-yDYw
+refreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MjEzMTYyMTksImV4cCI6MTcyMjUyNTgxOX0.Axw3eSEu2n_TrU3mfuDU89Ki3FW9W6LNYmEfcxXCUuk
 
-{
-    "email": "test004@naver.com",
-    "password": "test004"
-}

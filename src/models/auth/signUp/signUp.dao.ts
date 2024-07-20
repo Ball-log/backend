@@ -1,5 +1,5 @@
-import { postSignUpLocalsDto } from "./signUp.dto";
-import { postSignUpSql, checkEmailSql } from "./signUp.sql";
+import { getSignUpLocalsDto } from "./signUp.dto";
+import { getSignUpSql, checkEmailSql } from "./signUp.sql";
 import { getPool }  from "./../../../../config/db.pool";
 import { ResultSetHeader, RowDataPacket } from "mysql2/promise";
 
@@ -7,7 +7,7 @@ import { ResultSetHeader, RowDataPacket } from "mysql2/promise";
 
 // import { ApiError } from "../../../config/error";
 
-export const postSignUpDao = async (user: postSignUpLocalsDto): Promise<number> => {
+export const getSignUpDao = async (user: getSignUpLocalsDto): Promise<number> => {
     const connection = await getPool().getConnection();
     try {
         const [ CheckEamil ] = await connection.query<RowDataPacket[]>(checkEmailSql, user.email);
@@ -17,7 +17,7 @@ export const postSignUpDao = async (user: postSignUpLocalsDto): Promise<number> 
             connection.release();
             return -1;
         }
-        const [ result ] = await connection.query<ResultSetHeader>(postSignUpSql,
+        const [ result ] = await connection.query<ResultSetHeader>(getSignUpSql,
             [ user.id, user.email, user.name ]);
         connection.release();
         return result.insertId;

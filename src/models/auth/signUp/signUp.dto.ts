@@ -1,10 +1,10 @@
-export interface postSignUpLocalsDto extends Request {
+export interface getSignUpLocalsDto extends Request {
     id: string,
     email: string,
     name: string
 }
 
-export interface postSignUpReqDto {
+export interface getSignUpReqDto {
     nickname: string,
     team_id: number
 }

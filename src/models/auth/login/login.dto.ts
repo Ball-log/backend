@@ -1,4 +1,4 @@
-export interface postLoginLocalsDto {
+export interface getLoginLocalsDto {
     id: string
 }
 

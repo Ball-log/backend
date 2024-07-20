@@ -2,11 +2,11 @@ import { login } from "../../../utils/jwt.utils";
 import { BaseApiResponse } from "../../../../config/response";
 import { status } from "../../../../config/response.status";
 import { ApiError } from "../../../../config/error";
-import { postLoginDao } from "../../../models/auth/login/login.dao";
+import { getLoginDao } from "../../../models/auth/login/login.dao";
 import { JWT } from "../../../models/auth/login/login.dto";
 
 export const getLoginService = async (req: string) => {
-    const success = await postLoginDao(req);
+    const success = await getLoginDao(req);
     if (success) {
 
         const [ accessToken, refreshToken ] = await login(req);

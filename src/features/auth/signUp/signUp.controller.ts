@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import { getSignUpService } from "./signUp.service";
-import { postSignUpLocalsDto } from "../../../models/auth/signUp/signUp.dto";
+import { getSignUpLocalsDto } from "../../../models/auth/signUp/signUp.dto";
 
 export const getSignUpController = async (req: Request, res: Response) => {
 
-    const result = await getSignUpService(res.locals as postSignUpLocalsDto);
+    const result = await getSignUpService(res.locals as getSignUpLocalsDto);
     res.cookie("refreshToken", result[1], {
         httpOnly: true,
         secure: true, // HTTPS를 사용할 때만

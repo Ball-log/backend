@@ -23,7 +23,6 @@ export const authAccessTokenMiddleware = (req: Request, res: Response, next: Nex
 
 export const tokenGoogleMiddleware =  async (req: Request, res: Response, next: NextFunction) => {
     const path  = req.path;
-    console.log(path);
     let redirectUrl = null;
     if (path === "/signUp") {
         redirectUrl = process.env.GOOGLE_REDIRECT_URI_SIGN_UP;

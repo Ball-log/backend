@@ -1,5 +1,4 @@
-import { sign, refresh } from "../../../utils/jwt.utils";
-import redisClient from "./../../../../config/db.redis";
+import { login } from "../../../utils/jwt.utils";
 import { BaseApiResponse } from "../../../../config/response";
 import { status } from "../../../../config/response.status";
 import { ApiError } from "../../../../config/error";
@@ -9,10 +8,8 @@ import { JWT } from "../../../models/auth/login/login.dto";
 export const getLoginService = async (req: string) => {
     const success = await postLoginDao(req);
     if (success) {
-        const accessToken = sign(req);
-        const refreshToken = refresh();
-        redisClient.set(req, refreshToken);
 
+        const [ accessToken, refreshToken ] = await login(req);
         const body: BaseApiResponse<JWT> = {
             ...status.SUCCESS.body,
             result: {

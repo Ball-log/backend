@@ -9,7 +9,6 @@ export const getLoginController = async (req: Request, res: Response) => {
         secure: true, // HTTPS를 사용할 때만
         sameSite: "strict" // CSRF 방지
     });
-    console.log(res.cookie("refreshToken", result));
     res.send(result[0]);
 };
 

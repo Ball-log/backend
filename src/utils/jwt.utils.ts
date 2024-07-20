@@ -69,4 +69,12 @@ const refreshVerify = async (token: string, userId: string) => {
     }
 };
 
-export { sign, verify, refresh, refreshVerify };
+const login = async (req: string) => {
+
+    const accessToken = sign(req);
+    const refreshToken = refresh();
+    redisClient.set(req, refreshToken);
+    return [ accessToken, refreshToken ];
+};
+
+export { login, sign, verify, refresh, refreshVerify };

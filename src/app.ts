@@ -40,11 +40,19 @@ export default function App() {
         url += "&scope=email profile";
         res.redirect(url);
     });
+    app.get("/login/kakao", (req, res) => {
+        let url = "https://kauth.kakao.com/oauth/authorize";
+        url += `?client_id=${process.env.KAKAO_CLIENT_ID}`;
+        url += `&redirect_uri=${process.env.KAKAO_REDIRECT_URI_LOGIN}`;
+        url += "&response_type=code";
+        res.redirect(url);
+    });
+
 
     app.get("/signUp/kakao", (req, res) => {
         let url = "https://kauth.kakao.com/oauth/authorize";
-        url += `?client_id=${process.env.GOOGLE_CLIENT_ID}`;
-        url += `&redirect_uri=${process.env.GOOGLE_REDIRECT_URI_SIGN_UP}`;
+        url += `?client_id=${process.env.KAKAO_CLIENT_ID}`;
+        url += `&redirect_uri=${process.env.KAKAO_REDIRECT_URI_SIGN_UP}`;
         url += "&response_type=code";
         res.redirect(url);
     });

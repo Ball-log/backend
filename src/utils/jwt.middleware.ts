@@ -73,7 +73,7 @@ export const tokenKakaoMiddleware = async (req: Request, res: Response, next: Ne
         Authorization: "Bearer " + kakaoToken.data.access_token
     };
 
-    const userInfo = await axios.get("https://kapi.kakao.com/v2/user/me", { headers: header });
+    const userInfo = await axios.get(process.env.KAKAO_USERINFO_URL as string, { headers: header });
 
     res.locals = {
         id: "kakao" + userInfo.data.id,

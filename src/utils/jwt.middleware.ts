@@ -82,3 +82,41 @@ export const tokenKakaoMiddleware = async (req: Request, res: Response, next: Ne
     };
     next();
 };
+
+export const tokenNaverMiddleware = async (req: Request, res: Response, next: NextFunction) => {
+
+    const path  = req.path;
+    let redirectUri = null;
+    if (path === "/signUp/naver") {
+        redirectUri = process.env.NAVER_REDIRECT_URI_SIGN_UP;
+    } else {
+        redirectUri = process.env.NAVER_REDIRECT_URI_LOGIN;
+    }
+    const code = req.query.code;
+    const state = req.query.state;
+
+    const data = {
+        grant_type: "authorization_code",
+        response_type: "code",
+        client_id: process.env.NAVER_CLIENT_ID as string,
+        client_secret: process.env.NAVER_CLIENT_SECRET as string,
+        redirect_uri: redirectUri as string,
+        code: code as string,
+        state: state as string
+    };
+
+    const naverToken = await axios.post(process.env.NAVER_TOKEN_URL as string, data, { headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+    } });
+
+    const header = {
+        Authorization: "Bearer " + naverToken.data.access_token
+    };
+    const userInfo = await axios.get(process.env.NAVER_USERINFO_URL as string, { headers: header });
+    res.locals = {
+        id: "naver" + userInfo.data.response.id,
+        email: userInfo.data.response.email,
+        name: userInfo.data.response.name
+    };
+    next();
+};

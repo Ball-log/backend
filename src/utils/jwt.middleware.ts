@@ -23,11 +23,11 @@ export const authAccessTokenMiddleware = (req: Request, res: Response, next: Nex
 
 export const tokenGoogleMiddleware =  async (req: Request, res: Response, next: NextFunction) => {
     const path  = req.path;
-    let redirectUrl = null;
-    if (path === "/signUp") {
-        redirectUrl = process.env.GOOGLE_REDIRECT_URI_SIGN_UP;
+    let redirectUri = null;
+    if (path === "/signUp/google") {
+        redirectUri = process.env.GOOGLE_REDIRECT_URI_SIGN_UP;
     } else {
-        redirectUrl = process.env.GOOGLE_REDIRECT_URI_LOGIN;
+        redirectUri = process.env.GOOGLE_REDIRECT_URI_LOGIN;
     }
     const { code } = req.query;
     const token = await axios.post(process.env.GOOGLE_TOKEN_URL as string, {
@@ -35,7 +35,7 @@ export const tokenGoogleMiddleware =  async (req: Request, res: Response, next: 
         code,
         client_id: process.env.GOOGLE_CLIENT_ID,
         client_secret: process.env.GOOGLE_CLIENT_SECRET,
-        redirect_uri: redirectUrl,
+        redirect_uri: redirectUri,
         grant_type: "authorization_code"
     });
     const userInfo = await axios.get(process.env.GOOGLE_USERINFO_URL as string, {

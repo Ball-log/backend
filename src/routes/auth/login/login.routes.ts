@@ -4,6 +4,6 @@ import { tokenGoogleMiddleware } from "../../../utils/jwt.middleware";
 import asyncHandler from "express-async-handler";
 
 export const loginRouter = Router();
-loginRouter.get("/login", asyncHandler(tokenGoogleMiddleware), asyncHandler(getLoginController));
+loginRouter.get("/login/google", asyncHandler(tokenGoogleMiddleware), asyncHandler(getLoginController));
 
 

@@ -6,13 +6,18 @@ import axios from "axios";
 
 config();
 
-export const authAccessTokenMiddleware = (req: Request, res: Response, next: NextFunction) => {
+export const authAccessTokenMiddleware = (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
     if (req.headers.authorization) {
-        const accessToken = req.headers.accesstoken as string;
+        const accessToken = req.headers.authorization as string;
         const token = accessToken.split(" ")[1];
         const result = verify(token); // token을 검증합니다.
 
         if (result.ok) {
+            res.locals.userId = result.sub;
             next();
         } else {
             res.status(401).send(status.ACCESS_TOKEN_EXPIRED.body);
@@ -20,9 +25,12 @@ export const authAccessTokenMiddleware = (req: Request, res: Response, next: Nex
     }
 };
 
-
-export const tokenGoogleMiddleware =  async (req: Request, res: Response, next: NextFunction) => {
-    const path  = req.path;
+export const tokenGoogleMiddleware = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    const path = req.path;
     let redirectUri = null;
     if (path === "/signUp/google") {
         redirectUri = process.env.GOOGLE_REDIRECT_URI_SIGN_UP;
@@ -38,7 +46,6 @@ export const tokenGoogleMiddleware =  async (req: Request, res: Response, next: 
         grant_type: "authorization_code"
     });
     const userInfo = await axios.get(process.env.GOOGLE_USERINFO_URL as string, {
-
         headers: {
             Authorization: "Bearer " + token.data.access_token
         }
@@ -51,9 +58,11 @@ export const tokenGoogleMiddleware =  async (req: Request, res: Response, next: 
     next();
 };
 
-
-export const tokenKakaoMiddleware = async (req: Request, res: Response, next: NextFunction) => {
-
+export const tokenKakaoMiddleware = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
     const { code } = req.query;
     const data = {
         grant_type: "authorization_code",
@@ -63,17 +72,19 @@ export const tokenKakaoMiddleware = async (req: Request, res: Response, next: Ne
 
     const queryString = `grant_type=${data.grant_type}&client_id=${data.client_id}&code=${data.code}`;
 
-
-    const kakaoToken
-    = (await axios.post(process.env.KAKAO_TOKEN_URL as string, queryString));
-
+    const kakaoToken = await axios.post(
+        process.env.KAKAO_TOKEN_URL as string,
+        queryString
+    );
 
     const header = {
         "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
         Authorization: "Bearer " + kakaoToken.data.access_token
     };
 
-    const userInfo = await axios.get(process.env.KAKAO_USERINFO_URL as string, { headers: header });
+    const userInfo = await axios.get(process.env.KAKAO_USERINFO_URL as string, {
+        headers: header
+    });
 
     res.locals = {
         id: "kakao" + userInfo.data.id,
@@ -83,9 +94,12 @@ export const tokenKakaoMiddleware = async (req: Request, res: Response, next: Ne
     next();
 };
 
-export const tokenNaverMiddleware = async (req: Request, res: Response, next: NextFunction) => {
-
-    const path  = req.path;
+export const tokenNaverMiddleware = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    const path = req.path;
     let redirectUri = null;
     if (path === "/signUp/naver") {
         redirectUri = process.env.NAVER_REDIRECT_URI_SIGN_UP;
@@ -105,14 +119,22 @@ export const tokenNaverMiddleware = async (req: Request, res: Response, next: Ne
         state: state as string
     };
 
-    const naverToken = await axios.post(process.env.NAVER_TOKEN_URL as string, data, { headers: {
-        "Content-Type": "application/x-www-form-urlencoded"
-    } });
+    const naverToken = await axios.post(
+        process.env.NAVER_TOKEN_URL as string,
+        data,
+        {
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            }
+        }
+    );
 
     const header = {
         Authorization: "Bearer " + naverToken.data.access_token
     };
-    const userInfo = await axios.get(process.env.NAVER_USERINFO_URL as string, { headers: header });
+    const userInfo = await axios.get(process.env.NAVER_USERINFO_URL as string, {
+        headers: header
+    });
     res.locals = {
         id: "naver" + userInfo.data.response.id,
         email: userInfo.data.response.email,

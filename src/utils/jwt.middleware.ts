@@ -13,6 +13,7 @@ export const authAccessTokenMiddleware = (req: Request, res: Response, next: Nex
         const result = verify(token); // token을 검증합니다.
 
         if (result.ok) {
+            res.locals.userId = result.sub
             next();
         } else {
             res.status(401).send(status.ACCESS_TOKEN_EXPIRED.body);

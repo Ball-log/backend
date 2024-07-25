@@ -18,7 +18,7 @@ export const getSignUpDao = async (user: getSignUpLocalsDto): Promise<number> =>
             return -1;
         }
         const [ result ] = await connection.query<ResultSetHeader>(getSignUpSql,
-            [ user.id, user.email, user.name ]);
+            [ user.id, user.email, user.name, user.icon ]);
         connection.release();
         return result.insertId;
 

@@ -2,7 +2,7 @@ export const settingSql = {
     getSettingSql:
         `SELECT
             user.id AS user_id,
-            user.profile_img_url AS user_icon,
+            user.icon_url AS user_icon,
             user.name AS user_name,
             team.id AS team_id,
             team.name AS team_name,

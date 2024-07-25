@@ -45,10 +45,12 @@ export const tokenGoogleMiddleware =  async (req: Request, res: Response, next: 
             Authorization: "Bearer " + token.data.access_token
         }
     });
+    console.log(userInfo.data);
     res.locals = {
         id: "google" + userInfo.data.id,
         email: userInfo.data.email,
-        name: userInfo.data.name
+        name: userInfo.data.name,
+        icon: userInfo.data.picture
     };
     next();
 };
@@ -76,11 +78,12 @@ export const tokenKakaoMiddleware = async (req: Request, res: Response, next: Ne
     };
 
     const userInfo = await axios.get(process.env.KAKAO_USERINFO_URL as string, { headers: header });
-
+    console.log(userInfo.data);
     res.locals = {
         id: "kakao" + userInfo.data.id,
         email: userInfo.data.kakao_account.email,
-        name: "test"
+        name: "test",
+        icon: userInfo.data.properties.profile_image
     };
     next();
 };
@@ -115,10 +118,12 @@ export const tokenNaverMiddleware = async (req: Request, res: Response, next: Ne
         Authorization: "Bearer " + naverToken.data.access_token
     };
     const userInfo = await axios.get(process.env.NAVER_USERINFO_URL as string, { headers: header });
+    console.log(userInfo.data);
     res.locals = {
         id: "naver" + userInfo.data.response.id,
         email: userInfo.data.response.email,
-        name: userInfo.data.response.name
+        name: userInfo.data.response.name,
+        icon: userInfo.data.response.profile_image
     };
     next();
 };

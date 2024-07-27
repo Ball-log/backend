@@ -85,6 +85,8 @@ const CommunitySQL = {
         ON ac.user_id = u.id
     WHERE
         ac.article_id = ?
+    ORDER BY 
+        ac.created_at
   `,
   getPostReplies: `
     SELECT
@@ -101,6 +103,8 @@ const CommunitySQL = {
         ON ar.user_id = u.id
     WHERE
         ar.article_id = ?
+    ORDER BY 
+        ar.created_at
   `,
   postPost: "",
   getUserLikeStatus: `

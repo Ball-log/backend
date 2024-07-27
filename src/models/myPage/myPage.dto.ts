@@ -1,0 +1,12 @@
+export interface getMyPageResDto {
+    team_id: string,
+    team_icon_round: string,
+    user_background_img: string,
+    user_name: string,
+    match_date: Date,
+    user_team_icon_flag: string,
+    opposition_icon_flag: string,
+    user_team_score: number,
+    opposition_score: number,
+    writed_date_list: Date[] | null
+}

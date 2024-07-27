@@ -51,3 +51,8 @@ export interface PostReplies {
   date: string;
   isMine: boolean;
 }
+
+// toggle like
+export interface patchToggleLikeResDto {
+  like: boolean;
+}

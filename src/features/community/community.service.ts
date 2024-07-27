@@ -7,6 +7,7 @@ import {
   getPostsResDto,
   PostComments,
   PostReplies,
+  patchToggleLikeResDto,
 } from "../../models/community/community.dto";
 
 const CommunityService = {
@@ -99,10 +100,22 @@ const CommunityService = {
     console.log(currentState);
     if (currentState) {
       await CommunityDao.deleteLike(userId, postId);
-      return { like: false };
+      const bocy: BaseApiResponse<patchToggleLikeResDto> = {
+        ...status.SUCCESS.body,
+        result: {
+          like: false,
+        },
+      };
+      return bocy;
     } else {
       await CommunityDao.insertLike(userId, postId);
-      return { like: true };
+      const bocy: BaseApiResponse<patchToggleLikeResDto> = {
+        ...status.SUCCESS.body,
+        result: {
+          like: true,
+        },
+      };
+      return bocy;
     }
   },
 };

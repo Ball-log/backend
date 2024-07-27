@@ -94,6 +94,17 @@ const CommunityService = {
 
     return body;
   },
+  toggleLike: async (userId: string, postId: string) => {
+    const currentState = await CommunityDao.getUserLikeStatus(userId, postId);
+    console.log(currentState);
+    if (currentState) {
+      await CommunityDao.deleteLike(userId, postId);
+      return { like: false };
+    } else {
+      await CommunityDao.insertLike(userId, postId);
+      return { like: true };
+    }
+  },
 };
 
 export default CommunityService;

@@ -103,6 +103,27 @@ const CommunitySQL = {
         ar.article_id = ?
   `,
   postPost: "",
+  getUserLikeStatus: `
+    SELECT
+        COUNT(*) AS count
+    FROM
+        article_like
+    WHERE
+        user_id = ? AND article_id = ?
+  `,
+  insertLike: `
+    INSERT INTO
+        article_like (user_id, article_id)
+    VALUES
+        (?, ?)
+  `,
+  deleteLike: `
+    DELETE FROM
+        article_like
+    WHERE
+        user_id = ?
+        AND article_id = ?
+  `,
 };
 
 export default CommunitySQL;

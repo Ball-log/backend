@@ -89,6 +89,31 @@ const CommunityDao = {
 
     return postReplyRows;
   },
+  getUserLikeStatus: async (
+    userId: string,
+    postId: string
+  ): Promise<boolean> => {
+    const pool = getPool();
+    const [getUserLikeStatus] = await pool.query<RowDataPacket[]>(
+      CommunitySQL.getUserLikeStatus,
+      [userId, postId]
+    );
+    return getUserLikeStatus[0].count > 0;
+  },
+  insertLike: async (userId: string, postId: string): Promise<void> => {
+    const pool = getPool();
+    await pool.query<RowDataPacket[]>(CommunitySQL.insertLike, [
+      userId,
+      postId,
+    ]);
+  },
+  deleteLike: async (userId: string, postId: string): Promise<void> => {
+    const pool = getPool();
+    await pool.query<RowDataPacket[]>(CommunitySQL.deleteLike, [
+      userId,
+      postId,
+    ]);
+  },
 };
 
 export default CommunityDao;

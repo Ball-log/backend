@@ -12,3 +12,8 @@ communityRouter.get(
   "/post/:postId",
   asyncHandler(CommunityController.getPostDetailController)
 );
+
+communityRouter.patch(
+  "/like/:postId",
+  asyncHandler(CommunityController.patchToggleLikeController)
+);

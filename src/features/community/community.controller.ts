@@ -35,7 +35,22 @@ const CommunityController = {
       } else {
         res.json(new ApiError(status.UNKNOWN_ERROR).data.body);
       }
-      return;
+    }
+  },
+  patchToggleLikeController: async (req: Request, res: Response) => {
+    try {
+      const userId = res.locals.userId;
+      const postId = req.params.postId;
+      const result = await CommunityService.toggleLike(userId, postId);
+
+      res.json(result);
+    } catch (err) {
+      console.log(err);
+      if (err instanceof ApiError) {
+        res.json(err.data.body);
+      } else {
+        res.json(new ApiError(status.UNKNOWN_ERROR).data.body);
+      }
     }
   },
 };

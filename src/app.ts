@@ -1,10 +1,10 @@
 
 import express, { json, urlencoded } from "express";
-
 import { authRouter } from "./routes/auth/auth.routes";
-
 import { config } from "dotenv";
-
+import { myPageRouter } from "./routes/myPage/myPage.route";
+import asyncHandler from "express-async-handler";
+import { authAccessTokenMiddleware } from "./utils/jwt.middleware";
 config();
 export default function App() {
     const app = express();
@@ -79,5 +79,6 @@ export default function App() {
     app.use(urlencoded({ extended: true }));
 
     app.use("/auth", authRouter);
+    app.use("/myPage", asyncHandler(authAccessTokenMiddleware), asyncHandler(myPageRouter));
     return app;
 }

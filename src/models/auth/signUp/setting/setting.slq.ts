@@ -12,6 +12,14 @@ export const settingSql = {
         CROSS JOIN
             team
         WHERE
-            user.id = ?`
+            user.id = ?`,
 
+    patchSettingSql:
+        `UPDATE 
+            user
+        SET 
+            user.icon_url = ?,
+            user.team_id = ?
+        WHERE 
+            user.id = ?`
 };

@@ -14,7 +14,8 @@ export type ResponseType =
   | "THERE_IS_NO_REFRESH_TOKEN"
   | "THERE_IS_NO_TOKEN"
   | "UNKNOWN_ERROR"
-  | "POST_TYPE_EMPTY";
+  | "POST_TYPE_EMPTY"
+  | "WRONG_POST_ID";
 
 export type ResponseWithStatus = {
   status: StatusCodes;
@@ -89,5 +90,9 @@ export const status: Record<ResponseType, ResponseWithStatus> = {
   POST_TYPE_EMPTY: {
     status: StatusCodes.BAD_REQUEST,
     body: { isSuccess: false, code: "400", message: "type이 비어있습니다." },
+  },
+  WRONG_POST_ID: {
+    status: StatusCodes.BAD_REQUEST,
+    body: { isSuccess: false, code: "400", message: "잘못된 post id 입니다." },
   },
 };

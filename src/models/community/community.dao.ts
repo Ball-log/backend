@@ -59,6 +59,36 @@ const CommunityDao = {
 
     return { totalCount, posts: posts };
   },
+
+  getPostDetail: async (postId: string): Promise<RowDataPacket> => {
+    const pool = getPool();
+    const [postDetailRows] = await pool.query<RowDataPacket[]>(
+      CommunitySQL.getPostDetail,
+      [postId]
+    );
+
+    return postDetailRows[0];
+  },
+
+  getPostComments: async (postId: string): Promise<RowDataPacket[]> => {
+    const pool = getPool();
+    const [postCommentRows] = await pool.query<RowDataPacket[]>(
+      CommunitySQL.getPostComments,
+      [postId]
+    );
+
+    return postCommentRows;
+  },
+
+  getPostReplies: async (postId: string): Promise<RowDataPacket[]> => {
+    const pool = getPool();
+    const [postReplyRows] = await pool.query<RowDataPacket[]>(
+      CommunitySQL.getPostReplies,
+      [postId]
+    );
+
+    return postReplyRows;
+  },
 };
 
 export default CommunityDao;

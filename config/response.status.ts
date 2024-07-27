@@ -2,7 +2,8 @@ import { StatusCodes } from "http-status-codes";
 import { BaseApiResponse } from "./response";
 
 export type ResponseType = "SUCCESS" | "NOT_FOUND" | "EMAIL_ALREADY_EXIST" | "LOGIN_INFO_UNMATCHED" | "ACCESS_TOKEN_EXPIRED" | "REFRESH_TOKEN_UNMATCHED" |
-                            "ACCESS_TOKEN_IS_VALID" | "ACCESS_TOKEN_UNMATCHED" | "THERE_IS_NO_ACCESS_TOKEN" | "THERE_IS_NO_REFRESH_TOKEN" | "THERE_IS_NO_TOKEN";
+                            "ACCESS_TOKEN_IS_VALID" | "ACCESS_TOKEN_UNMATCHED" | "THERE_IS_NO_ACCESS_TOKEN" | "THERE_IS_NO_REFRESH_TOKEN" | "THERE_IS_NO_TOKEN" |
+                            "DATA_INSERTED_SQL_ERROR" | "REQUEST_BODY_INVALID";
 
 
 export type ResponseWithStatus = {
@@ -54,5 +55,13 @@ export const status: Record<ResponseType, ResponseWithStatus> = {
     THERE_IS_NO_TOKEN: {
         status: StatusCodes.UNAUTHORIZED,
         body: { isSuccess: false, code: "401", message: "there is no token."}
+    },
+    DATA_INSERTED_SQL_ERROR: {
+        status: StatusCodes.BAD_REQUEST,
+        body: { isSuccess: false, code: "400", message: "there is an error in the SQL syntax for inserting data." }
+    },
+    REQUEST_BODY_INVALID: {
+        status: StatusCodes.BAD_REQUEST,
+        body: { isSuccess: false, code: "400", message: "request body is invalid." }
     }
 };

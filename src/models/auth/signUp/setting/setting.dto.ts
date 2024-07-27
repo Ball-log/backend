@@ -1,5 +1,4 @@
-export interface getSettingDto {
-    user_id: string,
+export interface getSettingResDto {
     user_icon: string,
     user_name: string,
     team_info:
@@ -10,3 +9,9 @@ export interface getSettingDto {
     }[]
 
 }
+
+export interface patchSettingDto {
+    user_icon: string,
+    user_team_id: number
+}
+

@@ -4,6 +4,9 @@ const CommunitySQL = {
         COUNT(*) AS totalCount
     FROM 
         article a
+    JOIN
+        user u 
+        ON a.user_id = u.id
     WHERE
         {{typeCondition}}
         {{cursorCondition}}

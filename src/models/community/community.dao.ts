@@ -114,6 +114,28 @@ const CommunityDao = {
       postId,
     ]);
   },
+  insertPostComment: async (userId: string, postId: string, body: string) => {
+    const pool = getPool();
+    await pool.query<RowDataPacket[]>(CommunitySQL.insertPostComment, [
+      postId,
+      userId,
+      body,
+    ]);
+  },
+  insertPostReply: async (
+    userId: string,
+    commentId: string,
+    postId: string,
+    body: string
+  ) => {
+    const pool = getPool();
+    await pool.query<RowDataPacket[]>(CommunitySQL.insertPostReply, [
+      postId,
+      commentId,
+      userId,
+      body,
+    ]);
+  },
 };
 
 export default CommunityDao;

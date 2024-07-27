@@ -9,6 +9,7 @@ import {
   PostReplies,
   patchToggleLikeResDto,
 } from "../../models/community/community.dto";
+import { emptyDto } from "../../models/empty.dto";
 
 const CommunityService = {
   getPosts: async (type: string, page: number, cursor?: number) => {
@@ -97,26 +98,46 @@ const CommunityService = {
   },
   toggleLike: async (userId: string, postId: string) => {
     const currentState = await CommunityDao.getUserLikeStatus(userId, postId);
-    console.log(currentState);
     if (currentState) {
       await CommunityDao.deleteLike(userId, postId);
-      const bocy: BaseApiResponse<patchToggleLikeResDto> = {
+      const body: BaseApiResponse<patchToggleLikeResDto> = {
         ...status.SUCCESS.body,
         result: {
           like: false,
         },
       };
-      return bocy;
+      return body;
     } else {
       await CommunityDao.insertLike(userId, postId);
-      const bocy: BaseApiResponse<patchToggleLikeResDto> = {
+      const body: BaseApiResponse<patchToggleLikeResDto> = {
         ...status.SUCCESS.body,
         result: {
           like: true,
         },
       };
-      return bocy;
+      return body;
     }
+  },
+  postComment: async (userId: string, postId: string, body: string) => {
+    await CommunityDao.insertPostComment(userId, postId, body);
+    const response: BaseApiResponse<emptyDto> = {
+      ...status.SUCCESS.body,
+      result: {},
+    };
+    return response;
+  },
+  postReply: async (
+    userId: string,
+    commentId: string,
+    postId: string,
+    body: string
+  ) => {
+    await CommunityDao.insertPostReply(userId, commentId, postId, body);
+    const response: BaseApiResponse<emptyDto> = {
+      ...status.SUCCESS.body,
+      result: {},
+    };
+    return response;
   },
 };
 

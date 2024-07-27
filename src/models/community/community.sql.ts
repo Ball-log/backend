@@ -124,6 +124,18 @@ const CommunitySQL = {
         user_id = ?
         AND article_id = ?
   `,
+  insertPostComment: `
+    INSERT INTO
+        article_comment (article_id, user_id, body)
+    VALUES
+        (?, ?, ?)
+  `,
+  insertPostReply: `
+    INSERT INTO
+        article_reply (article_id, comment_id, user_id, body)
+    VALUES
+        (?, ?, ?, ?)
+  `,
 };
 
 export default CommunitySQL;

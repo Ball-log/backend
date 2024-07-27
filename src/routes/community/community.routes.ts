@@ -17,3 +17,13 @@ communityRouter.patch(
   "/like/:postId",
   asyncHandler(CommunityController.patchToggleLikeController)
 );
+
+communityRouter.post(
+  "/comment",
+  asyncHandler(CommunityController.postCommentController)
+);
+
+communityRouter.post(
+  "/reply",
+  asyncHandler(CommunityController.postReplyController)
+);

@@ -15,7 +15,9 @@ export type ResponseType =
   | "THERE_IS_NO_TOKEN"
   | "UNKNOWN_ERROR"
   | "POST_TYPE_EMPTY"
-  | "WRONG_POST_ID";
+  | "WRONG_POST_ID"
+  | "THERE_IS_NO_POSTID_OR_BODY"
+  | "THERE_IS_NO_POSTID_OR_COMMENTID_OR_BODY";
 
 export type ResponseWithStatus = {
   status: StatusCodes;
@@ -94,5 +96,21 @@ export const status: Record<ResponseType, ResponseWithStatus> = {
   WRONG_POST_ID: {
     status: StatusCodes.BAD_REQUEST,
     body: { isSuccess: false, code: "400", message: "잘못된 post id 입니다." },
+  },
+  THERE_IS_NO_POSTID_OR_BODY: {
+    status: StatusCodes.BAD_REQUEST,
+    body: {
+      isSuccess: false,
+      code: "400",
+      message: "postId와 body는 필수 입니다.",
+    },
+  },
+  THERE_IS_NO_POSTID_OR_COMMENTID_OR_BODY: {
+    status: StatusCodes.BAD_REQUEST,
+    body: {
+      isSuccess: false,
+      code: "400",
+      message: "postId와 commentId와 body는 필수 입니다.",
+    },
   },
 };

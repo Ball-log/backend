@@ -53,6 +53,51 @@ const CommunityController = {
       }
     }
   },
+  postCommentController: async (req: Request, res: Response) => {
+    try {
+      const userId = res.locals.userId;
+      const { postId, body } = req.body;
+
+      if (!postId || !body) {
+        throw new ApiError(status.THERE_IS_NO_POSTID_OR_BODY);
+      }
+
+      const result = await CommunityService.postComment(userId, postId, body);
+      res.json(result);
+    } catch (err) {
+      console.log(err);
+      if (err instanceof ApiError) {
+        res.json(err.data.body);
+      } else {
+        res.json(new ApiError(status.UNKNOWN_ERROR).data.body);
+      }
+    }
+  },
+  postReplyController: async (req: Request, res: Response) => {
+    try {
+      const userId = res.locals.userId;
+      const { postId, commentId, body } = req.body;
+
+      if (!postId || !commentId || !body) {
+        throw new ApiError(status.THERE_IS_NO_POSTID_OR_COMMENTID_OR_BODY);
+      }
+
+      const result = await CommunityService.postReply(
+        userId,
+        commentId,
+        postId,
+        body
+      );
+      res.json(result);
+    } catch (err) {
+      console.log(err);
+      if (err instanceof ApiError) {
+        res.json(err.data.body);
+      } else {
+        res.json(new ApiError(status.UNKNOWN_ERROR).data.body);
+      }
+    }
+  },
 };
 
 export default CommunityController;

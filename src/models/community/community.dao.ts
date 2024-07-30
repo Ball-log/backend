@@ -89,6 +89,40 @@ const CommunityDao = {
 
     return postReplyRows;
   },
+  inserPost: async (
+    title: string,
+    content: string,
+    user_id: string,
+    type: string
+  ): Promise<number> => {
+    const pool = getPool();
+
+    let team_id: string | null = null;
+    if (type === "team") {
+      const [team_id_result] = await pool.query<RowDataPacket[]>(
+        CommunitySQL.getUserTeamId,
+        [user_id]
+      );
+      team_id = team_id_result[0].team_id;
+    } else if (type === "league") {
+      team_id = null;
+    }
+
+    const [result] = await pool.query(CommunitySQL.insertPost, [
+      title,
+      content,
+      team_id,
+      user_id,
+    ]);
+    return (result as any).insertId;
+  },
+  insertImageIntoPost: async (url: string, article_id: string) => {
+    const pool = getPool();
+    const [result] = await pool.query(CommunitySQL.insertImageIntoPost, [
+      url,
+      article_id,
+    ]);
+  },
   getUserLikeStatus: async (
     userId: string,
     postId: string

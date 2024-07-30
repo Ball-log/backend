@@ -37,6 +37,32 @@ const CommunityController = {
       }
     }
   },
+  postPost: async (req: Request, res: Response) => {
+    try {
+      const userId = res.locals.userId;
+      const title = req.body.title;
+      const content = req.body.content;
+      const imageUrls = req.body.imageUrls;
+      const type = req.body.type;
+
+      const result = await CommunityService.insertPost(
+        title,
+        content,
+        userId,
+        imageUrls,
+        type
+      );
+      // console.log(result);
+      res.json(result);
+    } catch (err) {
+      console.log(err);
+      if (err instanceof ApiError) {
+        res.json(err.data.body);
+      } else {
+        res.json(new ApiError(status.UNKNOWN_ERROR).data.body);
+      }
+    }
+  },
   patchToggleLikeController: async (req: Request, res: Response) => {
     try {
       const userId = res.locals.userId;

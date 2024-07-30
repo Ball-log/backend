@@ -106,7 +106,29 @@ const CommunitySQL = {
     ORDER BY 
         ar.created_at
   `,
-  postPost: "",
+  getUserTeamId: `
+    SELECT
+        team_id
+    FROM
+        user
+    WHERE
+        id = ?
+  `,
+  insertPost: `
+    INSERT INTO
+        article
+        (title, content, team_id, user_id)
+    VALUES
+        (?, ?, ?, ?)
+  `,
+  insertImageIntoPost: `
+    INSERT INTO
+        article_image
+        (url, article_id)
+    VALUES
+        (?, ?)
+
+  `,
   getUserLikeStatus: `
     SELECT
         COUNT(*) AS count

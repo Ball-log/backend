@@ -96,6 +96,43 @@ const CommunityService = {
 
     return body;
   },
+  insertPost: async (
+    title: string,
+    content: string,
+    userId: string,
+    imageUrls: [string],
+    type: string
+  ) => {
+    const postId = await CommunityDao.inserPost(title, content, userId, type);
+
+    if (title === "" || content === "") {
+      throw new ApiError(status.THERE_IS_NO_TITLE_OR_CONTENT_IN_POST);
+    }
+
+    if (!title || !content || !imageUrls || !type) {
+      throw new ApiError(status.WRONG_BODY);
+    }
+
+    if (!(type === "team" || type === "league")) {
+      throw new ApiError(status.TEAM_TYPE_ERROR);
+    }
+
+    if (postId) {
+      const imageInsertPromises = imageUrls.map((url) => {
+        return CommunityDao.insertImageIntoPost(url, postId.toString());
+      });
+      await Promise.all(imageInsertPromises);
+
+      const response: BaseApiResponse<emptyDto> = {
+        ...status.SUCCESS.body,
+        result: {},
+      };
+
+      return response;
+    } else {
+      throw new ApiError(status.UNKNOWN_ERROR);
+    }
+  },
   toggleLike: async (userId: string, postId: string) => {
     const currentState = await CommunityDao.getUserLikeStatus(userId, postId);
     if (currentState) {

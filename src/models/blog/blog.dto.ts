@@ -1,7 +1,7 @@
 export interface BlogPost {
   id: number;
   title: string;
-  content: string;
+  body: string;
   author: string;
   createAt: Date;
   updatedAt: Date;
@@ -14,6 +14,10 @@ export interface getBlogPostsResDto {
 
 export interface createBlogPostReqDto {
   title: string;
-  content: string;
-  author: string;
+  body: string;
+  public: boolean;
+  thumbnail_url: string;
+  created_at: Date;
+  updated_at: Date;
+  user_id: string;
 }

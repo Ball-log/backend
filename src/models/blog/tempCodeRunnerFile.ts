@@ -2,8 +2,6 @@ import { getBlogPostsResDto, createBlogPostReqDto } from "./blog.dto";
 import { getPool } from "../../../config/db.pool";
 import BlogSQL from "./blog.sql";
 
-const limit = 10;
-
 const BlogDao = {
   getBlogPosts: async (
     page: number,

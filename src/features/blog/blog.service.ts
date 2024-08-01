@@ -58,6 +58,24 @@ const BlogService = {
       throw new ApiError(status.UNKNOWN_ERROR);
     }
   },
+
+  // 좋아요 토글
+  toggleBlogLike: async (postId: number, userId: string): Promise<number> => {
+    try {
+      const [result] = await db.query<{ likeCount: number }>(
+        `SELECT COUNT(*) AS likeCount
+         FROM blog_likes
+         WHERE post_id = ?
+         `,
+        [postId]
+      );
+
+      return result.likeCount;
+    } catch (error) {
+      console.error("Error in toggleBlogLike: ", error);
+      throw new ApiError(status.UNKNOWN_ERROR);
+    }
+  },
 };
 
 export default BlogService;

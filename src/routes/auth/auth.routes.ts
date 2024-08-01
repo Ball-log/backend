@@ -7,5 +7,5 @@ export const authRouter = Router();
 
 authRouter.use(refreshTokenRouter);
 authRouter.use(loginRouter);
-authRouter.use(asyncHandler(signUpRouter));
+authRouter.use("/signUp", asyncHandler(signUpRouter));
 

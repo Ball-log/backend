@@ -20,7 +20,8 @@ export type ResponseType =
   | "THERE_IS_NO_POSTID_OR_COMMENTID_OR_BODY"
   | "THERE_IS_NO_TITLE_OR_CONTENT_IN_POST"
   | "TEAM_TYPE_ERROR"
-  | "WRONG_BODY";
+  | "WRONG_BODY"
+  | "ONLY_AUTHOR_CAN_DELETE_OR_EDIT";
 
 export type ResponseWithStatus = {
   status: StatusCodes;
@@ -138,6 +139,14 @@ export const status: Record<ResponseType, ResponseWithStatus> = {
       isSuccess: false,
       code: "400",
       message: "body를 확인해주세요.",
+    },
+  },
+  ONLY_AUTHOR_CAN_DELETE_OR_EDIT: {
+    status: StatusCodes.BAD_REQUEST,
+    body: {
+      isSuccess: false,
+      code: "400",
+      message: "작성자만 수정 혹은 삭제를 할 수 있습니다.",
     },
   },
 };

@@ -29,3 +29,8 @@ communityRouter.post(
   "/reply",
   asyncHandler(CommunityController.postReplyController)
 );
+
+communityRouter.delete(
+  "/post/:postId",
+  asyncHandler(CommunityController.deletePost)
+);

@@ -170,6 +170,19 @@ const CommunityDao = {
       body,
     ]);
   },
+  getPostAuthorId: async (postId: string): Promise<string> => {
+    const pool = getPool();
+    const [result] = await pool.query<RowDataPacket[]>(
+      CommunitySQL.getPostAuthorId,
+      [postId]
+    );
+
+    return (result[0] as any).user_id;
+  },
+  deletePost: async (postId: string) => {
+    const pool = getPool();
+    await pool.query(CommunitySQL.deletePost, [postId]);
+  },
 };
 
 export default CommunityDao;

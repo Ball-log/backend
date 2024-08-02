@@ -15,27 +15,27 @@ const CommunitySQL = {
     SELECT 
         a.*,
         u.name AS user_name,
-        GROUP_CONCAT(ai.url SEPARATOR ', ') AS image_urls,
-        COALESCE(ac.comment_count, 0) AS comment_count,
-        COALESCE(al.like_count, 0) AS like_count
+        GROUP_CONCAT(i.url SEPARATOR ', ') AS image_urls,
+        COALESCE(c.comment_count, 0) AS comment_count,
+        COALESCE(pl.like_count, 0) AS like_count
     FROM
         article a
     JOIN
         user u 
         ON a.user_id = u.id
     LEFT JOIN
-        article_image ai
-        ON a.id = ai.article_id
+        image i
+        ON a.id = i.post_id
     LEFT JOIN 
-        (SELECT article_id, COUNT(*) AS comment_count
-        FROM article_comment
-        GROUP BY article_id) ac
-        ON a.id = ac.article_id
+        (SELECT post_id, COUNT(*) AS comment_count
+        FROM comment
+        GROUP BY post_id) c
+        ON a.id = c.post_id
     LEFT JOIN 
-        (SELECT article_id, COUNT(*) AS like_count
-        FROM article_like
-        GROUP BY article_id) al
-        ON a.id = al.article_id
+        (SELECT post_id, COUNT(*) AS like_count
+        FROM post_like
+        GROUP BY post_id) pl
+        ON a.id = pl.post_id
     WHERE
         {{typeCondition}}
         {{cursorCondition}}
@@ -51,21 +51,21 @@ const CommunitySQL = {
         u.id AS author_id,
         u.name AS author_name,
         u.icon_url AS author_profile_url,
-        GROUP_CONCAT(ai.url SEPARATOR ', ') AS image_urls,
-        COALESCE(al.like_count, 0) AS like_count
+        GROUP_CONCAT(i.url SEPARATOR ', ') AS image_urls,
+        COALESCE(pl.like_count, 0) AS like_count
     FROM 
         article a
     JOIN
         user u
         ON a.user_id = u.id
     LEFT JOIN
-        article_image ai
-        ON a.id = ai.article_id
+        image i
+        ON a.id = i.post_id
     LEFT JOIN
-        (SELECT article_id, COUNT(*) AS like_count
-        FROM article_like
-        GROUP BY article_id) al
-        ON a.id = al.article_id
+        (SELECT post_id, COUNT(*) AS like_count
+        FROM post_like
+        GROUP BY post_id) pl
+        ON a.id = pl.post_id
     WHERE
         a.id = ?
     GROUP BY
@@ -73,38 +73,38 @@ const CommunitySQL = {
   `,
   getPostComments: `
     SELECT
-        ac.id AS comment_id,
-        ac.body AS comment,
-        ac.created_at AS date,
+        c.post_id AS comment_id,
+        c.body AS comment,
+        c.created_at AS date,
         u.id AS author_id,
         u.name AS author_name
     FROM
-        article_comment ac
+        comment c
     JOIN
         user u
-        ON ac.user_id = u.id
+        ON c.user_id = u.id
     WHERE
-        ac.article_id = ?
+        c.post_id = ?
     ORDER BY 
-        ac.created_at
+        c.created_at
   `,
   getPostReplies: `
     SELECT
-        ar.id AS reply_id,
-        ar.comment_id AS comment_id,
-        ar.body AS comment,
-        ar.created_at AS date,
+        r.id AS reply_id,
+        r.comment_id AS comment_id,
+        r.body AS comment,
+        r.created_at AS date,
         u.id AS author_id,
         u.name AS author_name
     FROM
-        article_reply ar
+        reply r
     JOIN
         user u
-        ON ar.user_id = u.id
+        ON r.user_id = u.id
     WHERE
-        ar.article_id = ?
+        r.post_id = ?
     ORDER BY 
-        ar.created_at
+        r.created_at
   `,
   getUserTeamId: `
     SELECT
@@ -123,44 +123,58 @@ const CommunitySQL = {
   `,
   insertImageIntoPost: `
     INSERT INTO
-        article_image
-        (url, article_id)
+        image
+        (url, post_id, post_type)
     VALUES
-        (?, ?)
+        (?, ?, 'article')
 
   `,
   getUserLikeStatus: `
     SELECT
         COUNT(*) AS count
     FROM
-        article_like
+        post_like
     WHERE
-        user_id = ? AND article_id = ?
+        user_id = ? AND post_id = ?
   `,
   insertLike: `
     INSERT INTO
-        article_like (user_id, article_id)
+        post_like (user_id, post_id, post_type)
     VALUES
-        (?, ?)
+        (?, ?, 'article')
   `,
   deleteLike: `
     DELETE FROM
-        article_like
+        post_like
     WHERE
         user_id = ?
-        AND article_id = ?
+        AND post_id = ?
   `,
   insertPostComment: `
     INSERT INTO
-        article_comment (article_id, user_id, body)
+        comment (post_id, user_id, body, post_type)
     VALUES
-        (?, ?, ?)
+        (?, ?, ?, 'article')
   `,
   insertPostReply: `
     INSERT INTO
-        article_reply (article_id, comment_id, user_id, body)
+        reply (post_id, comment_id, user_id, body, post_type)
     VALUES
-        (?, ?, ?, ?)
+        (?, ?, ?, ?, 'article')
+  `,
+  getPostAuthorId: `
+    SELECT
+        user_id
+    FROM
+        article
+    WHERE
+        id = ?
+  `,
+  deletePost: `
+    DELETE FROM
+        article
+    WHERE
+        id = ?
   `,
 };
 

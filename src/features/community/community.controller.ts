@@ -52,7 +52,7 @@ const CommunityController = {
         imageUrls,
         type
       );
-      // console.log(result);
+
       res.json(result);
     } catch (err) {
       console.log(err);
@@ -114,6 +114,23 @@ const CommunityController = {
         postId,
         body
       );
+      res.json(result);
+    } catch (err) {
+      console.log(err);
+      if (err instanceof ApiError) {
+        res.json(err.data.body);
+      } else {
+        res.json(new ApiError(status.UNKNOWN_ERROR).data.body);
+      }
+    }
+  },
+  deletePost: async (req: Request, res: Response) => {
+    try {
+      const userId = res.locals.userId;
+      const postId = req.params.postId;
+
+      const result = await CommunityService.deletePost(userId, postId);
+
       res.json(result);
     } catch (err) {
       console.log(err);

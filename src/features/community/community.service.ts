@@ -176,6 +176,20 @@ const CommunityService = {
     };
     return response;
   },
+  deletePost: async (userId: string, postId: string) => {
+    let authorId = await CommunityDao.getPostAuthorId(postId);
+
+    if (userId !== authorId) {
+      throw new ApiError(status.ONLY_AUTHOR_CAN_DELETE_OR_EDIT);
+    }
+
+    await CommunityDao.deletePost(postId);
+    const response: BaseApiResponse<emptyDto> = {
+      ...status.SUCCESS.body,
+      result: {},
+    };
+    return response;
+  },
 };
 
 export default CommunityService;

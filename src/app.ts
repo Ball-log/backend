@@ -1,13 +1,17 @@
-
 import express, { json, urlencoded } from "express";
 import { authRouter } from "./routes/auth/auth.routes";
 import { config } from "dotenv";
+
 import { myPageRouter } from "./routes/myPage/myPage.route";
 import asyncHandler from "express-async-handler";
 import { authAccessTokenMiddleware } from "./utils/jwt.middleware";
+
+import { communityRouter } from "./routes/community/community.routes";
+
+
 config();
 export default function App() {
-    const app = express();
+  const app = express();
 
     app.get("/auth/login", (req, res) => {
         res.send(`
@@ -24,12 +28,15 @@ export default function App() {
         <a href="/auth/signUp/kakao">kakao Sign pp</a>
         <a href="/auth/signUp/naver">naver Sign pp</a>
         `);
-    });
-
+  });
     app.use(json());
     app.use(urlencoded({ extended: true }));
 
     app.use("/auth", asyncHandler(authRouter));
     app.use("/myPage", asyncHandler(authAccessTokenMiddleware), asyncHandler(myPageRouter));
-    return app;
+  app.use("/auth", authRouter);
+  app.use(asyncHandler(authAccessTokenMiddleware));
+  app.use("/community", communityRouter);
+
+  return app;
 }

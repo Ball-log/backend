@@ -1,4 +1,4 @@
-import jwt, { JwtPayload  } from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import redisClient from "./../../config/db.redis";
 import { config } from "dotenv";
 
@@ -9,15 +9,20 @@ if (!secret) {
     throw new Error("JWT secret is not defined in environment variables");
 }
 
-const sign = (user: string) => { // access token 발급
+const sign = (user: string) => {
+    // access token 발급
     const payload = {
         iss: "https://www.ballog.com",
         sub: user
     };
 
-    return jwt.sign(payload, secret, { // secret으로 sign하여 발급하고 return
+    return jwt.sign(payload, secret, {
+
+        // secret으로 sign하여 발급하고 return
         algorithm: "HS256", // 암호화 알고리즘
+
         expiresIn: "2h" 	  // 유효기간
+
     });
 };
 
@@ -40,15 +45,17 @@ const verify = (token: string) => {
     }
 };
 
-const refresh = () => { // refresh token 발급
-    return jwt.sign({}, secret, { // refresh token은 payload 없이 발급
+const refresh = () => {
+    // refresh token 발급
+    return jwt.sign({}, secret, {
+
+        // refresh token은 payload 없이 발급
         algorithm: "HS256",
         expiresIn: "14d"
     });
 };
 
 const refreshVerify = async (token: string, userId: string) => {
-
     try {
         const data = await redisClient.get(userId);
         if (token === data) {
@@ -70,7 +77,6 @@ const refreshVerify = async (token: string, userId: string) => {
 };
 
 const login = async (req: string) => {
-
     const accessToken = sign(req);
     const refreshToken = refresh();
     redisClient.set(req, refreshToken);

@@ -7,8 +7,9 @@ import axios from "axios";
 config();
 
 export const authAccessTokenMiddleware = (req: Request, res: Response, next: NextFunction) => {
-    if (req.headers.accesstoken) {
-        const accessToken = req.headers.accesstoken as string;
+    if (req.headers.Authorization) {
+        console.log(req.headers.Authorization);
+        const accessToken = req.headers.Authorization as string;
         const token = accessToken.split(" ")[1];
         const result = verify(token); // token을 검증합니다.
         if (result.ok) {
@@ -18,7 +19,7 @@ export const authAccessTokenMiddleware = (req: Request, res: Response, next: Nex
             res.status(401).send(status.ACCESS_TOKEN_EXPIRED.body);
         }
     } else {
-        console.log(req.headers.accesstoken);
+        console.log(req.headers);
     }
 };
 
@@ -45,7 +46,6 @@ export const tokenGoogleMiddleware =  async (req: Request, res: Response, next: 
             Authorization: "Bearer " + token.data.access_token
         }
     });
-    console.log(userInfo.data);
     res.locals = {
         id: "google" + userInfo.data.id,
         email: userInfo.data.email,
@@ -78,7 +78,6 @@ export const tokenKakaoMiddleware = async (req: Request, res: Response, next: Ne
     };
 
     const userInfo = await axios.get(process.env.KAKAO_USERINFO_URL as string, { headers: header });
-    console.log(userInfo.data);
     res.locals = {
         id: "kakao" + userInfo.data.id,
         email: userInfo.data.kakao_account.email,
@@ -118,7 +117,6 @@ export const tokenNaverMiddleware = async (req: Request, res: Response, next: Ne
         Authorization: "Bearer " + naverToken.data.access_token
     };
     const userInfo = await axios.get(process.env.NAVER_USERINFO_URL as string, { headers: header });
-    console.log(userInfo.data);
     res.locals = {
         id: "naver" + userInfo.data.response.id,
         email: userInfo.data.response.email,

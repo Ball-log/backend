@@ -9,12 +9,12 @@ config();
 export default function App() {
     const app = express();
 
-    app.get("/login", (req, res) => {
+    app.get("/auth/login", (req, res) => {
         res.send(`
         <h1>Log in</h1>
-        <a href="/login/google">google Log in</a>
-        <a href="/login/kakao">kakao Log in</a>
-        <a href="/login/naver">naver Log in</a>
+        <a href="/auth/login/google">google Log in</a>
+        <a href="/auth/login/kakao">kakao Log in</a>
+        <a href="/auth/login/naver">naver Log in</a>
         `);
     });
     app.get("/auth/signUp", (req, res) => {
@@ -26,37 +26,10 @@ export default function App() {
         `);
     });
 
-    app.get("/login/google", (req, res) => {
-        let url = "https://accounts.google.com/o/oauth2/v2/auth";
-        url += `?client_id=${process.env.GOOGLE_CLIENT_ID}`;
-        url += `&redirect_uri=${process.env.GOOGLE_REDIRECT_URI_LOGIN}`;
-        url += "&response_type=code";
-        url += "&scope=email profile";
-        res.redirect(url);
-    });
-
-    app.get("/login/kakao", (req, res) => {
-        let url = "https://kauth.kakao.com/oauth/authorize";
-        url += `?client_id=${process.env.KAKAO_CLIENT_ID}`;
-        url += `&redirect_uri=${process.env.KAKAO_REDIRECT_URI_LOGIN}`;
-        url += "&response_type=code";
-        res.redirect(url);
-    });
-
-
-    app.get("/login/naver", (req, res) => {
-        let url = "https://nid.naver.com/oauth2.0/authorize?response_type=code";
-        url += `&client_id=${process.env.NAVER_CLIENT_ID}`;
-        url += `&redirect_uri=${process.env.NAVER_REDIRECT_URI_LOGIN}`;
-        url += "&state=test";
-        res.redirect(url);
-    });
-
-
     app.use(json());
     app.use(urlencoded({ extended: true }));
 
-    app.use("/auth", authRouter);
+    app.use("/auth", asyncHandler(authRouter));
     app.use("/myPage", asyncHandler(authAccessTokenMiddleware), asyncHandler(myPageRouter));
     return app;
 }

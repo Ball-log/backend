@@ -6,6 +6,6 @@ import asyncHandler from "express-async-handler";
 export const authRouter = Router();
 
 authRouter.use(refreshTokenRouter);
-authRouter.use(loginRouter);
+authRouter.use("/login", asyncHandler(loginRouter));
 authRouter.use("/signUp", asyncHandler(signUpRouter));
 

@@ -4,9 +4,10 @@ import { postRefreshTokenReqHeadersDto as reqHeaders } from "../../../models/aut
 
 export const postRefreshTokenController = async (req: Request, res: Response) => {
     const headers: reqHeaders = {
-        accessToken: req.headers.accesstoken as string,
-        refreshToken: req.headers.refreshtoken as string
+        accessToken: req.headers.Authorization as string,
+        refreshToken: req.headers.refreshToken as string
     };
-    const result = await postRefreshTokenService(req.body, headers);
-    res.send(result);
+    const result = await postRefreshTokenService(headers);
+    res.set("Authorization", `Bearer ${result}`);
+    res.send("ok");
 };

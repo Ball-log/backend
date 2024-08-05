@@ -16,9 +16,7 @@ export const authAccessTokenMiddleware = (
         const accessToken = req.headers.authorization as string;
         const token = accessToken.split(" ")[1];
         const result = verify(token); // token을 검증합니다.
-        console.log(result);
         if (result.ok) {
-            console.log(result.sub);
             res.locals.id = result.sub;
 
             next();

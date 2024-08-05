@@ -4,38 +4,38 @@ import CommunityController from "../../features/community/community.controller";
 
 export const communityRouter = Router();
 communityRouter.get(
-  "/posts",
-  asyncHandler(CommunityController.getPostsController)
+    "/posts",
+    asyncHandler(CommunityController.getPostsController)
 );
 
 communityRouter.get(
-  "/post/:postId",
-  asyncHandler(CommunityController.getPostDetailController)
+    "/post/:postId",
+    asyncHandler(CommunityController.getPostDetailController)
 );
 
 communityRouter.post("/post", asyncHandler(CommunityController.postPost));
 
 communityRouter.patch(
-  "/like/:postId",
-  asyncHandler(CommunityController.patchToggleLikeController)
+    "/like/:postId",
+    asyncHandler(CommunityController.patchToggleLikeController)
 );
 
 communityRouter.post(
-  "/comment",
-  asyncHandler(CommunityController.postCommentController)
+    "/comment",
+    asyncHandler(CommunityController.postCommentController)
 );
 
 communityRouter.post(
-  "/reply",
-  asyncHandler(CommunityController.postReplyController)
+    "/reply",
+    asyncHandler(CommunityController.postReplyController)
 );
 
 communityRouter.delete(
-  "/post/:postId",
-  asyncHandler(CommunityController.deletePost)
+    "/post/:postId",
+    asyncHandler(CommunityController.deletePost)
 );
 
 communityRouter.patch(
-  "/post/:postId",
-  asyncHandler(CommunityController.updatePost)
+    "/post/:postId",
+    asyncHandler(CommunityController.updatePost)
 );

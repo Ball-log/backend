@@ -11,7 +11,7 @@ import { communityRouter } from "./routes/community/community.routes";
 
 config();
 export default function App() {
-  const app = express();
+    const app = express();
 
     app.get("/auth/login", (req, res) => {
         res.send(`
@@ -28,15 +28,15 @@ export default function App() {
         <a href="/auth/signUp/kakao">kakao Sign pp</a>
         <a href="/auth/signUp/naver">naver Sign pp</a>
         `);
-  });
+    });
     app.use(json());
     app.use(urlencoded({ extended: true }));
 
     app.use("/auth", asyncHandler(authRouter));
     app.use("/myPage", asyncHandler(authAccessTokenMiddleware), asyncHandler(myPageRouter));
-  app.use("/auth", authRouter);
-  app.use(asyncHandler(authAccessTokenMiddleware));
-  app.use("/community", communityRouter);
+    app.use("/auth", authRouter);
+    app.use(asyncHandler(authAccessTokenMiddleware));
+    app.use("/community", communityRouter);
 
-  return app;
+    return app;
 }

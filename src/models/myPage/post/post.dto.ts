@@ -15,7 +15,7 @@ export interface getPostResDto {
         mvp_player_name: string,
         mvp_player_record: string,
         mvp_created_at: Date,
-        mpv_count_like: number,
+        mvp_count_like: number,
         mvp_count_comment: number
     }[]
 }

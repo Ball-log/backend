@@ -6,14 +6,19 @@ import axios from "axios";
 
 config();
 
-export const authAccessTokenMiddleware = (req: Request, res: Response, next: NextFunction) => {
-    if (req.headers.Authorization) {
-        console.log(req.headers.Authorization);
-        const accessToken = req.headers.Authorization as string;
+export const authAccessTokenMiddleware = (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    if (req.headers.authorization) {
+        console.log(req.headers.authorization);
+        const accessToken = req.headers.authorization as string;
         const token = accessToken.split(" ")[1];
         const result = verify(token); // token을 검증합니다.
+        console.log(result);
         if (result.ok) {
-
+            console.log(result.sub);
             res.locals.id = result.sub;
 
             next();
@@ -83,7 +88,9 @@ export const tokenKakaoMiddleware = async (
         Authorization: "Bearer " + kakaoToken.data.access_token
     };
 
-    const userInfo = await axios.get(process.env.KAKAO_USERINFO_URL as string, { headers: header });
+    const userInfo = await axios.get(process.env.KAKAO_USERINFO_URL as string, {
+        headers: header
+    });
 
     res.locals = {
         id: "kakao" + userInfo.data.id,

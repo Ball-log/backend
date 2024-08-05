@@ -176,6 +176,22 @@ const CommunitySQL = {
     WHERE
         id = ?
   `,
+  updatePost: `
+    UPDATE 
+        article
+    SET 
+        title = ?, content = ?, updated_at = NOW()
+    WHERE
+        id = ?
+  `,
+  deletePostImages: `
+    DELETE FROM
+        image
+    WHERE
+        post_id = ? 
+        AND post_type = 'article'
+        AND id IN (?)
+  `,
 };
 
 export default CommunitySQL;

@@ -183,6 +183,14 @@ const CommunityDao = {
     const pool = getPool();
     await pool.query(CommunitySQL.deletePost, [postId]);
   },
+  updatePost: async (title: string, content: string, articleId: string) => {
+    const pool = getPool();
+    await pool.query(CommunitySQL.updatePost, [title, content, articleId]);
+  },
+  deletePostImages: async (postId: string, imageIds: [string]) => {
+    const pool = getPool();
+    await pool.query(CommunitySQL.deletePostImages, [postId, imageIds]);
+  },
 };
 
 export default CommunityDao;

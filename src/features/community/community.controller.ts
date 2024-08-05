@@ -141,6 +141,34 @@ const CommunityController = {
       }
     }
   },
+  updatePost: async (req: Request, res: Response) => {
+    try {
+      const userId = res.locals.userId;
+      const postId = req.params.postId;
+      const title = req.body.title;
+      const content = req.body.content;
+      const deleteImageIds = req.body.deleteImageIds;
+      const newImageUrls = req.body.newImageUrls;
+
+      const result = await CommunityService.updatePost(
+        userId,
+        postId,
+        title,
+        content,
+        deleteImageIds,
+        newImageUrls
+      );
+
+      res.json(result);
+    } catch (err) {
+      console.log(err);
+      if (err instanceof ApiError) {
+        res.json(err.data.body);
+      } else {
+        res.json(new ApiError(status.UNKNOWN_ERROR).data.body);
+      }
+    }
+  },
 };
 
 export default CommunityController;

@@ -190,6 +190,33 @@ const CommunityService = {
     };
     return response;
   },
+  updatePost: async (
+    userId: string,
+    postId: string,
+    title: string,
+    content: string,
+    deleteImageIds: [string],
+    newImageUrls: [string]
+  ) => {
+    let authorId = await CommunityDao.getPostAuthorId(postId);
+
+    if (userId !== authorId) {
+      throw new ApiError(status.ONLY_AUTHOR_CAN_DELETE_OR_EDIT);
+    }
+
+    await CommunityDao.updatePost(title, content, postId);
+    await CommunityDao.deletePostImages(postId, deleteImageIds);
+    const imageInsertPromises = newImageUrls.map((url) => {
+      return CommunityDao.insertImageIntoPost(url, postId.toString());
+    });
+    await Promise.all(imageInsertPromises);
+    const response: BaseApiResponse<emptyDto> = {
+      ...status.SUCCESS.body,
+      result: {},
+    };
+
+    return response;
+  },
 };
 
 export default CommunityService;

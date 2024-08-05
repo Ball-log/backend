@@ -34,3 +34,8 @@ communityRouter.delete(
   "/post/:postId",
   asyncHandler(CommunityController.deletePost)
 );
+
+communityRouter.patch(
+  "/post/:postId",
+  asyncHandler(CommunityController.updatePost)
+);

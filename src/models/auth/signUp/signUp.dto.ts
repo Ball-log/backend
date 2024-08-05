@@ -1,7 +1,8 @@
-export interface getSignUpLocalsDto extends Request {
+export interface getSignUpLocalsDto {
     id: string,
     email: string,
-    name: string
+    name: string,
+    icon: string
 }
 
 export interface getSignUpReqDto {

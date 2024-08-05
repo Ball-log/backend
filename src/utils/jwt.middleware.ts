@@ -6,22 +6,22 @@ import axios from "axios";
 
 config();
 
-export const authAccessTokenMiddleware = (
-    req: Request,
-    res: Response,
-    next: NextFunction
-) => {
-    if (req.headers.authorization) {
-        const accessToken = req.headers.authorization as string;
+export const authAccessTokenMiddleware = (req: Request, res: Response, next: NextFunction) => {
+    if (req.headers.Authorization) {
+        console.log(req.headers.Authorization);
+        const accessToken = req.headers.Authorization as string;
         const token = accessToken.split(" ")[1];
         const result = verify(token); // token을 검증합니다.
-
         if (result.ok) {
-            res.locals.userId = result.sub;
+
+            res.locals.id = result.sub;
+
             next();
         } else {
             res.status(401).send(status.ACCESS_TOKEN_EXPIRED.body);
         }
+    } else {
+        console.log(req.headers);
     }
 };
 
@@ -53,7 +53,8 @@ export const tokenGoogleMiddleware = async (
     res.locals = {
         id: "google" + userInfo.data.id,
         email: userInfo.data.email,
-        name: userInfo.data.name
+        name: userInfo.data.name,
+        icon: userInfo.data.picture
     };
     next();
 };
@@ -82,14 +83,13 @@ export const tokenKakaoMiddleware = async (
         Authorization: "Bearer " + kakaoToken.data.access_token
     };
 
-    const userInfo = await axios.get(process.env.KAKAO_USERINFO_URL as string, {
-        headers: header
-    });
+    const userInfo = await axios.get(process.env.KAKAO_USERINFO_URL as string, { headers: header });
 
     res.locals = {
         id: "kakao" + userInfo.data.id,
         email: userInfo.data.kakao_account.email,
-        name: "test"
+        name: "test",
+        icon: userInfo.data.properties.profile_image
     };
     next();
 };
@@ -138,7 +138,8 @@ export const tokenNaverMiddleware = async (
     res.locals = {
         id: "naver" + userInfo.data.response.id,
         email: userInfo.data.response.email,
-        name: userInfo.data.response.name
+        name: userInfo.data.response.name,
+        icon: userInfo.data.response.profile_image
     };
     next();
 };

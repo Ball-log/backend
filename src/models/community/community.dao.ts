@@ -48,7 +48,6 @@ const CommunityDao = {
     }
 
     const [rows] = await pool.query<RowDataPacket[]>(postsQuery, postsParams);
-
     // post 썸네일 타입으로 매핑
     const posts: PostThumbnail[] = rows.map((row) => ({
       postId: row.id,
@@ -58,7 +57,7 @@ const CommunityDao = {
       date: row.created_at,
       likeCount: row.like_count,
       commentCount: row.comment_count,
-      imageUrls: row.imageUrls ? row.imageUrls.split(", ") : [],
+      imageUrls: row.image_urls ? row.image_urls.split(", ") : [],
     }));
 
     return { totalCount, posts: posts };

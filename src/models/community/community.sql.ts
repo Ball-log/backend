@@ -39,6 +39,8 @@ const CommunitySQL = {
     WHERE
         {{typeCondition}}
         {{cursorCondition}}
+    GROUP BY
+        a.id
     ORDER BY 
         a.id DESC
     LIMIT ?

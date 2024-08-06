@@ -34,17 +34,21 @@ const CommunityDao = {
       postCountParams.push(cursor);
       postsParams.push(cursor);
     }
-    postsParams.push(`${page}`);
+    postsParams.push(page);
 
     const pool = getPool();
-    const [countRows] = await pool.execute(postCountQuery, postCountParams);
-    const totalCount = (countRows as any[])[0].totalCount;
+    const [countRows] = await pool.execute<RowDataPacket[]>(
+      postCountQuery,
+      postCountParams
+    );
+    const totalCount = countRows[0].totalCount;
 
     if (totalCount == 0) {
       return { totalCount, posts: [] };
     }
 
-    const [rows] = await pool.execute<RowDataPacket[]>(postsQuery, postsParams);
+    const [rows] = await pool.query<RowDataPacket[]>(postsQuery, postsParams);
+
     // post 썸네일 타입으로 매핑
     const posts: PostThumbnail[] = rows.map((row) => ({
       postId: row.id,
@@ -108,13 +112,11 @@ const CommunityDao = {
       team_id = null;
     }
 
-    const [result] = await pool.query(CommunitySQL.insertPost, [
-      title,
-      content,
-      team_id,
-      user_id,
-    ]);
-    return (result as any).insertId;
+    const [result] = await pool.query<RowDataPacket[]>(
+      CommunitySQL.insertPost,
+      [title, content, team_id, user_id]
+    );
+    return result[0].insertId;
   },
   insertImageIntoPost: async (url: string, article_id: string) => {
     const pool = getPool();

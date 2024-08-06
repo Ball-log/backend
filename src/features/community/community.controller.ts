@@ -23,7 +23,7 @@ const CommunityController = {
 
   getPostDetailController: async (req: Request, res: Response) => {
     try {
-      const userId = res.locals.userId;
+      const userId = res.locals.id;
       const postId = req.params.postId;
       const result = await CommunityService.getPostDetail(userId, postId);
 
@@ -39,7 +39,7 @@ const CommunityController = {
   },
   postPost: async (req: Request, res: Response) => {
     try {
-      const userId = res.locals.userId;
+      const userId = res.locals.id;
       const title = req.body.title;
       const content = req.body.content;
       const imageUrls = req.body.imageUrls;
@@ -65,7 +65,7 @@ const CommunityController = {
   },
   patchToggleLikeController: async (req: Request, res: Response) => {
     try {
-      const userId = res.locals.userId;
+      const userId = res.locals.id;
       const postId = req.params.postId;
       const result = await CommunityService.toggleLike(userId, postId);
 
@@ -81,7 +81,7 @@ const CommunityController = {
   },
   postCommentController: async (req: Request, res: Response) => {
     try {
-      const userId = res.locals.userId;
+      const userId = res.locals.id;
       const { postId, body } = req.body;
 
       if (!postId || !body) {
@@ -101,7 +101,7 @@ const CommunityController = {
   },
   postReplyController: async (req: Request, res: Response) => {
     try {
-      const userId = res.locals.userId;
+      const userId = res.locals.id;
       const { postId, commentId, body } = req.body;
 
       if (!postId || !commentId || !body) {
@@ -126,7 +126,7 @@ const CommunityController = {
   },
   deletePost: async (req: Request, res: Response) => {
     try {
-      const userId = res.locals.userId;
+      const userId = res.locals.id;
       const postId = req.params.postId;
 
       const result = await CommunityService.deletePost(userId, postId);
@@ -143,7 +143,7 @@ const CommunityController = {
   },
   updatePost: async (req: Request, res: Response) => {
     try {
-      const userId = res.locals.userId;
+      const userId = res.locals.id;
       const postId = req.params.postId;
       const title = req.body.title;
       const content = req.body.content;

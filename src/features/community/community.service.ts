@@ -78,6 +78,7 @@ const CommunityService = {
     const body: BaseApiResponse<getPostDetailDto> = {
       ...status.SUCCESS.body,
       result: {
+        postId: postDetail.id,
         title: postDetail.title,
         content: postDetail.cotent,
         authorId: postDetail.author_id,

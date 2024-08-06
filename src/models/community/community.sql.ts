@@ -47,6 +47,7 @@ const CommunitySQL = {
     `,
   getPostDetail: `
     SELECT
+        a.id,
         a.title,
         a.content,
         a.created_at AS date,

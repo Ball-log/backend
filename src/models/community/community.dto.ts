@@ -17,6 +17,7 @@ export interface PostThumbnail {
 
 // getPostDetail
 export interface getPostDetailDto {
+  postId: number;
   title: string;
   content: string;
   authorId: string;

@@ -1,4 +1,4 @@
-import { RowDataPacket } from "mysql2";
+import { ResultSetHeader, RowDataPacket } from "mysql2";
 import CommunitySQL from "./community.sql";
 import { getPool } from "../../../config/db.pool";
 import { PostThumbnail } from "./community.dto";
@@ -112,11 +112,11 @@ const CommunityDao = {
       team_id = null;
     }
 
-    const [result] = await pool.query<RowDataPacket[]>(
+    const [result] = await pool.query<ResultSetHeader>(
       CommunitySQL.insertPost,
       [title, content, team_id, user_id]
     );
-    return result[0].insertId;
+    return result.insertId;
   },
   insertImageIntoPost: async (url: string, article_id: string) => {
     const pool = getPool();

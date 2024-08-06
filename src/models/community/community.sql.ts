@@ -39,12 +39,15 @@ const CommunitySQL = {
     WHERE
         {{typeCondition}}
         {{cursorCondition}}
+    GROUP BY
+        a.id
     ORDER BY 
         a.id DESC
     LIMIT ?
     `,
     getPostDetail: `
     SELECT
+        a.id,
         a.title,
         a.content,
         a.created_at AS date,

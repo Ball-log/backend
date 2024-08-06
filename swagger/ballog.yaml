@@ -344,6 +344,17 @@ paths:
       responses:
         "200":
           description: "댓글 작성 성공"
+          schema:
+            type: "object"
+            properties:
+              isSuccess:
+                type: "boolean"
+              code:
+                type: "string"
+              message:
+                type: "string"
+              result:
+                type: "object"
 
   /community/like/{post_id}:
     patch:
@@ -395,9 +406,21 @@ paths:
                   type: "string"
               type:
                 type: "string"
+                example: "team 또는 league"
       responses:
         "200":
           description: "글 작성 성공"
+          schema:
+            type: "object"
+            properties:
+              isSuccess:
+                type: "boolean"
+              code:
+                type: "string"
+              message:
+                type: "string"
+              result:
+                type: "object"
 
   /community/post/{post_id}:
     get:
@@ -412,6 +435,106 @@ paths:
       responses:
         "200":
           description: "글 조회 성공"
+          schema:
+            type: "object"
+            properties:
+              isSuccess:
+                type: "boolean"
+                example: true
+              code:
+                type: "string"
+                example: "200"
+              message:
+                type: "string"
+                example: "success!"
+              result:
+                type: "object"
+                properties:
+                  postId:
+                    type: "integer"
+                    example: 7
+                  title:
+                    type: "string"
+                    example: "123"
+                  authorId:
+                    type: "string"
+                    example: "google107022130803262620129"
+                  authorName:
+                    type: "string"
+                    example: "현우"
+                  authorProfileUrl:
+                    type: "string"
+                    nullable: true
+                    example: null
+                  date:
+                    type: "string"
+                    format: "date-time"
+                    example: "2024-07-27T02:32:12.000Z"
+                  likeCount:
+                    type: "integer"
+                    example: 1
+                  commentCount:
+                    type: "integer"
+                    example: 3
+                  imageUrl:
+                    type: "array"
+                    items:
+                      type: "string"
+                    example: []
+                  isMine:
+                    type: "boolean"
+                    example: true
+                  comments:
+                    type: "array"
+                    items:
+                      type: "object"
+                      properties:
+                        commentId:
+                          type: "integer"
+                          example: 1
+                        comment:
+                          type: "string"
+                          example: "zzz good"
+                        authorId:
+                          type: "string"
+                          example: "naver6E5PtxWLMHHdEKeZUptmD6F53J63qJtjLb7pStMfFQU"
+                        authorName:
+                          type: "string"
+                          example: "김성준"
+                        date:
+                          type: "string"
+                          format: "date-time"
+                          example: "2024-07-27T02:58:48.000Z"
+                        isMine:
+                          type: "boolean"
+                          example: false
+                        replies:
+                          type: "array"
+                          items:
+                            type: "object"
+                            properties:
+                              replyId:
+                                type: "integer"
+                                example: 1
+                              commentId:
+                                type: "integer"
+                                example: 1
+                              comment:
+                                type: "string"
+                                example: "thx!"
+                              authorId:
+                                type: "string"
+                                example: "google107022130803262620129"
+                              authorName:
+                                type: "string"
+                                example: "현우"
+                              date:
+                                type: "string"
+                                format: "date-time"
+                                example: "2024-07-27T02:59:07.000Z"
+                              isMine:
+                                type: "boolean"
+                                example: true
 
     patch:
       tags:
@@ -422,9 +545,40 @@ paths:
           in: "path"
           required: true
           type: "integer"
+        - in: "body"
+          name: "body"
+          required: true
+          schema:
+            type: "object"
+            properties:
+              title:
+                type: "string"
+              content:
+                type: "string"
+              deleteImageIds:
+                type: "array"
+                items:
+                  type: "integer"
+                  example: 7
+              newImageUrls:
+                type: "array"
+                items:
+                  type: "string"
+                  example: "string"
       responses:
         "200":
           description: "글 수정 성공"
+          schema:
+            type: "object"
+            properties:
+              isSuccess:
+                type: "boolean"
+              code:
+                type: "string"
+              message:
+                type: "string"
+              result:
+                type: "object"
 
     delete:
       tags:
@@ -438,12 +592,42 @@ paths:
       responses:
         "200":
           description: "글 삭제 성공"
+          schema:
+            type: "object"
+            properties:
+              isSuccess:
+                type: "boolean"
+              code:
+                type: "string"
+              message:
+                type: "string"
+              result:
+                type: "object"
 
   /community/posts:
     get:
       tags:
         - "community"
       summary: "커뮤니티 글 목록 조회"
+      parameters:
+        - name: "type"
+          in: "path"
+          required: true
+          type: "string"
+          description: "리그 커뮤니티 or 마이팀 커뮤니티 'team' or 'league'."
+          enum:
+            - "team"
+            - "league"
+        - name: "cursor"
+          in: "path"
+          required: false
+          type: "integer"
+          description: "마지막으로 조회한 글의 ID. 첫번째 조회인 경우엔 보내지 말아주세요."
+        - name: "page"
+          in: "path"
+          required: true
+          type: "integer"
+          description: "페이징 할 단위"
       responses:
         "200":
           description: "목록 조회 성공"
@@ -474,6 +658,7 @@ paths:
                           type: "string"
                         date:
                           type: "string"
+                          example: "2024-07-27T02:32:12.000Z"
                         likeCount:
                           type: "integer"
                         commentCount:
@@ -488,9 +673,34 @@ paths:
       tags:
         - "community"
       summary: "커뮤니티 대댓글 작성"
+      parameters:
+        - in: "body"
+          name: "body"
+          required: true
+          schema:
+            type: "object"
+            properties:
+              postId:
+                type: "integer"
+              commentId:
+                type: "integer"
+              body:
+                type: "string"
+
       responses:
         "200":
           description: "대댓글 작성 성공"
+          schema:
+            type: "object"
+            properties:
+              isSuccess:
+                type: "boolean"
+              code:
+                type: "string"
+              message:
+                type: "string"
+              result:
+                type: "object"
 
   /myPage:
     get:

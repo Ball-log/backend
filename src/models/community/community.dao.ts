@@ -12,9 +12,9 @@ const CommunityDao = {
     // type이 "league"면
     let typeCondition = "";
     if (type === "team") {
-      typeCondition = `a.team_id = u.team_id`;
+      typeCondition = "a.team_id = u.team_id";
     } else if (type === "league") {
-      typeCondition = `a.team_id IS NULL`;
+      typeCondition = "a.team_id IS NULL";
     }
 
     // 페이징 첫 조회라면 cursor가 없으니깐 빈 문자열로

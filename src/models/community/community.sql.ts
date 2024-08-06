@@ -1,5 +1,5 @@
 const CommunitySQL = {
-  getPostsCount: ` 
+    getPostsCount: ` 
     SELECT 
         COUNT(*) AS totalCount
     FROM 
@@ -11,7 +11,7 @@ const CommunitySQL = {
         {{typeCondition}}
         {{cursorCondition}}
     `,
-  getPosts: ` 
+    getPosts: ` 
     SELECT 
         a.*,
         u.name AS user_name,
@@ -45,7 +45,7 @@ const CommunitySQL = {
         a.id DESC
     LIMIT ?
     `,
-  getPostDetail: `
+    getPostDetail: `
     SELECT
         a.id,
         a.title,
@@ -74,7 +74,7 @@ const CommunitySQL = {
     GROUP BY
         a.id
   `,
-  getPostComments: `
+    getPostComments: `
     SELECT
         c.post_id AS comment_id,
         c.body AS comment,
@@ -91,7 +91,7 @@ const CommunitySQL = {
     ORDER BY 
         c.created_at
   `,
-  getPostReplies: `
+    getPostReplies: `
     SELECT
         r.id AS reply_id,
         r.comment_id AS comment_id,
@@ -109,7 +109,7 @@ const CommunitySQL = {
     ORDER BY 
         r.created_at
   `,
-  getUserTeamId: `
+    getUserTeamId: `
     SELECT
         team_id
     FROM
@@ -117,14 +117,14 @@ const CommunitySQL = {
     WHERE
         id = ?
   `,
-  insertPost: `
+    insertPost: `
     INSERT INTO
         article
         (title, content, team_id, user_id)
     VALUES
         (?, ?, ?, ?)
   `,
-  insertImageIntoPost: `
+    insertImageIntoPost: `
     INSERT INTO
         image
         (url, post_id, post_type)
@@ -132,7 +132,7 @@ const CommunitySQL = {
         (?, ?, 'article')
 
   `,
-  getUserLikeStatus: `
+    getUserLikeStatus: `
     SELECT
         COUNT(*) AS count
     FROM
@@ -140,32 +140,32 @@ const CommunitySQL = {
     WHERE
         user_id = ? AND post_id = ?
   `,
-  insertLike: `
+    insertLike: `
     INSERT INTO
         post_like (user_id, post_id, post_type)
     VALUES
         (?, ?, 'article')
   `,
-  deleteLike: `
+    deleteLike: `
     DELETE FROM
         post_like
     WHERE
         user_id = ?
         AND post_id = ?
   `,
-  insertPostComment: `
+    insertPostComment: `
     INSERT INTO
         comment (post_id, user_id, body, post_type)
     VALUES
         (?, ?, ?, 'article')
   `,
-  insertPostReply: `
+    insertPostReply: `
     INSERT INTO
         reply (post_id, comment_id, user_id, body, post_type)
     VALUES
         (?, ?, ?, ?, 'article')
   `,
-  getPostAuthorId: `
+    getPostAuthorId: `
     SELECT
         user_id
     FROM
@@ -173,13 +173,13 @@ const CommunitySQL = {
     WHERE
         id = ?
   `,
-  deletePost: `
+    deletePost: `
     DELETE FROM
         article
     WHERE
         id = ?
   `,
-  updatePost: `
+    updatePost: `
     UPDATE 
         article
     SET 
@@ -187,14 +187,14 @@ const CommunitySQL = {
     WHERE
         id = ?
   `,
-  deletePostImages: `
+    deletePostImages: `
     DELETE FROM
         image
     WHERE
         post_id = ? 
         AND post_type = 'article'
         AND id IN (?)
-  `,
+  `
 };
 
 export default CommunitySQL;

@@ -14,9 +14,9 @@ const CommunityController = {
     if (!type) {
       res.json(new ApiError(status.POST_TYPE_EMPTY).data.body);
       return;
+
       // throw new ApiError(status.POST_TYPE_EMPTY);
     }
-
     const result = await CommunityService.getPosts(type, page, cursor);
     res.json(result);
   },

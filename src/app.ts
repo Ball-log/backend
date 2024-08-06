@@ -8,35 +8,45 @@ import { authAccessTokenMiddleware } from "./utils/jwt.middleware";
 
 import { communityRouter } from "./routes/community/community.routes";
 
+import { specs } from "../config/swagger.config";
+import SwaggerUi from "swagger-ui-express";
 
 config();
 export default function App() {
-    const app = express();
+  const app = express();
 
-    app.get("/auth/login", (req, res) => {
-        res.send(`
+  app.get("/auth/login", (req, res) => {
+    res.send(`
         <h1>Log in</h1>
         <a href="/auth/login/google">google Log in</a>
         <a href="/auth/login/kakao">kakao Log in</a>
         <a href="/auth/login/naver">naver Log in</a>
         `);
-    });
-    app.get("/auth/signUp", (req, res) => {
-        res.send(`
+  });
+  app.get("/auth/signUp", (req, res) => {
+    res.send(`
         <h1>Sign up</h1>
         <a href="/auth/signUp/google">google Sign up</a>
         <a href="/auth/signUp/kakao">kakao Sign pp</a>
         <a href="/auth/signUp/naver">naver Sign pp</a>
         `);
-    });
-    app.use(json());
-    app.use(urlencoded({ extended: true }));
+  });
 
-    app.use("/auth", asyncHandler(authRouter));
-    app.use("/myPage", asyncHandler(authAccessTokenMiddleware), asyncHandler(myPageRouter));
-    app.use("/auth", authRouter);
-    app.use(asyncHandler(authAccessTokenMiddleware));
-    app.use("/community", communityRouter);
+  // swagger
+  app.use("/api-docs", SwaggerUi.serve, SwaggerUi.setup(specs));
 
-    return app;
+  app.use(json());
+  app.use(urlencoded({ extended: true }));
+
+  app.use("/auth", asyncHandler(authRouter));
+  app.use(
+    "/myPage",
+    asyncHandler(authAccessTokenMiddleware),
+    asyncHandler(myPageRouter)
+  );
+  app.use("/auth", authRouter);
+  app.use(asyncHandler(authAccessTokenMiddleware));
+  app.use("/community", communityRouter);
+
+  return app;
 }

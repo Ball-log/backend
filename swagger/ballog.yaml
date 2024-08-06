@@ -1,0 +1,665 @@
+swagger: "2.0"
+info:
+  description: "API Documentation"
+  version: "1.0.0"
+  title: "API"
+host: "api.example.com"
+basePath: "/v1"
+schemes:
+  - "https"
+paths:
+  /auth/login/{sns}:
+    get:
+      tags:
+        - "auth"
+      summary: "소셜 네트워크 로그인"
+      parameters:
+        - name: "sns"
+          in: "path"
+          required: true
+          type: "string"
+      responses:
+        "200":
+          description: "OK"
+
+  /auth/refreshToken:
+    post:
+      tags:
+        - "auth"
+      summary: "엑세스 토큰 재발급"
+      responses:
+        "200":
+          description: "OK"
+
+  /auth/signUp/{sns}:
+    get:
+      tags:
+        - "auth"
+      summary: "소셜 네트워크 회원가입"
+      parameters:
+        - name: "sns"
+          in: "path"
+          required: true
+          type: "string"
+      responses:
+        "200":
+          description: "OK"
+
+  /auth/signUp/setting:
+    get:
+      tags:
+        - "auth"
+      summary: "회원 아이콘 및 이름 조회"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: "object"
+            properties:
+              isSuccess:
+                type: "boolean"
+              code:
+                type: "string"
+              message:
+                type: "string"
+              result:
+                type: "object"
+                properties:
+                  user_id:
+                    type: "string"
+                  user_icon:
+                    type: "string"
+                  user_name:
+                    type: "string"
+                  team_info:
+                    type: "array"
+                    items:
+                      type: "object"
+                      properties:
+                        team_id:
+                          type: "integer"
+                        team_name:
+                          type: "string"
+                        team_icon_flag:
+                          type: "string"
+
+    patch:
+      tags:
+        - "auth"
+      summary: "회원 아이콘, 이름 및 팀 설정"
+      parameters:
+        - in: "body"
+          name: "body"
+          required: true
+          schema:
+            type: "object"
+            properties:
+              user_icon:
+                type: "string"
+              user_team_id:
+                type: "integer"
+      responses:
+        "200":
+          description: "OK"
+
+  /blog/posts/{postId}/comments:
+    post:
+      tags:
+        - "blog"
+      summary: "블로그 댓글 작성"
+      parameters:
+        - name: "postId"
+          in: "path"
+          required: true
+          type: "integer"
+        - in: "body"
+          name: "body"
+          required: true
+          schema:
+            type: "object"
+            properties:
+              postId:
+                type: "integer"
+              body:
+                type: "string"
+      responses:
+        "201":
+          description: "댓글 작성 성공"
+
+  /blog/posts/{postId}/comments/{commentId}/replies:
+    post:
+      tags:
+        - "blog"
+      summary: "블로그 대댓글 작성"
+      parameters:
+        - name: "postId"
+          in: "path"
+          required: true
+          type: "integer"
+        - name: "commentId"
+          in: "path"
+          required: true
+          type: "integer"
+        - in: "body"
+          name: "body"
+          required: true
+          schema:
+            type: "object"
+            properties:
+              postId:
+                type: "integer"
+              body:
+                type: "string"
+      responses:
+        "201":
+          description: "대댓글 작성 성공"
+
+  /blog/posts/{postId}/like:
+    post:
+      tags:
+        - "blog"
+      summary: "블로그 좋아요 토글"
+      parameters:
+        - name: "postId"
+          in: "path"
+          required: true
+          type: "integer"
+      responses:
+        "200":
+          description: "좋아요 성공"
+          schema:
+            type: "object"
+            properties:
+              isSuccess:
+                type: "boolean"
+              code:
+                type: "string"
+              message:
+                type: "string"
+              result:
+                type: "object"
+                properties:
+                  like:
+                    type: "boolean"
+
+  /blog/posts/{postId}:
+    delete:
+      tags:
+        - "blog"
+      summary: "블로그 글 삭제"
+      parameters:
+        - name: "postId"
+          in: "path"
+          required: true
+          type: "integer"
+      responses:
+        "200":
+          description: "글 삭제 성공"
+
+    put:
+      tags:
+        - "blog"
+      summary: "블로그 글 수정"
+      parameters:
+        - name: "postId"
+          in: "path"
+          required: true
+          type: "integer"
+        - in: "body"
+          name: "body"
+          required: true
+          schema:
+            type: "object"
+            properties:
+              title:
+                type: "string"
+              gameDate:
+                type: "string"
+              teams:
+                type: "object"
+                properties:
+                  Team1:
+                    type: "string"
+                  Team2:
+                    type: "string"
+              score:
+                type: "object"
+                properties:
+                  Team1Score:
+                    type: "integer"
+                  Team2Score:
+                    type: "integer"
+              content:
+                type: "string"
+              authorName:
+                type: "string"
+      responses:
+        "200":
+          description: "글 수정 성공"
+
+  /blog/posts/articles:
+    get:
+      tags:
+        - "blog"
+      summary: "블로그 글 목록 조회"
+      responses:
+        "200":
+          description: "목록 조회 성공"
+          schema:
+            type: "object"
+            properties:
+              isSuccess:
+                type: "boolean"
+              code:
+                type: "string"
+              message:
+                type: "string"
+              result:
+                type: "array"
+                items:
+                  type: "object"
+                  properties:
+                    postId:
+                      type: "integer"
+                    title:
+                      type: "string"
+                    gameDate:
+                      type: "string"
+                    teams:
+                      type: "object"
+                      properties:
+                        Team1:
+                          type: "string"
+                        Team2:
+                          type: "string"
+                    score:
+                      type: "object"
+                      properties:
+                        Team1Score:
+                          type: "integer"
+                        Team2Score:
+                          type: "integer"
+                    content:
+                      type: "string"
+                    authorName:
+                      type: "string"
+                    likeCount:
+                      type: "integer"
+                    createdAt:
+                      type: "string"
+
+    post:
+      tags:
+        - "blog"
+      summary: "블로그 글 작성"
+      parameters:
+        - in: "body"
+          name: "body"
+          required: true
+          schema:
+            type: "object"
+            properties:
+              title:
+                type: "string"
+              gameDate:
+                type: "string"
+              teams:
+                type: "object"
+                properties:
+                  Team1:
+                    type: "string"
+                  Team2:
+                    type: "string"
+              score:
+                type: "object"
+                properties:
+                  Team1Score:
+                    type: "integer"
+                  Team2Score:
+                    type: "integer"
+              content:
+                type: "string"
+              authorName:
+                type: "string"
+      responses:
+        "201":
+          description: "글 작성 성공"
+
+  /community/comment:
+    post:
+      tags:
+        - "community"
+      summary: "커뮤니티 댓글 작성"
+      parameters:
+        - in: "body"
+          name: "body"
+          required: true
+          schema:
+            type: "object"
+            properties:
+              postId:
+                type: "integer"
+              body:
+                type: "string"
+      responses:
+        "200":
+          description: "댓글 작성 성공"
+
+  /community/like/{post_id}:
+    patch:
+      tags:
+        - "community"
+      summary: "커뮤니티 좋아요 토글"
+      parameters:
+        - name: "post_id"
+          in: "path"
+          required: true
+          type: "integer"
+      responses:
+        "200":
+          description: "좋아요 성공"
+          schema:
+            type: "object"
+            properties:
+              isSuccess:
+                type: "boolean"
+              code:
+                type: "string"
+              message:
+                type: "string"
+              result:
+                type: "object"
+                properties:
+                  like:
+                    type: "boolean"
+
+  /community/post:
+    post:
+      tags:
+        - "community"
+      summary: "커뮤니티 글 작성"
+      parameters:
+        - in: "body"
+          name: "body"
+          required: true
+          schema:
+            type: "object"
+            properties:
+              title:
+                type: "string"
+              content:
+                type: "string"
+              imageUrls:
+                type: "array"
+                items:
+                  type: "string"
+              type:
+                type: "string"
+      responses:
+        "200":
+          description: "글 작성 성공"
+
+  /community/post/{post_id}:
+    get:
+      tags:
+        - "community"
+      summary: "커뮤니티 글 상세 조회"
+      parameters:
+        - name: "post_id"
+          in: "path"
+          required: true
+          type: "integer"
+      responses:
+        "200":
+          description: "글 조회 성공"
+
+    patch:
+      tags:
+        - "community"
+      summary: "커뮤니티 글 수정"
+      parameters:
+        - name: "post_id"
+          in: "path"
+          required: true
+          type: "integer"
+      responses:
+        "200":
+          description: "글 수정 성공"
+
+    delete:
+      tags:
+        - "community"
+      summary: "커뮤니티 글 삭제"
+      parameters:
+        - name: "post_id"
+          in: "path"
+          required: true
+          type: "integer"
+      responses:
+        "200":
+          description: "글 삭제 성공"
+
+  /community/posts:
+    get:
+      tags:
+        - "community"
+      summary: "커뮤니티 글 목록 조회"
+      responses:
+        "200":
+          description: "목록 조회 성공"
+          schema:
+            type: "object"
+            properties:
+              isSuccess:
+                type: "boolean"
+              code:
+                type: "string"
+              message:
+                type: "string"
+              result:
+                type: "object"
+                properties:
+                  totalCount:
+                    type: "integer"
+                  data:
+                    type: "array"
+                    items:
+                      type: "object"
+                      properties:
+                        postId:
+                          type: "integer"
+                        title:
+                          type: "string"
+                        authorName:
+                          type: "string"
+                        date:
+                          type: "string"
+                        likeCount:
+                          type: "integer"
+                        commentCount:
+                          type: "integer"
+                        imageUrls:
+                          type: "array"
+                          items:
+                            type: "string"
+
+  /community/reply:
+    post:
+      tags:
+        - "community"
+      summary: "커뮤니티 대댓글 작성"
+      responses:
+        "200":
+          description: "대댓글 작성 성공"
+
+  /myPage:
+    get:
+      tags:
+        - "myPage"
+      summary: "마이페이지 조회"
+      responses:
+        "200":
+          description: "마이페이지 조회 성공"
+          schema:
+            type: "object"
+            properties:
+              isSuccess:
+                type: "boolean"
+              code:
+                type: "string"
+              message:
+                type: "string"
+              result:
+                type: "object"
+                properties:
+                  team_id:
+                    type: "string"
+                  team_icon_round:
+                    type: "string"
+                  user_background_img:
+                    type: "string"
+                  user_name:
+                    type: "string"
+                  match_date:
+                    type: "string"
+                  user_team_icon_flag:
+                    type: "string"
+                  opposition_icon_flag:
+                    type: "string"
+                  user_team_score:
+                    type: "integer"
+                  opposition_score:
+                    type: "integer"
+                  writed_date_list:
+                    type: "array"
+                    items:
+                      type: "string"
+
+  /myPage/post:
+    get:
+      tags:
+        - "myPage"
+      summary: "마이페이지 날짜별 작성글 조회"
+      parameters:
+        - name: "date"
+          in: "query"
+          required: true
+          type: "string"
+      responses:
+        "200":
+          description: "목록 조회 성공"
+          schema:
+            type: "object"
+            properties:
+              isSuccess:
+                type: "boolean"
+              code:
+                type: "string"
+              message:
+                type: "string"
+              result:
+                type: "object"
+                properties:
+                  blog_list:
+                    type: "array"
+                    items:
+                      type: "object"
+                      properties:
+                        blog_id:
+                          type: "integer"
+                        blog_thumbnail:
+                          type: "string"
+                        blog_title:
+                          type: "string"
+                        blog_created_at:
+                          type: "string"
+                        blog_count_like:
+                          type: "integer"
+                        blog_count_comment:
+                          type: "integer"
+                  mvp_list:
+                    type: "array"
+                    items:
+                      type: "object"
+                      properties:
+                        mvp_id:
+                          type: "integer"
+                        mvp_thumbnail:
+                          type: "string"
+                        mvp_player_name:
+                          type: "string"
+                        mvp_player_record:
+                          type: "string"
+                        mvp_created_at:
+                          type: "string"
+                        mvp_count_like:
+                          type: "integer"
+                        mvp_count_comment:
+                          type: "integer"
+
+  /myPage/setting/backgroundImg:
+    patch:
+      tags:
+        - "myPage"
+      summary: "마이페이지 배경이미지 설정"
+      parameters:
+        - in: "body"
+          name: "body"
+          required: true
+          schema:
+            type: "object"
+            properties:
+              user_background_img:
+                type: "string"
+      responses:
+        "200":
+          description: "배경 이미지 설정 성공"
+
+  /myPage/setting/teamSetting:
+    get:
+      tags:
+        - "myPage"
+      summary: "마이페이지 팀 변경 조회"
+      responses:
+        "200":
+          description: "팀 정보 조회 성공"
+          schema:
+            type: "object"
+            properties:
+              isSuccess:
+                type: "boolean"
+              code:
+                type: "string"
+              message:
+                type: "string"
+              result:
+                type: "object"
+                properties:
+                  team_info:
+                    type: "array"
+                    items:
+                      type: "object"
+                      properties:
+                        team_id:
+                          type: "integer"
+                        team_name:
+                          type: "string"
+                        team_icon_flag:
+                          type: "string"
+
+    patch:
+      tags:
+        - "myPage"
+      summary: "마이페이지 팀 변경"
+      parameters:
+        - in: "body"
+          name: "body"
+          required: true
+          schema:
+            type: "object"
+            properties:
+              team_id:
+                type: "integer"
+      responses:
+        "200":
+          description: "팀 변경 성공"

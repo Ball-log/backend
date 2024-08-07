@@ -7,6 +7,6 @@ import { teamSetRouter } from "./teamSetting/teamSetting.route";
 
 export const myPageRouter = Router();
 myPageRouter.get("/", asyncHandler(getMyPageController));
-myPageRouter.use("/backgroundImg", asyncHandler(backImgRouter));
+myPageRouter.use("/setting/backgroundImg", asyncHandler(backImgRouter));
 myPageRouter.use("/post", asyncHandler(postRouter));
 myPageRouter.use("/setting/teamSetting", asyncHandler(teamSetRouter));

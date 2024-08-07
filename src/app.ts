@@ -10,7 +10,7 @@ import { communityRouter } from "./routes/community/community.routes";
 
 import { specs } from "../config/swagger.config";
 import SwaggerUi from "swagger-ui-express";
-import { s3Router } from "./routes/api-util/s3/s3.route";
+import { api_utilsRouter } from "./routes/api-util/api-util.route";
 
 config();
 export default function App() {
@@ -49,6 +49,6 @@ export default function App() {
     app.use("/auth", authRouter);
     app.use(asyncHandler(authAccessTokenMiddleware));
     app.use("/community", communityRouter);
-    app.use("/api-utils", s3Router);
+    app.use("/api-utils", api_utilsRouter);
     return app;
 }

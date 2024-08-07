@@ -1063,12 +1063,12 @@ paths:
                   team_id:
                     type: "integer"
                     example: 1
-/s3:
+/api-utils/s3:
     post:
       security:
         - Authorization: []
       tags:
-        - "s3"
+        - "api-utils"
       summary: "s3 presigned url 호출"
       parameters:
         - in: "body"

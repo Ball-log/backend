@@ -22,7 +22,9 @@ export type ResponseType =
   | "THERE_IS_NO_TITLE_OR_CONTENT_IN_POST"
   | "TEAM_TYPE_ERROR"
   | "WRONG_BODY"
-  | "ONLY_AUTHOR_CAN_DELETE_OR_EDIT";
+  | "ONLY_AUTHOR_CAN_DELETE_OR_EDIT"
+  | "UNAUTHORIZED"
+  | "THERE_IS_NO_CONTENT_IN_COMMENT";
 
 export type ResponseWithStatus = {
   status: StatusCodes;
@@ -148,6 +150,22 @@ export const status: Record<ResponseType, ResponseWithStatus> = {
       isSuccess: false,
       code: "400",
       message: "작성자만 수정 혹은 삭제를 할 수 있습니다.",
+    },
+  },
+  THERE_IS_NO_CONTENT_IN_COMMENT: {
+    status: StatusCodes.BAD_REQUEST,
+    body: {
+      isSuccess: false,
+      code: "400",
+      message: "댓글 내용을 작성해주세요.",
+    },
+  },
+  UNAUTHORIZED: {
+    status: StatusCodes.BAD_REQUEST,
+    body: {
+      isSuccess: false,
+      code: "400",
+      message: "이 게시글을 삭제할 권한이 없습니다.",
     },
   },
   FORBIDDEN: {

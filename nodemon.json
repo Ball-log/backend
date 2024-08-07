@@ -1,5 +1,5 @@
 {
-    "watch": ["src"],
-    "ext": "ts",
-    "exec": "yarn run lint && ts-node ./src/main.ts"
+  "watch": ["src", "swagger", "config"],
+  "ext" : "ts, yaml",
+  "exec": "ts-node ./src/main.ts"
   }

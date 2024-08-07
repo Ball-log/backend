@@ -1,4 +1,11 @@
-GET http://localhost:3000/myPage/post?date=2024-07-31
+POST  http://localhost:3000/s3
 Content-Type: application/json
 accessToken: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL3d3dy5iYWxsb2cuY29tIiwic3ViIjoia2FrYW8zNjI5MTA4NDI4IiwiaWF0IjoxNzIyNTIxODcyLCJleHAiOjE3MjI1MjkwNzJ9.FBm7S6QIRztNEy3kf1ILDXqWe4YQN96WIMeIo2Sot2o
 refreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MjE5OTQ4NzEsImV4cCI6MTcyMzIwNDQ3MX0.
+
+{
+    "fileName": "T1.jpg",
+    "fileLocation": "icon",
+    "fileType": "image/jpeg",
+    "reqType": "put"
+}

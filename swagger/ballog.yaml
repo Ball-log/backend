@@ -6,9 +6,11 @@ info:
 host: "api.example.com"
 basePath: "/v1"
 schemes:
-  - "https"
+  - "http"
 paths:
   /auth/login/{sns}:
+    security:
+    - oauth2: []
     get:
       tags:
         - "auth"
@@ -21,9 +23,19 @@ paths:
       responses:
         "200":
           description: "OK"
-
+        "302":
+          description: "Redirect to the external authentication provider"
+          headers:
+            Location:
+              description: "The URL to redirect to for social network login"
+              schema:
+                type: "string"
+                example: "http://localhost:3000/auth/login/google/redirect?code=4/0AcvDMrDFSLpKYCNEA3xdwNYPURCs9RqTdP2LQLerg1r8LxjrgxPjjBb8Juuh5cmDrT95mA"
   /auth/refreshToken:
     post:
+      security:
+        - Authorization: []
+          RefreshToken: []
       tags:
         - "auth"
       summary: "엑세스 토큰 재발급"
@@ -47,6 +59,8 @@ paths:
 
   /auth/signUp/setting:
     get:
+      security:
+        - Authorization: []
       tags:
         - "auth"
       summary: "회원 아이콘 및 이름 조회"
@@ -58,19 +72,25 @@ paths:
             properties:
               isSuccess:
                 type: "boolean"
+                example: true
               code:
                 type: "string"
+                example: "200"
               message:
                 type: "string"
+                example: "SUCCESS!"
               result:
                 type: "object"
                 properties:
                   user_id:
                     type: "string"
+                    example: "google00000000000"
                   user_icon:
                     type: "string"
+                    example: "https://example.com/icon.jpg"
                   user_name:
                     type: "string"
+                    example: "John Doe"
                   team_info:
                     type: "array"
                     items:
@@ -78,12 +98,27 @@ paths:
                       properties:
                         team_id:
                           type: "integer"
+                          example: 1
                         team_name:
                           type: "string"
+                          example: "삼성"
                         team_icon_flag:
                           type: "string"
+                          example: "flag_samsung.png"
+                    example:
+                      - team_id: 1
+                        team_name: "삼성"
+                        team_icon_flag: "flag_samsung.png"
+                      - team_id: 2
+                        team_name: "LG"
+                        team_icon_flag: "flag_lg.png"
+                      - team_id: 3
+                        team_name: "SK"
+                        team_icon_flag: "flag_sk.png"
 
     patch:
+      security:
+        - Authorization: []
       tags:
         - "auth"
       summary: "회원 아이콘, 이름 및 팀 설정"
@@ -96,14 +131,33 @@ paths:
             properties:
               user_icon:
                 type: "string"
+                example: "https://example.com/icon.jpg"
               user_team_id:
                 type: "integer"
+                example: 1
       responses:
         "200":
           description: "OK"
+          schema:
+            type: "object"
+            properties:
+              isSuccess:
+                type: "boolean"
+                example: true
+              code:
+                type: "string"
+                example: "200"
+              message:
+                type: "string"
+                example: "SUCCESS!"
+              result: 
+                type: "string"
+                example: "NULL"
 
   /blog/posts/{postId}/comments:
     post:
+      security:
+        - Authorization: []
       tags:
         - "blog"
       summary: "블로그 댓글 작성"
@@ -128,6 +182,8 @@ paths:
 
   /blog/posts/{postId}/comments/{commentId}/replies:
     post:
+      security:
+        - Authorization: []
       tags:
         - "blog"
       summary: "블로그 대댓글 작성"
@@ -156,6 +212,8 @@ paths:
 
   /blog/posts/{postId}/like:
     post:
+      security:
+        - Authorization: []
       tags:
         - "blog"
       summary: "블로그 좋아요 토글"
@@ -184,6 +242,8 @@ paths:
 
   /blog/posts/{postId}:
     delete:
+      security:
+        - Authorization: []
       tags:
         - "blog"
       summary: "블로그 글 삭제"
@@ -197,6 +257,8 @@ paths:
           description: "글 삭제 성공"
 
     put:
+      security:
+        - Authorization: []
       tags:
         - "blog"
       summary: "블로그 글 수정"
@@ -239,6 +301,8 @@ paths:
 
   /blog/posts/articles:
     get:
+      security:
+        - Authorization: []
       tags:
         - "blog"
       summary: "블로그 글 목록 조회"
@@ -289,6 +353,8 @@ paths:
                       type: "string"
 
     post:
+      security:
+        - Authorization: []
       tags:
         - "blog"
       summary: "블로그 글 작성"
@@ -327,6 +393,8 @@ paths:
 
   /community/comment:
     post:
+      security:
+        - Authorization: []
       tags:
         - "community"
       summary: "커뮤니티 댓글 작성"
@@ -358,6 +426,8 @@ paths:
 
   /community/like/{post_id}:
     patch:
+      security:
+        - Authorization: []
       tags:
         - "community"
       summary: "커뮤니티 좋아요 토글"
@@ -386,6 +456,8 @@ paths:
 
   /community/post:
     post:
+      security:
+        - Authorization: []
       tags:
         - "community"
       summary: "커뮤니티 글 작성"
@@ -424,6 +496,8 @@ paths:
 
   /community/post/{post_id}:
     get:
+      security:
+        - Authorization: []
       tags:
         - "community"
       summary: "커뮤니티 글 상세 조회"
@@ -537,6 +611,8 @@ paths:
                                 example: true
 
     patch:
+      security:
+        - Authorization: []
       tags:
         - "community"
       summary: "커뮤니티 글 수정"
@@ -581,6 +657,8 @@ paths:
                 type: "object"
 
     delete:
+      security:
+        - Authorization: []
       tags:
         - "community"
       summary: "커뮤니티 글 삭제"
@@ -606,6 +684,8 @@ paths:
 
   /community/posts:
     get:
+      security:
+        - Authorization: []
       tags:
         - "community"
       summary: "커뮤니티 글 목록 조회"
@@ -670,6 +750,8 @@ paths:
 
   /community/reply:
     post:
+      security:
+        - Authorization: []
       tags:
         - "community"
       summary: "커뮤니티 대댓글 작성"
@@ -704,6 +786,8 @@ paths:
 
   /myPage:
     get:
+      security:
+        - Authorization: []
       tags:
         - "myPage"
       summary: "마이페이지 조회"
@@ -715,38 +799,57 @@ paths:
             properties:
               isSuccess:
                 type: "boolean"
+                example: true
               code:
                 type: "string"
+                example: "200"
               message:
                 type: "string"
+                example: "SUCCESS"
               result:
                 type: "object"
                 properties:
                   team_id:
                     type: "string"
+                    example: "1"
                   team_icon_round:
                     type: "string"
+                    example: "https://example.com/icon.jpg"
                   user_background_img:
                     type: "string"
+                    example: "https://example.com/icon.jpg"
                   user_name:
                     type: "string"
+                    example: "user name"
                   match_date:
                     type: "string"
                   user_team_icon_flag:
                     type: "string"
+                    example: "https://example.com/icon.jpg"
                   opposition_icon_flag:
                     type: "string"
+                    example: "https://example.com/icon.jpg"
                   user_team_score:
                     type: "integer"
+                    example: 5
                   opposition_score:
                     type: "integer"
+                    example: 3
                   writed_date_list:
                     type: "array"
                     items:
                       type: "string"
+                    example:
+                      - "2024-01-15"
+                      - "2024-02-03"
+                      - "2024-03-20"
+                      - "2024-04-07"
+                      - "2024-05-22"
 
   /myPage/post:
     get:
+      security:
+        - Authorization: []
       tags:
         - "myPage"
       summary: "마이페이지 날짜별 작성글 조회"
@@ -763,10 +866,13 @@ paths:
             properties:
               isSuccess:
                 type: "boolean"
+                example: true
               code:
                 type: "string"
+                example: "200"
               message:
                 type: "string"
+                example: "SUCCESS!"
               result:
                 type: "object"
                 properties:
@@ -787,6 +893,19 @@ paths:
                           type: "integer"
                         blog_count_comment:
                           type: "integer"
+                    example:
+                      - blog_id: 1
+                        blog_thumbnail: "https://example.com/thumbnail.jpg"
+                        blog_title: "Blog Title 1"
+                        blog_created_at: "2024-07-30"
+                        blog_count_like: 10
+                        blog_count_comment: 5
+                      - blog_id: 5
+                        blog_thumbnail: "https://example.com/thumbnail.jpg"
+                        blog_title: "Blog Title 4"
+                        blog_created_at: "2024-07-30"
+                        blog_count_like: 11
+                        blog_count_comment: 6
                   mvp_list:
                     type: "array"
                     items:
@@ -806,9 +925,28 @@ paths:
                           type: "integer"
                         mvp_count_comment:
                           type: "integer"
+                    example:
+                      - mvp_id: 2
+                        mvp_thumbnail: "https://example.com/thumbnail.jpg"
+                        mvp_player_name: "Player Name 1"
+                        mvp_player_record: "3rd"
+                        mvp_created_at: "2024-07-30"
+                        mvp_count_like: 8
+                        mvp_count_comment: 4
+                      - mvp_id: 6
+                        mvp_thumbnail: "https://example.com/thumbnail.jpg"
+                        mvp_player_name: "Player Name 2"
+                        mvp_player_record: "3rd"
+                        mvp_created_at: "2024-07-30"
+                        mvp_count_like: 8
+                        mvp_count_comment: 4
+
+                    
 
   /myPage/setting/backgroundImg:
     patch:
+      security:
+        - Authorization: []
       tags:
         - "myPage"
       summary: "마이페이지 배경이미지 설정"
@@ -821,12 +959,33 @@ paths:
             properties:
               user_background_img:
                 type: "string"
+                example: "https://example.com/background.jpg"
       responses:
         "200":
           description: "배경 이미지 설정 성공"
+          schema:
+            type: "object"
+            properties:
+              isSuccess:
+                type: "boolean"
+                example: true
+              code:
+                type: "string"
+                example: "200"
+              message:
+                type: "string"
+                example: "SUCCESS"
+              result:
+                type: "object"
+                properties:
+                  user_background_img:
+                    type: "string"
+                    example: "https://example.com/background.jpg"
 
   /myPage/setting/teamSetting:
     get:
+      security:
+        - Authorization: []
       tags:
         - "myPage"
       summary: "마이페이지 팀 변경 조회"
@@ -856,8 +1015,20 @@ paths:
                           type: "string"
                         team_icon_flag:
                           type: "string"
+                      example:
+                      - team_id: 1
+                        team_name: "삼성"
+                        team_icon_flag: "flag_samsung.png"
+                      - team_id: 2
+                        team_name: "LG"
+                        team_icon_flag: "flag_lg.png"
+                      - team_id: 3
+                        team_name: "SK"
+                        team_icon_flag: "flag_sk.png"
 
     patch:
+      security:
+        - Authorization: []
       tags:
         - "myPage"
       summary: "마이페이지 팀 변경"
@@ -870,6 +1041,99 @@ paths:
             properties:
               team_id:
                 type: "integer"
+                example: 1
       responses:
         "200":
-          description: "팀 변경 성공"
+          description: "배경 이미지 설정 성공"
+          schema:
+            type: "object"
+            properties:
+              isSuccess:
+                type: "boolean"
+                example: true
+              code:
+                type: "string"
+                example: "200"
+              message:
+                type: "string"
+                example: "SUCCESS!"
+              result:
+                type: "object"
+                properties:
+                  team_id:
+                    type: "integer"
+                    example: 1
+/s3:
+    post:
+      security:
+        - Authorization: []
+      tags:
+        - "s3"
+      summary: "s3 presigned url 호출"
+      parameters:
+        - in: "body"
+          name: "body"
+          required: true
+          schema:
+            type: "object"
+            properties:
+              fileName:
+                type: "string"
+                example: "exampleIcon.jpg"
+              fileLocation:
+                type: string
+                enum:
+                  -icon
+                  -background
+                  -player
+                  -post
+                example: "icon"
+              fileType:
+                type: string
+                example: "image/jpeg"
+              reqType:
+                type: string
+                enum:
+                  -put
+                  -delete
+                example: "put"
+      responses:
+        "200":
+          description: "s3 presigned url 호출"
+          schema:
+            type: "object"
+            properties:
+              isSuccess:
+                type: "boolean"
+                example: true
+              code:
+                type: "string"
+                example: "200"
+              message:
+                type: "string"
+                example: "SUCCESS!"
+              result:
+                type: "object"
+                properties:
+                  presignedUrl:
+                    type: "string"
+                    example: "http://example.com"
+
+securityDefinitions:
+  Authorization:
+    type: apiKey
+    name: Authorization
+    in: header
+  RefreshToken:
+    type: apiKey
+    name: RefreshToken
+    in: header
+  oauth2:
+    type: oauth2
+    authorizationUrl: https://accounts.google.com/o/oauth2/auth
+    tokenUrl: https://oauth2.googleapis.com/token
+    flow: accessCode
+    scopes:
+      read: Grants read access
+      write: Grants write access
+      admin: Grants access to admin operations

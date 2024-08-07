@@ -24,7 +24,8 @@ export type ResponseType =
   | "ONLY_AUTHOR_CAN_DELETE_OR_EDIT"
   | "DATA_INSERTED_SQL_ERROR"
   | "REQUEST_BODY_INVALID"
-  | "FORBIDDEN";
+  | "FORBIDDEN"
+  | "GENERATING_PRESIGNED_URL_ERROR";
 
 export type ResponseWithStatus = {
   status: StatusCodes;
@@ -172,4 +173,12 @@ export const status: Record<ResponseType, ResponseWithStatus> = {
     status: StatusCodes.FORBIDDEN,
     body: { isSuccess: false, code: "403", message: "접근이 금지되었습니다." },
   },
+  GENERATING_PRESIGNED_URL_ERROR: {
+    status: StatusCodes.INTERNAL_SERVER_ERROR,
+    body: {
+      isSuccess: false,
+      code: "400",
+      message: "pre-signed URL generation error.",
+    },
+  }
 };

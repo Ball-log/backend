@@ -1,10 +1,9 @@
 import { S3Client, PutObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import { ApiError } from "../../../config/error";
-import { status } from "../../../config/response.status";
-import { postS3PresignedUrlReqDto, postS3PresignedUrlResDto } from "../../models/api-util/s3/s3.dto";
-import { BaseApiResponse } from "../../../config/response";
-
+import { ApiError } from "../../../../config/error";
+import { status } from "../../../../config/response.status";
+import { postS3PresignedUrlReqDto, postS3PresignedUrlResDto } from "../../../models/api-util/s3/s3.dto";
+import { BaseApiResponse } from "../../../../config/response";
 // S3 클라이언트 설정
 const s3Client = new S3Client({
     region: "ap-northeast-2",

@@ -48,6 +48,6 @@ export default function App() {
     );
     app.use("/community", asyncHandler(authAccessTokenMiddleware), communityRouter);
     app.use("/api-utils", asyncHandler(authAccessTokenMiddleware), api_utilsRouter);
-    app.use("/health", ebHealthRouter)
+    app.use("/health", ebHealthRouter);
     return app;
 }

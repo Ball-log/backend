@@ -64,3 +64,4 @@ jobs:
 
       - name: Deployed!
         run: echo App deployed to ELB
+        

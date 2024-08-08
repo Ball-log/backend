@@ -10,7 +10,6 @@ schemes:
 paths:
   /auth/login/{sns}:
     security:
-    - oauth2: []
     get:
       tags:
         - "auth"
@@ -31,6 +30,26 @@ paths:
               schema:
                 type: "string"
                 example: "http://localhost:3000/auth/login/google/redirect?code=4/0AcvDMrDFSLpKYCNEA3xdwNYPURCs9RqTdP2LQLerg1r8LxjrgxPjjBb8Juuh5cmDrT95mA"
+  /auth/login/test:
+    post:
+      tags:
+        - "auth"
+      summary: "소셜 네트워크 로그인 테스트"
+      description: |
+        토큰을 발급받기 위한 테스터용 API입니다. id는 test1 ~ test4까지 입니다. 원하는 테스트 아이디를 입력해 토큰 정보를 받으시면 됩니다. 받으신 Authorization과 RefreshToken을 상단 우측 Authorize에 삽입하시면 헤더에 토큰 정보가 유지됩니다.
+      parameters:
+        - in: "body"
+          name: "body"
+          required: true
+          schema:
+            type: "object"
+            properties:
+              id:
+                type: "string"
+                example: "test1"
+      responses:
+        "200":
+          description: "OK"
   /auth/refreshToken:
     post:
       security:
@@ -40,9 +59,16 @@ paths:
         - "auth"
       summary: "엑세스 토큰 재발급"
       responses:
-        "200":
-          description: "OK"
-
+        "500":
+          description: "헤더에 토큰이 없음"
+          schema:
+            type: "string"
+            example: "Error: there is no token."
+        "400":
+          description: "아직 사용 가능한 엑세스 토큰"
+          schema:
+            type: "string"
+            example: "Error: access token is valid"
   /auth/signUp/{sns}:
     get:
       tags:

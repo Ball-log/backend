@@ -22,3 +22,4 @@ export const loginNaverService = async () => {
     url += "&state=test";
     return url;
 };
+

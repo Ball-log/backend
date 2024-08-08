@@ -45,10 +45,7 @@ export default function App() {
         asyncHandler(authAccessTokenMiddleware),
         asyncHandler(myPageRouter)
     );
-
-    app.use("/auth", authRouter);
-    app.use(asyncHandler(authAccessTokenMiddleware));
-    app.use("/community", communityRouter);
-    app.use("/api-utils", api_utilsRouter);
+    app.use("/community", asyncHandler(authAccessTokenMiddleware), communityRouter);
+    app.use("/api-utils", asyncHandler(authAccessTokenMiddleware), api_utilsRouter);
     return app;
 }

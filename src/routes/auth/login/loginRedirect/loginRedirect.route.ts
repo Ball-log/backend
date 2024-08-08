@@ -8,3 +8,4 @@ export const loginRedirectRouter = Router();
 loginRedirectRouter.get("/google/redirect", asyncHandler(tokenGoogleMiddleware), asyncHandler(getLoginController));
 loginRedirectRouter.get("/kakao/redirect", asyncHandler(tokenKakaoMiddleware), asyncHandler(getLoginController));
 loginRedirectRouter.get("/naver/redirect", asyncHandler(tokenNaverMiddleware), asyncHandler(getLoginController));
+

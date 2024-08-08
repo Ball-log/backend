@@ -29,7 +29,8 @@
     "mysql2": "^3.10.3",
     "redis": "^4.6.15",
     "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-express": "^5.0.1"
+    "swagger-ui-express": "^5.0.1",
+    "ts-loader": "^9.5.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.7.0",
@@ -41,14 +42,18 @@
     "ts-jest": "^29.2.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.4",
-    "typescript-eslint": "^7.16.0"
+    "typescript-eslint": "^7.16.0",
+    "webpack": "^5.93.0",
+    "webpack-cli": "^5.1.4",
+    "webpack-node-externals": "^3.0.0"
   },
   "scripts": {
-    "clear": "rmdir /s /q dist",
+    "clear": "rm -rf dist",
     "lint": "eslint src/**/*.ts --fix",
     "prebuild": "yarn run clear & yarn run lint",
-    "build": "tsc",
-    "start": "node dist/main.js",
-    "start:dev": "nodemon"
+    "start:dist": "webpack --mode production & node ./dist/src/main.js",
+    "start": "node dist/bundle.js",
+    "start:dev": "nodemon",
+    "build": "webpack --mode production"
   }
 }

@@ -4,6 +4,7 @@ import { ApiError } from "../../../../config/error";
 import { status } from "../../../../config/response.status";
 import { postS3PresignedUrlReqDto, postS3PresignedUrlResDto } from "../../../models/api-util/s3/s3.dto";
 import { BaseApiResponse } from "../../../../config/response";
+
 // S3 클라이언트 설정
 const s3Client = new S3Client({
     region: "ap-northeast-2",

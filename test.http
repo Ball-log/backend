@@ -1,10 +1,6 @@
-POST http://localhost:3000/api-utils/s3
+POST http://localhost:3000/auth/login/test
 Content-Type: application/json
-authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL3d3dy5iYWxsb2cuY29tIiwic3ViIjoia2FrYW8zNjI5MTA4NDI4IiwiaWF0IjoxNzIzMDY5NTg0LCJleHAiOjE3MjMwNzY3ODR9.-2Osze6bbXL7q80tfNx7cJ4OCtXuw-yF0raZhHUT3dQ
 
 {
-    "fileName": "T11.jpg",
-    "fileLocation": "icon",
-    "fileType": "image/jpeg",
-    "reqType": "put"
+    "id": "test1"
 }

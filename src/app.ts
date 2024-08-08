@@ -11,6 +11,7 @@ import { communityRouter } from "./routes/community/community.routes";
 import { specs } from "../config/swagger.config";
 import SwaggerUi from "swagger-ui-express";
 import { api_utilsRouter } from "./routes/api-util/api-util.route";
+import { ebHealthRouter } from "./routes/eb_health/eb_health.route";
 
 config();
 export default function App() {
@@ -47,5 +48,6 @@ export default function App() {
     );
     app.use("/community", asyncHandler(authAccessTokenMiddleware), communityRouter);
     app.use("/api-utils", asyncHandler(authAccessTokenMiddleware), api_utilsRouter);
+    app.use("/eb_health", ebHealthRouter)
     return app;
 }

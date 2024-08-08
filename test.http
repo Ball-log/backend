@@ -1,10 +1,9 @@
-POST  http://localhost:3000/s3
+POST http://localhost:3000/api-utils/s3
 Content-Type: application/json
-accessToken: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL3d3dy5iYWxsb2cuY29tIiwic3ViIjoia2FrYW8zNjI5MTA4NDI4IiwiaWF0IjoxNzIyNTIxODcyLCJleHAiOjE3MjI1MjkwNzJ9.FBm7S6QIRztNEy3kf1ILDXqWe4YQN96WIMeIo2Sot2o
-refreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MjE5OTQ4NzEsImV4cCI6MTcyMzIwNDQ3MX0.
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL3d3dy5iYWxsb2cuY29tIiwic3ViIjoia2FrYW8zNjI5MTA4NDI4IiwiaWF0IjoxNzIzMDY5NTg0LCJleHAiOjE3MjMwNzY3ODR9.-2Osze6bbXL7q80tfNx7cJ4OCtXuw-yF0raZhHUT3dQ
 
 {
-    "fileName": "T1.jpg",
+    "fileName": "T11.jpg",
     "fileLocation": "icon",
     "fileType": "image/jpeg",
     "reqType": "put"

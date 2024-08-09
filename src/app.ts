@@ -1,17 +1,21 @@
-import express, { json, urlencoded } from "express";
-import { authRouter } from "./routes/auth/auth.routes";
+import express from "express";
+
 import { config } from "dotenv";
 import cors from "cors";
-import { myPageRouter } from "./routes/myPage/myPage.route";
-import asyncHandler from "express-async-handler";
-import { authAccessTokenMiddleware } from "./utils/jwt.middleware";
 
-import { communityRouter } from "./routes/community/community.routes";
 
 import { specs } from "../config/swagger.config";
 import SwaggerUi from "swagger-ui-express";
+
+/*
+import { json, urlencoded } from "express"
+import { authRouter } from "./routes/auth/auth.routes";
 import { api_utilsRouter } from "./routes/api-util/api-util.route";
 import { ebHealthRouter } from "./routes/eb_health/eb_health.route";
+import { communityRouter } from "./routes/community/community.routes";
+import { myPageRouter } from "./routes/myPage/myPage.route";
+import asyncHandler from "express-async-handler";
+import { authAccessTokenMiddleware } from "./utils/jwt.middleware";*/
 
 config();
 export default function App() {
@@ -37,6 +41,7 @@ export default function App() {
     // swagger
     app.use("/api-docs", SwaggerUi.serve, SwaggerUi.setup(specs));
 
+    /*
     app.use(json());
     app.use(urlencoded({ extended: true }));
 
@@ -49,5 +54,6 @@ export default function App() {
     app.use("/community", asyncHandler(authAccessTokenMiddleware), communityRouter);
     app.use("/api-utils", asyncHandler(authAccessTokenMiddleware), api_utilsRouter);
     app.use("/health", ebHealthRouter);
+    */
     return app;
 }

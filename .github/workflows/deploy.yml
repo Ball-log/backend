@@ -81,6 +81,7 @@ jobs:
 
       - name: Generate deployment package
         run: |
+          cp -R ./swagger dist/swagger
           cp -R .platform dist
           cp package.json dist/package.json
           cp package-lock.json dist/package-lock.json

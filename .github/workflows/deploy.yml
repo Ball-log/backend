@@ -37,10 +37,48 @@ jobs:
       - name: Install dependencies
         run: npm ci   # dependencies 설치 npm ci, npm install 모두 다 됨!
       
+      - name: Create .env file
+        run: |
+          echo "DB_HOST=${{ secrets.DB_HOST }}" > .env
+          echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
+          echo "DB_USER=${{ secrets.DB_USER }}" >> .env
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+          echo "DB_DATABASE=${{ secrets.DB_DATABASE }}" >> .env
+          echo "PORT=${{ secrets.PORT }}" >> .env
+          echo "NODE_ENV=${{ secrets.NODE_ENV }}" >> .env
+          echo "REDIS_HOST=${{ secrets.REDIS_HOST }}" >> .env
+          echo "REDIS_PORT=${{ secrets.REDIS_PORT }}" >> .env
+          echo "REDIS_USERNAME=${{ secrets.REDIS_USERNAME }}" >> .env
+          echo "REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}" >> .env
+          echo "SECRET=${{ secrets.SECRET }}" >> .env
+          echo "GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" >> .env
+          echo "GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}" >> .env
+          echo "GOOGLE_REDIRECT_URI_LOGIN=${{ secrets.GOOGLE_REDIRECT_URI_LOGIN }}" >> .env
+          echo "GOOGLE_REDIRECT_URI_SIGN_UP=${{ secrets.GOOGLE_REDIRECT_URI_SIGN_UP }}" >> .env
+          echo "GOOGLE_TOKEN_URL=${{ secrets.GOOGLE_TOKEN_URL }}" >> .env
+          echo "GOOGLE_USERINFO_URL=${{ secrets.GOOGLE_USERINFO_URL }}" >> .env
+          echo "KAKAO_CLIENT_ID=${{ secrets.KAKAO_CLIENT_ID }}" >> .env
+          echo "KAKAO_CLIENT_SECRET=${{ secrets.KAKAO_CLIENT_SECRET }}" >> .env
+          echo "KAKAO_REDIRECT_URI_LOGIN=${{ secrets.KAKAO_REDIRECT_URI_LOGIN }}" >> .env
+          echo "KAKAO_REDIRECT_URI_SIGN_UP=${{ secrets.KAKAO_REDIRECT_URI_SIGN_UP }}" >> .env
+          echo "KAKAO_TOKEN_URL=${{ secrets.KAKAO_TOKEN_URL }}" >> .env
+          echo "KAKAO_USERINFO_URL=${{ secrets.KAKAO_USERINFO_URL }}" >> .env
+          echo "NAVER_CLIENT_ID=${{ secrets.NAVER_CLIENT_ID }}" >> .env
+          echo "NAVER_CLIENT_SECRET=${{ secrets.NAVER_CLIENT_SECRET }}" >> .env
+          echo "NAVER_REDIRECT_URI_LOGIN=${{ secrets.NAVER_REDIRECT_URI_LOGIN }}" >> .env
+          echo "NAVER_REDIRECT_URI_SIGN_UP=${{ secrets.NAVER_REDIRECT_URI_SIGN_UP }}" >> .env
+          echo "NAVER_TOKEN_URL=${{ secrets.NAVER_TOKEN_URL }}" >> .env
+          echo "NAVER_USERINFO_URL=${{ secrets.NAVER_USERINFO_URL }}" >> .env
+          echo "AWS_IAM_KEY=${{ secrets.AWS_IAM_KEY }}" >> .env
+          echo "AWS_IAM_SECRET_KEY=${{ secrets.AWS_IAM_SECRET_KEY }}" >> .env
+      
       - name: Run Build
         run: npm run build # 빌드
       # 배포 패키지 생성
       
+      - name: Copy .env to dist
+        run: cp .env dist/
+
       - name: Generate deployment package
         run: |
           cp -R .platform dist
@@ -50,7 +88,9 @@ jobs:
           cd dist
           zip -r deploy.zip .
       
-      # 생성한 deploy.zip 파일 내부 확인용!
+
+      
+        # 생성한 deploy.zip 파일 내부 확인용!
       - name: Get Zip Inside
         run: zipinfo -1 dist/deploy.zip
 

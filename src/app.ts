@@ -67,6 +67,5 @@ export default function App() {
     app.use("/api-utils", asyncHandler(authAccessTokenMiddleware), api_utilsRouter);
     */
 
-
     return app;
 }

@@ -52,7 +52,7 @@
     "lint": "eslint src/**/*.ts --fix",
     "prebuild": "yarn run clear & yarn run lint",
     "start:dist": "webpack --mode production & node ./dist/src/main.js",
-    "start": "node dist/bundle.js",
+    "start": "node bundle.js",
     "start:dev": "nodemon",
     "build": "webpack --mode production"
   }

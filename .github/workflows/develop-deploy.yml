@@ -21,7 +21,7 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: yarn install
+        run: npm install
 
       - name: Create .env file
         run: |
@@ -59,7 +59,7 @@ jobs:
           echo "AWS_IAM_SECRET_KEY=${{ secrets.AWS_IAM_SECRET_KEY }}" >> .env
 
       - name: Run Build
-        run: yarn run build
+        run: npm run build
 
       - name: Generate deployment package
         run: |

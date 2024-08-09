@@ -2,25 +2,21 @@ import express from "express";
 import { healthRoute } from "./health.route";
 import cors from "cors";
 import asyncHandler from "express-async-handler";
-import { config } from "dotenv";
 
 
 import { specs } from "../config/swagger.config";
 import SwaggerUi from "swagger-ui-express";
 
 /*
-
-import { json, urlencoded } from "express"
+import { config } from "dotenv";
 import { authRouter } from "./routes/auth/auth.routes";
-import { api_utilsRouter } from "./routes/api-util/api-util.route";
+
 import { communityRouter } from "./routes/community/community.routes";
 import { myPageRouter } from "./routes/myPage/myPage.route";
-
-import { authAccessTokenMiddleware } from "./utils/jwt.middleware";
-
-*/
-
 config();
+*/
+import { authAccessTokenMiddleware } from "./utils/jwt.middleware";
+import { api_utilsRouter } from "./routes/api-util/api-util.route";
 
 export default function App() {
     const app = express();
@@ -30,7 +26,7 @@ export default function App() {
     app.use(express.urlencoded({ extended: false }));
 
     app.get("/", (req, res) => {
-        res.send(process.env.PORT);
+        res.send("루트 페이지!");
     });
 
     app.get("/auth/login", (req, res) => {
@@ -64,8 +60,8 @@ export default function App() {
         asyncHandler(myPageRouter)
     );
     app.use("/community", asyncHandler(authAccessTokenMiddleware), communityRouter);
-    app.use("/api-utils", asyncHandler(authAccessTokenMiddleware), api_utilsRouter);
     */
+    app.use("/api-utils", asyncHandler(authAccessTokenMiddleware), api_utilsRouter);
 
     return app;
 }

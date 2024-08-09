@@ -22,6 +22,8 @@ export type ResponseType =
   | "TEAM_TYPE_ERROR"
   | "WRONG_BODY"
   | "ONLY_AUTHOR_CAN_DELETE_OR_EDIT"
+  | "UNAUTHORIZED"
+  | "THERE_IS_NO_CONTENT_IN_COMMENT"
   | "DATA_INSERTED_SQL_ERROR"
   | "REQUEST_BODY_INVALID"
   | "FORBIDDEN"
@@ -153,20 +155,21 @@ export const status: Record<ResponseType, ResponseWithStatus> = {
       message: "작성자만 수정 혹은 삭제를 할 수 있습니다.",
     },
   },
-  DATA_INSERTED_SQL_ERROR: {
+  THERE_IS_NO_CONTENT_IN_COMMENT: {
     status: StatusCodes.BAD_REQUEST,
     body: {
       isSuccess: false,
       code: "400",
-      message: "there is an error in the SQL syntax for inserting data.",
+      message: "댓글 내용을 작성해주세요.",
     },
   },
+
   REQUEST_BODY_INVALID: {
     status: StatusCodes.BAD_REQUEST,
     body: {
       isSuccess: false,
       code: "400",
-      message: "request body is invalid.",
+      message: "이 게시글을 삭제할 권한이 없습니다.",
     },
   },
   FORBIDDEN: {
@@ -180,5 +183,15 @@ export const status: Record<ResponseType, ResponseWithStatus> = {
       code: "400",
       message: "pre-signed URL generation error.",
     },
+  },
+  DATA_INSERTED_SQL_ERROR: {
+    status: StatusCodes.BAD_REQUEST,
+    body: { isSuccess: false, code: "404", message: "there is an error in the SQL syntax for inserting data.",
+    }
+  },
+  UNAUTHORIZED: {
+    status: StatusCodes.BAD_REQUEST,
+    body: { isSuccess: false, code: "404", message: "unauthorizes"
+    }
   }
 };

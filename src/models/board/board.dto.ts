@@ -1,11 +1,12 @@
 export interface PostDto {
-  id: string; // 게시글 ID
-  title: string; // 제목
-  matchResult?: string; // 경기 결과 (선택적)
-  content: string; // 본문 내용
-  createdAt: Date; // 생성 날짜
-  userId: string; // 작성자 ID
-  type: string; // 'blog' | 'mvp'
+  id: string;
+  title: string;
+  matchResult?: string;
+  content: string;
+  createdAt: Date;
+  userId: string;
+  type: string;
+  likeCount: number;
 }
 
 export interface ImageDto {

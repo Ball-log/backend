@@ -1,6 +1,8 @@
 import { ResultSetHeader, RowDataPacket } from "mysql2";
 import BoardSQL from "./board.sql";
 import { getPool } from "../../../config/db.pool";
+import { PostDto } from "./board.dto";
+import { populate } from "dotenv";
 
 const BoardDao = {
   insertPost: async (
@@ -55,6 +57,14 @@ const BoardDao = {
     return result.insertId;
   },
 
+  getPost: async (postId: string): Promise<PostDto | null> => {
+    const pool = getPool();
+    const [results] = await pool.query<RowDataPacket[]>(BoardSQL.getPostById, [
+      postId,
+    ]);
+    return results.length > 0 ? (results[0] as PostDto) : null;
+  },
+
   insertComment: async (
     postId: string,
     userId: string,
@@ -99,6 +109,57 @@ const BoardDao = {
       commentId,
     ]);
     return result.affectedRows > 0;
+  },
+
+  deleteComment: async (commentId: string): Promise<boolean> => {
+    const pool = getPool();
+    const [result] = await pool.query<ResultSetHeader>(BoardSQL.deleteComment, [
+      commentId,
+    ]);
+    return result.affectedRows > 0;
+  },
+
+  updatePost: async (
+    postId: string,
+    title: string,
+    matchResult: string,
+    content: string,
+    userId: string,
+    type: string
+  ): Promise<void> => {
+    const pool = getPool();
+    await pool.query(BoardSQL.updatePost, [
+      title,
+      matchResult,
+      content,
+      userId,
+      type,
+      postId,
+    ]);
+  },
+
+  updateMvp: async (
+    postId: string,
+    title: string,
+    playerImage: string,
+    matchResult: string,
+    content: string,
+    userId: string
+  ): Promise<void> => {
+    const pool = getPool();
+    await pool.query(BoardSQL.updateMvp, [
+      title,
+      playerImage,
+      matchResult,
+      content,
+      userId,
+      postId,
+    ]);
+  },
+
+  deleteImagesFromPost: async (postId: string): Promise<void> => {
+    const pool = getPool();
+    await pool.query(BoardSQL.deleteImagesFromPost, [postId]);
   },
 
   deletePost: async (postId: string): Promise<boolean> => {

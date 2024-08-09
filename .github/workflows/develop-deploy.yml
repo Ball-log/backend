@@ -112,7 +112,7 @@ jobs:
           application_name: Ballog-develop
           environment_name: Ballog-develop-env
           version_label: github-action-${{ steps.current-time.outputs.formattedTime }}  # version_label은 이전에 배포한 label과 중복되면 안됨!
-          use_existing_version_if_available: flase
+          use_existing_version_if_available: false
           region: ap-northeast-2
           deployment_package: dist/deploy.zip
           wait_for_deployment: false  # 바로 Beanstalk으로 넘어갈 수 있도록 함

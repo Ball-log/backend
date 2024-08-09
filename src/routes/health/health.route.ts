@@ -1,9 +1,6 @@
-import Router from "express";
-import { Request, Response } from "express";
-export const healthRouter = Router();
+import express from "express";
+import { healthController } from "../../features/health/health.controller";
 
-export const healthController = (req: Request, res: Response) => {
-    res.status(200).send("HELLO, I'm Healthy!");
-};
+export const healthRoute = express.Router();
 
-healthRouter.get("/", healthController);
+healthRoute.get("/", healthController);

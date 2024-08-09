@@ -1,8 +1,8 @@
 import App from "./app";
 import { initPool } from "./../config/db.pool";
-import { config } from "dotenv";
+/*import { config } from "dotenv";
 
-config();
+config();*/
 initPool();
 
 const app = App();

@@ -6,15 +6,15 @@ import asyncHandler from "express-async-handler";
 
 import { specs } from "../config/swagger.config";
 import SwaggerUi from "swagger-ui-express";
+import { communityRouter } from "./routes/community/community.routes";
+import { authRouter } from "./routes/auth/auth.routes";
 
 /*
 import { config } from "dotenv";
-import { authRouter } from "./routes/auth/auth.routes";
-
-import { communityRouter } from "./routes/community/community.routes";
 import { myPageRouter } from "./routes/myPage/myPage.route";
 config();
 */
+
 import { authAccessTokenMiddleware } from "./utils/jwt.middleware";
 import { api_utilsRouter } from "./routes/api-util/api-util.route";
 
@@ -51,16 +51,17 @@ export default function App() {
 
     // swagger
     app.use("/api-docs", SwaggerUi.serve, SwaggerUi.setup(specs));
+    app.use("/auth", asyncHandler(authRouter));
 
     /*
-    app.use("/auth", asyncHandler(authRouter));
+    
     app.use(
         "/myPage",
         asyncHandler(authAccessTokenMiddleware),
         asyncHandler(myPageRouter)
     );
-    app.use("/community", asyncHandler(authAccessTokenMiddleware), communityRouter);
     */
+    app.use("/community", asyncHandler(authAccessTokenMiddleware), communityRouter);
     app.use("/api-utils", asyncHandler(authAccessTokenMiddleware), api_utilsRouter);
     return app;
 }

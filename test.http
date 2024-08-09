@@ -1,6 +1,0 @@
-POST http://localhost:3000/auth/login/test
-Content-Type: application/json
-
-{
-    "id": "test1"
-}

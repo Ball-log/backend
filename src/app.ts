@@ -8,10 +8,11 @@ import { specs } from "../config/swagger.config";
 import SwaggerUi from "swagger-ui-express";
 import { communityRouter } from "./routes/community/community.routes";
 import { authRouter } from "./routes/auth/auth.routes";
+import { myPageRouter } from "./routes/myPage/myPage.route";
 
 /*
 import { config } from "dotenv";
-import { myPageRouter } from "./routes/myPage/myPage.route";
+
 config();
 */
 
@@ -26,7 +27,7 @@ export default function App() {
     app.use(express.urlencoded({ extended: false }));
 
     app.get("/", (req, res) => {
-        res.send("루트 페이지!");
+        res.send("루트 페이지!!!!");
     });
 
     app.get("/auth/login", (req, res) => {
@@ -53,14 +54,12 @@ export default function App() {
     app.use("/api-docs", SwaggerUi.serve, SwaggerUi.setup(specs));
     app.use("/auth", asyncHandler(authRouter));
 
-    /*
-    
+
     app.use(
         "/myPage",
         asyncHandler(authAccessTokenMiddleware),
         asyncHandler(myPageRouter)
     );
-    */
     app.use("/community", asyncHandler(authAccessTokenMiddleware), communityRouter);
     app.use("/api-utils", asyncHandler(authAccessTokenMiddleware), api_utilsRouter);
     return app;

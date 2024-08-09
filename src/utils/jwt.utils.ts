@@ -4,7 +4,7 @@ import { config } from "dotenv";
 
 config();
 
-const secret: string = "V9n2je39vCm0sB8YlK6qQdXoP5rEwZ1t"
+const secret: string = "V9n2je39vCm0sB8YlK6qQdXoP5rEwZ1t";
 if (!secret) {
     throw new Error("JWT secret is not defined in environment variables");
 }

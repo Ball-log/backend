@@ -1,5 +1,5 @@
 import express from "express";
-import { healthRoute } from "./health.route";
+import { healthRoute } from "./routes/health/health.route"
 import cors from "cors";
 import asyncHandler from "express-async-handler";
 

@@ -15,7 +15,6 @@ export type ResponseType =
   | "THERE_IS_NO_TOKEN"
   | "UNKNOWN_ERROR"
   | "POST_TYPE_EMPTY"
-  | "FORBIDDEN"
   | "WRONG_POST_ID"
   | "THERE_IS_NO_POSTID_OR_BODY"
   | "THERE_IS_NO_POSTID_OR_COMMENTID_OR_BODY"
@@ -24,7 +23,11 @@ export type ResponseType =
   | "WRONG_BODY"
   | "ONLY_AUTHOR_CAN_DELETE_OR_EDIT"
   | "UNAUTHORIZED"
-  | "THERE_IS_NO_CONTENT_IN_COMMENT";
+  | "THERE_IS_NO_CONTENT_IN_COMMENT"
+  | "DATA_INSERTED_SQL_ERROR"
+  | "REQUEST_BODY_INVALID"
+  | "FORBIDDEN"
+  | "GENERATING_PRESIGNED_URL_ERROR";
 
 export type ResponseWithStatus = {
   status: StatusCodes;
@@ -160,7 +163,8 @@ export const status: Record<ResponseType, ResponseWithStatus> = {
       message: "댓글 내용을 작성해주세요.",
     },
   },
-  UNAUTHORIZED: {
+
+  REQUEST_BODY_INVALID: {
     status: StatusCodes.BAD_REQUEST,
     body: {
       isSuccess: false,
@@ -172,4 +176,22 @@ export const status: Record<ResponseType, ResponseWithStatus> = {
     status: StatusCodes.FORBIDDEN,
     body: { isSuccess: false, code: "403", message: "접근이 금지되었습니다." },
   },
+  GENERATING_PRESIGNED_URL_ERROR: {
+    status: StatusCodes.INTERNAL_SERVER_ERROR,
+    body: {
+      isSuccess: false,
+      code: "400",
+      message: "pre-signed URL generation error.",
+    },
+  },
+  DATA_INSERTED_SQL_ERROR: {
+    status: StatusCodes.BAD_REQUEST,
+    body: { isSuccess: false, code: "404", message: "there is an error in the SQL syntax for inserting data.",
+    }
+  },
+  UNAUTHORIZED: {
+    status: StatusCodes.BAD_REQUEST,
+    body: { isSuccess: false, code: "404", message: "unauthorizes"
+    }
+  }
 };

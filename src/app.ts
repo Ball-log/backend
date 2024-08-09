@@ -6,12 +6,12 @@ import cors from "cors";
 
 import { specs } from "../config/swagger.config";
 import SwaggerUi from "swagger-ui-express";
+import { healthRouter } from "./routes/health/health.route";
 
 /*
 import { json, urlencoded } from "express"
 import { authRouter } from "./routes/auth/auth.routes";
 import { api_utilsRouter } from "./routes/api-util/api-util.route";
-import { ebHealthRouter } from "./routes/eb_health/eb_health.route";
 import { communityRouter } from "./routes/community/community.routes";
 import { myPageRouter } from "./routes/myPage/myPage.route";
 import asyncHandler from "express-async-handler";
@@ -53,7 +53,9 @@ export default function App() {
     );
     app.use("/community", asyncHandler(authAccessTokenMiddleware), communityRouter);
     app.use("/api-utils", asyncHandler(authAccessTokenMiddleware), api_utilsRouter);
-    app.use("/health", ebHealthRouter);
     */
+
+    app.use("/health", healthRouter);
+    
     return app;
 }

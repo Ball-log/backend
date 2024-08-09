@@ -62,6 +62,5 @@ export default function App() {
     app.use("/community", asyncHandler(authAccessTokenMiddleware), communityRouter);
     */
     app.use("/api-utils", asyncHandler(authAccessTokenMiddleware), api_utilsRouter);
-
     return app;
 }

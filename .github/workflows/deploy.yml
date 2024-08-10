@@ -1,4 +1,4 @@
-name: Node.js Dev CI/CD
+name: Ballog-develop CI/CD
 
 on:
   pull_request:      # pull request -> merge 가 되었을 때 Github Action 실행!
@@ -33,7 +33,6 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      # dependencies 설치, test and build
       - name: Install dependencies
         run: npm ci   # dependencies 설치 npm ci, npm install 모두 다 됨!
       
@@ -74,25 +73,19 @@ jobs:
       
       - name: Run Build
         run: npm run build # 빌드
-      # 배포 패키지 생성
       
-      - name: Copy .env to dist
-        run: cp .env dist/
-
       - name: Generate deployment package
         run: |
-          cp -R ./swagger dist/swagger
-          cp -R .platform dist
-          cp package.json dist/package.json
           cp -R .ebextensions dist/.ebextensions
+          cp -R .platform dist
+          cp -R ./swagger dist/swagger
+          cp .env dist/
+          cp package.json dist/package.json
           cp package-lock.json dist/package-lock.json
           cp Procfile dist/Procfile
           cd dist
           zip -r deploy.zip .
       
-
-      
-        # 생성한 deploy.zip 파일 내부 확인용!
       - name: Get Zip Inside
         run: zipinfo -1 dist/deploy.zip
 
@@ -104,12 +97,10 @@ jobs:
           format: YYYY-MM-DDTHH-mm-ss
           utcOffset: "+09:00" # 한국 시간 고려
 
-      # 현재 시간 출력 (위에서 얻은 build 시점의 시간 보여주기)
       - name: Show Current Time
         run: echo "CurrentTime=${{steps.current-time.outputs.formattedTime}}"
         shell: bash 
 
-      # Beanstalk 배포
       - name: Beanstalk Deploy
         uses: einaregilsson/beanstalk-deploy@v21
         with:
@@ -117,12 +108,11 @@ jobs:
           aws_secret_key: ${{secrets.AWS_ACTION_SECRET_ACCESS_KEY}}
           application_name: Ballog-develop
           environment_name: Ballog-develop-env
-          version_label: github-action-${{ steps.current-time.outputs.formattedTime }}  # version_label은 이전에 배포한 label과 중복되면 안됨!
+          version_label: github-action-${{ steps.current-time.outputs.formattedTime }}
           use_existing_version_if_available: false
           region: ap-northeast-2
           deployment_package: dist/deploy.zip
           wait_for_deployment: false  # 바로 Beanstalk으로 넘어갈 수 있도록 함
 
-      # 그냥 다 했다고 출력하기
       - name: Deployed!
         run: echo App deployed to ELB

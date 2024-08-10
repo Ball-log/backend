@@ -1,28 +1,25 @@
 import jwt, { JwtPayload } from "jsonwebtoken";
 import redisClient from "./../../config/db.redis";
 import { config } from "dotenv";
+import { ApiError } from "../../config/error";
+import { status } from "../../config/response.status";
 
 config();
 
-const secret: string = "V9n2je39vCm0sB8YlK6qQdXoP5rEwZ1t";
+const secret: string = process.env.SECRET as string;
 if (!secret) {
-    throw new Error("JWT secret is not defined in environment variables");
+    throw new ApiError(status.JWT_SECRET_NOT_FOUND);
 }
 
 const sign = (user: string) => {
     // access token 발급
     const payload = {
-        iss: "https://www.ballog.com",
+        iss: "https://api.ballog.store",
         sub: user
     };
-
     return jwt.sign(payload, secret, {
-
-        // secret으로 sign하여 발급하고 return
-        algorithm: "HS256", // 암호화 알고리즘
-
-        expiresIn: "2h" 	  // 유효기간
-
+        algorithm: "HS256",
+        expiresIn: "2h"
     });
 };
 
@@ -34,22 +31,14 @@ const verify = (token: string) => {
             sub: decoded.sub
         };
     } catch (err) {
-        if (err instanceof Error) {
-            return {
-                ok: false,
-                message: err.message
-            };
-        } else {
-            throw new Error("Unknown error occurred");
-        }
+        return {
+            ok: false
+        };
     }
 };
 
 const refresh = () => {
-    // refresh token 발급
     return jwt.sign({}, secret, {
-
-        // refresh token은 payload 없이 발급
         algorithm: "HS256",
         expiresIn: "14d"
     });
@@ -60,19 +49,16 @@ const refreshVerify = async (token: string, userId: string) => {
         const data = await redisClient.get(userId);
         if (token === data) {
             try {
-                // JWT 토큰 검증
                 jwt.verify(token, secret);
                 return true;
             } catch (err) {
-                console.error("JWT verification failed:", err);
-                return false;
+                throw new ApiError(status.JWT_VERIFICATIN_FAILED);
             }
         } else {
-            return false; // 토큰이 Redis에 저장된 값과 일치하지 않을 경우
+            return false;
         }
     } catch (err) {
-        console.error("Error retrieving data from Redis:", err);
-        return false; // Redis에서 데이터를 가져오지 못한 경우
+        throw new ApiError(status.REDIS_ERROR);
     }
 };
 

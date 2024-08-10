@@ -84,6 +84,7 @@ jobs:
           cp -R ./swagger dist/swagger
           cp -R .platform dist
           cp package.json dist/package.json
+          cp -R .ebextensions dist/.ebextensions
           cp package-lock.json dist/package-lock.json
           cp Procfile dist/Procfile
           cd dist

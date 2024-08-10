@@ -3,6 +3,7 @@ import { Request, Response, NextFunction } from "express";
 import { status } from "../../config/response.status";
 import { config } from "dotenv";
 import axios from "axios";
+import { ApiError } from "../../config/error";
 
 config();
 
@@ -17,13 +18,12 @@ export const authAccessTokenMiddleware = (
         const result = verify(token); // token을 검증합니다.
         if (result.ok) {
             res.locals.id = result.sub;
-
             next();
         } else {
-            res.status(401).send(status.ACCESS_TOKEN_EXPIRED.body);
+            throw new ApiError(status.ACCESS_TOKEN_EXPIRED);
         }
     } else {
-        console.log("token err");
+        throw new ApiError(status.THERE_IS_NO_ACCESS_TOKEN);
     }
 };
 
@@ -36,13 +36,13 @@ export const tokenGoogleMiddleware = async (
     const urlPath = req.originalUrl;  // 쿼리스트링을 제외한 경로만 가져옵니다.
     const signUpRegex = /\/signUp\//;
     let redirectUri = null;
-    
+
     if (signUpRegex.test(urlPath)) {
         redirectUri = process.env.GOOGLE_REDIRECT_URI_SIGN_UP;
     } else {
         redirectUri = process.env.GOOGLE_REDIRECT_URI_LOGIN;
     }
-    console.log(redirectUri)
+    console.log(redirectUri);
     const { code } = req.query;
     const token = await axios.post(process.env.GOOGLE_TOKEN_URL as string, {
         code,

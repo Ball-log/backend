@@ -27,7 +27,10 @@ export type ResponseType =
   | "DATA_INSERTED_SQL_ERROR"
   | "REQUEST_BODY_INVALID"
   | "FORBIDDEN"
-  | "GENERATING_PRESIGNED_URL_ERROR";
+  | "GENERATING_PRESIGNED_URL_ERROR"
+  | "JWT_SECRET_NOT_FOUND"
+  | "JWT_VERIFICATIN_FAILED"
+  | "REDIS_ERROR";
 
 export type ResponseWithStatus = {
   status: StatusCodes;
@@ -184,6 +187,29 @@ export const status: Record<ResponseType, ResponseWithStatus> = {
       message: "pre-signed URL generation error.",
     },
   },
+  JWT_SECRET_NOT_FOUND: {
+    status: StatusCodes.NOT_FOUND,
+    body: {
+      isSuccess: false,
+      code: "400",
+      message: "JWT secret is not defined in environment variables.",
+    }
+  },
+  JWT_VERIFICATIN_FAILED: {
+    status: StatusCodes.FORBIDDEN,
+    body: {
+      isSuccess: false,
+      code: "400",
+      message: "JWT verification failed.",
+    }
+  },
+  REDIS_ERROR: {
+    status: StatusCodes.INTERNAL_SERVER_ERROR,
+    body: {
+      isSuccess: false,
+      code: "400",
+      message: "Redis error occurred.",
+    },
   DATA_INSERTED_SQL_ERROR: {
     status: StatusCodes.BAD_REQUEST,
     body: { isSuccess: false, code: "404", message: "there is an error in the SQL syntax for inserting data.",
@@ -191,7 +217,7 @@ export const status: Record<ResponseType, ResponseWithStatus> = {
   },
   UNAUTHORIZED: {
     status: StatusCodes.BAD_REQUEST,
-    body: { isSuccess: false, code: "404", message: "unauthorizes"
+    body: { isSuccess: false, code: "404", message: "unauthorized"
     }
   }
 };

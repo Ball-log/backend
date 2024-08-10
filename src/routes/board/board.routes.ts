@@ -20,7 +20,7 @@ boardRouter.delete(
 );
 
 // 게시글 상세 조회 라우트
-boardRouter.get("/board/post/:postId", asyncHandler(BoardController.getPost));
+//boardRouter.get("/board/post/:postId", asyncHandler(BoardController.getPost));
 
 // 댓글 작성 라우트
 boardRouter.post(

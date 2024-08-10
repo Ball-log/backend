@@ -7,9 +7,9 @@ const BoardSQL = {
   `,
 
   //게시글 삽입
-  insertPost: `
-      INSERT INTO blog(title, body, thumbnail_url, created_at, updated_at, user_id)
-      VALUES (?, ?, ?, NOW(), NOW(), ?)
+  insertBlog: `
+      INSERT INTO blog(title, body, thumbnail_url, user_id)
+      VALUES (?, ?, ?, ?)
     `,
   // 게시글 수정
   updatePost: `
@@ -20,8 +20,8 @@ const BoardSQL = {
 
   //mvp 게시글 삽입
   insertMvp: `
-      INSERT INTO mvp_posts (title, player_id, player_record, publicStatus, thumbnail_url, created_at, updated_at, user_id)
-      VALUES (?, ?, ?, ?, ?, NOW(), NOW(), ?)
+      INSERT INTO mvp_posts (player_id, player_record, thumbnail_url)
+      VALUES (?, ?, ?,)
     `,
 
   //mvp 게시글 수정
@@ -99,23 +99,23 @@ const BoardSQL = {
 
   //좋아요 추가
   addLike: `
-    INSERT INTO likes (user_id, post_id, created_at, updated_at, post_type)
-    VALUES(?, ?, ?, ?, ?)
+    INSERT INTO post_like (user_id, post_id, post_type)
+    VALUES(?, ?, ?)
     `,
 
   // 좋아요 취소
   removeLike: `
-    DELETE FROM likes WHERE user_id = ? AND post_id = ?
+    DELETE FROM post_like WHERE user_id = ? AND post_id = ?
     `,
 
   // 좋아요 눌렀는지 확인
   checkUserLike: `
-    SELECT * FROM likes WHERE user_id = ? AND post_id = ?
+    SELECT * FROM post_like WHERE user_id = ? AND post_id = ?
     `,
 
   // 좋아요 수
   getLikeCount: `
-    SELECT COUNT(*) AS likeCount FROM likes WHERE post_id = ?
+    SELECT COUNT(*) AS likeCount FROM post_like WHERE post_id = ?
     `,
 };
 

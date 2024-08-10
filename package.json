@@ -1,7 +1,8 @@
 {
   "name": "ballog_backend",
   "version": "1.0.0",
-  "main": "index.js",
+  "private": true,
+  "main": "dist/main.js",
   "repository": "https://github.com/Ball-log/backend",
   "author": "김성준 <bandalgomim@naver.com>",
   "license": "MIT",

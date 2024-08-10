@@ -7,7 +7,7 @@ export const getSignUpController = async (req: Request, res: Response) => {
     const result = await getSignUpService(res.locals as getSignUpLocalsDto);
     res.set("Authorization", `Bearer ${result[0]}`);
     res.set("RefreshToken", result[1]);
-    res.redirect("ok");
+    res.send("ok");
 };
 
 

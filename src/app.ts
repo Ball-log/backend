@@ -1,30 +1,73 @@
 import express from "express";
+import { healthRoute } from "./routes/health/health.route";
 import cors from "cors";
 import asyncHandler from "express-async-handler";
+import { config } from "dotenv";
+
 import { specs } from "../config/swagger.config";
 import SwaggerUi from "swagger-ui-express";
 
-import { communityRouter } from "./routes/community/community.routes";
+import { json, urlencoded } from "express";
 import { authRouter } from "./routes/auth/auth.routes";
-import { myPageRouter } from "./routes/myPage/myPage.route";
-import { healthRoute } from "./routes/health/health.route";
 import { api_utilsRouter } from "./routes/api-util/api-util.route";
+import { communityRouter } from "./routes/community/community.routes";
+import { boardRouter } from "./routes/board/board.routes";
+import { myPageRouter } from "./routes/myPage/myPage.route";
+
 import { authAccessTokenMiddleware } from "./utils/jwt.middleware";
 
+config();
+
 export default function App() {
-    const app = express();
-    app.use(cors());                            // cors 방식 허용
-    app.use(express.json());                    // request의 본문을 json으로 해석할 수 있도록 함 (JSON 형태의 요청 body를 파싱하기 위함)
-    app.use(express.urlencoded({ extended: false }));
+  const app = express();
+  app.use(cors()); // cors 방식 허용
+  app.use(express.static("public")); // 정적 파일 접근
+  app.use(express.json()); // request의 본문을 json으로 해석할 수 있도록 함 (JSON 형태의 요청 body를 파싱하기 위함)
+  app.use(express.urlencoded({ extended: false }));
 
-    app.get("/", (req, res) => { res.send("https://api.ballog.store"); });
+  app.get("/", (req, res) => {
+    res.send(process.env.PORT);
+  });
 
-    // swagger
-    app.use("/api-docs", SwaggerUi.serve, SwaggerUi.setup(specs));
-    app.use("/health", healthRoute);
-    app.use("/auth", asyncHandler(authRouter));
-    app.use("/myPage", asyncHandler(authAccessTokenMiddleware), asyncHandler(myPageRouter));
-    app.use("/community", asyncHandler(authAccessTokenMiddleware), communityRouter);
-    app.use("/api-utils", asyncHandler(authAccessTokenMiddleware), api_utilsRouter);
-    return app;
+  app.get("/auth/login", (req, res) => {
+    res.send(`
+        <h1>Log in</h1>
+        <a href="/auth/login/google">google Log in</a>
+        <a href="/auth/login/kakao">kakao Log in</a>
+        <a href="/auth/login/naver">naver Log in</a>
+        `);
+  });
+  app.get("/auth/signUp", (req, res) => {
+    res.send(`
+        <h1>Sign up</h1>
+        <a href="/auth/signUp/google">google Sign up</a>
+        <a href="/auth/signUp/kakao">kakao Sign pp</a>
+        <a href="/auth/signUp/naver">naver Sign pp</a>
+        `);
+  });
+
+  app.use("/health", healthRoute);
+
+  // swagger
+  app.use("/api-docs", SwaggerUi.serve, SwaggerUi.setup(specs));
+
+  app.use("/auth", asyncHandler(authRouter));
+  app.use(
+    "/myPage",
+    asyncHandler(authAccessTokenMiddleware),
+    asyncHandler(myPageRouter)
+  );
+  app.use(
+    "/community",
+    asyncHandler(authAccessTokenMiddleware),
+    communityRouter
+  );
+  app.use("/", asyncHandler(authAccessTokenMiddleware), boardRouter);
+  app.use(
+    "/api-utils",
+    asyncHandler(authAccessTokenMiddleware),
+    api_utilsRouter
+  );
+
+  return app;
 }

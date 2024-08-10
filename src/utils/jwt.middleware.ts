@@ -32,13 +32,17 @@ export const tokenGoogleMiddleware = async (
     res: Response,
     next: NextFunction
 ) => {
-    const path = req.path;
+
+    const urlPath = req.originalUrl;  // 쿼리스트링을 제외한 경로만 가져옵니다.
+    const signUpRegex = /\/signUp\//;
     let redirectUri = null;
-    if (path === "/signUp/google") {
+    
+    if (signUpRegex.test(urlPath)) {
         redirectUri = process.env.GOOGLE_REDIRECT_URI_SIGN_UP;
     } else {
         redirectUri = process.env.GOOGLE_REDIRECT_URI_LOGIN;
     }
+    console.log(redirectUri)
     const { code } = req.query;
     const token = await axios.post(process.env.GOOGLE_TOKEN_URL as string, {
         code,

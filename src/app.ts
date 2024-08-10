@@ -27,7 +27,7 @@ export default function App() {
     app.use(express.urlencoded({ extended: false }));
 
     app.get("/", (req, res) => {
-        res.send("루트 페이지!!!!");
+        res.send("dev.ballog.store");
     });
 
     app.get("/auth/login", (req, res) => {

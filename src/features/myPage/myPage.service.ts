@@ -6,6 +6,7 @@ import { getMyPageResDto } from "../../models/myPage/myPage.dto";
 
 export const getMyPageService = async (userId: string) => {
     const result = await getMyPageDao(userId);
+    console.log(result);
     const res_result: getMyPageResDto = {
         team_id: result[0].team_id,
         team_icon_round: result[0].team_icon_round,

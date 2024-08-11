@@ -1,13 +1,70 @@
-import { ResultSetHeader } from "mysql2/promise";
+import { ResultSetHeader, RowDataPacket } from "mysql2/promise";
 import { getPool } from "../../../../config/db.pool";
 import { blogDto, imgSettingsDto, mvpDto } from "./post.dto";
 import { ApiError } from "../../../../config/error";
 import { status } from "../../../../config/response.status";
-import { postSql } from "./post.sql";
+import { postSql, tempPostSql } from "./post.sql";
 import { Json } from "aws-sdk/clients/robomaker";
 
 
 export const postDao = {
+    getType : async (post_id: number) => {
+        const connection = await getPool().getConnection();
+        try {
+            const [ result ] = await connection.query<RowDataPacket[]>(tempPostSql.getType, [ post_id ]);
+            connection.release();
+            return result[0].type;
+        } catch {
+            throw new ApiError(status.DATA_INSERTED_SQL_ERROR);
+        }
+    },
+    getMatch: async (match_id: number) => {
+        const connection = await getPool().getConnection();
+        try {
+            const [ [match] ] = await connection.query<RowDataPacket[]>(tempPostSql.getMatch, [ match_id ]);
+            connection.release();
+            return match;
+        } catch (error) {
+            throw new ApiError(status.DATA_INSERTED_SQL_ERROR);
+        }
+    },
+    getBlog: async (post_id: number, user_id: string) => {
+        
+        const connection = await getPool().getConnection();
+        try {
+            const [ [blog] ] = await connection.query<RowDataPacket[]>(tempPostSql.getBlog, [ post_id, user_id ]);
+            const [ [imgUrls] ] = await connection.query<RowDataPacket[]>(tempPostSql.getImgUrls, [ post_id ]);
+            const [ comment ] = await connection.query<RowDataPacket[]>(tempPostSql.getComment, [ post_id ]);
+            const [ reply ] = await connection.query<RowDataPacket[]>(tempPostSql.getRepyl, [ post_id ]);
+            const [ [likeCount] ] = await connection.query<RowDataPacket[]>(tempPostSql.getLikeCount, [ post_id ]);
+            const [ [hasLike] ] = await connection.query<RowDataPacket[]>(tempPostSql.getHasliked, [ post_id, user_id ]);
+
+
+            connection.release();
+            return [blog, imgUrls, comment, reply, likeCount, hasLike]
+        } catch (error) {
+            console.log(error);
+            throw new ApiError(status.DATA_INSERTED_SQL_ERROR);
+        }
+    },
+    getMvp: async (post_id: number, user_id: string) => {
+        const connection = await getPool().getConnection();
+        try {
+            const [ mvp ] = await connection.query<RowDataPacket[]>(tempPostSql.getMvp, [ post_id, user_id ]);
+            const [ imgUrls ] = await connection.query<RowDataPacket[]>(tempPostSql.getImgUrls, [ post_id ]);
+            const [ comment ] = await connection.query<RowDataPacket[]>(tempPostSql.getComment, [ post_id ]);
+            const [ reply ] = await connection.query<RowDataPacket[]>(tempPostSql.getRepyl, [ post_id ]);
+            const [ likeCount ] = await connection.query<RowDataPacket[]>(tempPostSql.getLikeCount, [ post_id ]);
+            const [ hasLike ] = await connection.query<RowDataPacket[]>(tempPostSql.getHasliked, [ post_id, user_id ]);
+
+
+            connection.release();
+            return [mvp, imgUrls, comment, reply, likeCount, hasLike]
+        } catch (error) {
+            throw new ApiError(status.DATA_INSERTED_SQL_ERROR);
+        }
+    },
+
     postBlog: async (req: blogDto, user_id: string): Promise<number> => {
         const connection = await getPool().getConnection();
         try {
@@ -15,11 +72,13 @@ export const postDao = {
                 req.title,
                 req.body,
                 req.imgUrls[0],
-                user_id
+                user_id,
+                req.match_id
             ]);
             connection.release();
             return result.insertId;
         } catch (error) {
+            console.log(error);
             throw new ApiError(status.DATA_INSERTED_SQL_ERROR);
         }
     },
@@ -30,7 +89,8 @@ export const postDao = {
                 req.playerId,
                 req.playerRecord,
                 req.imgUrls[0],
-                user_id
+                user_id,
+                req.match_id
             ]);
             connection.release();
             return result.insertId;
@@ -41,7 +101,7 @@ export const postDao = {
 
     postImg: async (imgSet: Json, post_id: number, type: string) => {
         const connection = await getPool().getConnection();
-        console.log(imgSet, post_id, type)
+        console.log(imgSet, post_id, type);
         try {
             const [ result ] = await connection.query<ResultSetHeader>(postSql.postImg, [
                 imgSet,
@@ -51,10 +111,10 @@ export const postDao = {
             connection.release();
             return result.insertId;
         } catch (error) {
+            console.log(error);
             throw new ApiError(status.DATA_INSERTED_SQL_ERROR);
         }
     },
-
 
     patchBlog: async (req: blogDto, post_id: number, user_id: string): Promise<number> => {
         const connection = await getPool().getConnection();

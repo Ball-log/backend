@@ -6,6 +6,9 @@ import { mvpDto, blogDto } from "../../../models/board/post/post.dto";
 export const postService = {
     postBlog: async (req: blogDto, user_id: string) => {
         const result = await postDao.postBlog(req, user_id);
+        const imgArr = { imgUrls: req.imgUrls };
+        const imgInfoArr = JSON.stringify(imgArr)
+        await postDao.postImg(imgInfoArr, result, req.type);
         const body: BaseApiResponse<number> = {
             ...status.SUCCESS.body,
             result: result
@@ -14,6 +17,9 @@ export const postService = {
     },
     postMvp: async (req: mvpDto, user_id: string) => {
         const result = await postDao.postMvp(req, user_id);
+        const imgArr = { imgUrls: req.imgUrls };
+        const imgInfoArr = JSON.stringify(imgArr)
+        await postDao.postImg(imgInfoArr, result, req.type);
         const body: BaseApiResponse<number> = {
             ...status.SUCCESS.body,
             result: result

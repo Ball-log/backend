@@ -1,10 +1,8 @@
 export interface blogDto {
-
     type: "blog",
     title: string,
     body: string,
-    thumbnailUrl: string,
-    user_id: string
+    thumbnailUrl: string,   
 }
 
 export interface mvpDto {

@@ -54,7 +54,7 @@ paths:
     post:
       security:
         - Authorization: []
-          RefreshToken: []
+          Refreshtoken: []
       tags:
         - "auth"
       summary: "엑세스 토큰 재발급"
@@ -261,7 +261,7 @@ paths:
                 type: "string"
               content:
                 type: "string"
-              imgUrls:
+              imageUrls:
                 type: "array"
                 items:
                   type: "string"
@@ -532,7 +532,7 @@ paths:
                           type: "integer"
                         commentCount:
                           type: "integer"
-                        imgUrls:
+                        imageUrls:
                           type: "array"
                           items:
                             type: "string"
@@ -1616,7 +1616,7 @@ securityDefinitions:
     type: apiKey
     name: Authorization
     in: header
-  RefreshToken:
+  Refreshtoken:
     type: apiKey
     name: RefreshToken
     in: header

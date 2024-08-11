@@ -193,7 +193,7 @@ export const status: Record<ResponseType, ResponseWithStatus> = {
       isSuccess: false,
       code: "400",
       message: "JWT secret is not defined in environment variables.",
-    }
+    },
   },
   JWT_VERIFICATIN_FAILED: {
     status: StatusCodes.FORBIDDEN,
@@ -201,7 +201,7 @@ export const status: Record<ResponseType, ResponseWithStatus> = {
       isSuccess: false,
       code: "400",
       message: "JWT verification failed.",
-    }
+    },
   },
   REDIS_ERROR: {
     status: StatusCodes.INTERNAL_SERVER_ERROR,
@@ -210,14 +210,17 @@ export const status: Record<ResponseType, ResponseWithStatus> = {
       code: "400",
       message: "Redis error occurred.",
     },
+  },
   DATA_INSERTED_SQL_ERROR: {
     status: StatusCodes.BAD_REQUEST,
-    body: { isSuccess: false, code: "404", message: "there is an error in the SQL syntax for inserting data.",
-    }
+    body: {
+      isSuccess: false,
+      code: "404",
+      message: "there is an error in the SQL syntax for inserting data.",
+    },
   },
   UNAUTHORIZED: {
     status: StatusCodes.BAD_REQUEST,
-    body: { isSuccess: false, code: "404", message: "unauthorized"
-    }
-  }
+    body: { isSuccess: false, code: "404", message: "unauthorized" },
+  },
 };

@@ -8,6 +8,7 @@ config();
 
 const secret: string = process.env.SECRET as string;
 if (!secret) {
+
     throw new ApiError(status.JWT_SECRET_NOT_FOUND);
 }
 
@@ -35,9 +36,11 @@ const verify = (token: string) => {
             ok: false
         };
     }
+  
 };
 
 const refresh = () => {
+
     return jwt.sign({}, secret, {
         algorithm: "HS256",
         expiresIn: "14d"
@@ -59,14 +62,15 @@ const refreshVerify = async (token: string, userId: string) => {
         }
     } catch (err) {
         throw new ApiError(status.REDIS_ERROR);
-    }
+
+  } 
 };
 
 const login = async (req: string) => {
-    const accessToken = sign(req);
-    const refreshToken = refresh();
-    redisClient.set(req, refreshToken);
-    return [ accessToken, refreshToken ];
+  const accessToken = sign(req);
+  const refreshToken = refresh();
+  redisClient.set(req, refreshToken);
+  return [accessToken, refreshToken];
 };
 
 export { login, sign, verify, refresh, refreshVerify };

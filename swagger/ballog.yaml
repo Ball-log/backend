@@ -1546,6 +1546,8 @@ paths:
                     example: "http://example.com"
 /api-utils/matchInfo:
     get:
+      security:
+        - Authorization: []
       tags:
         - "api-utils"
       summary: "매치 정보 조회"
@@ -1618,12 +1620,3 @@ securityDefinitions:
     type: apiKey
     name: RefreshToken
     in: header
-  oauth2:
-    type: oauth2
-    authorizationUrl: https://accounts.google.com/o/oauth2/auth
-    tokenUrl: https://oauth2.googleapis.com/token
-    flow: accessCode
-    scopes:
-      read: Grants read access
-      write: Grants write access
-      admin: Grants access to admin operations

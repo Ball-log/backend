@@ -2,7 +2,7 @@ export interface blogDto {
     type: "blog",
     title: string,
     body: string,
-    thumbnailUrl: string,   
+    imgUrls: string[]   
 }
 
 export interface mvpDto {
@@ -10,6 +10,11 @@ export interface mvpDto {
     type: "mvp",
     playerId: number,
     playerRecord: string,
-    thumbnailUrl: string
+    imgUrls: string[]
 }
 
+export interface imgSettingsDto {
+    url: string,
+    post_id: number,
+    post_type: "article" | "blog" | "mvp"
+}

@@ -874,13 +874,15 @@ paths:
                     type: "string"
                   body:
                     type: "string"
-                  thumbnailUrl:
-                    type: "string"
+                  imageUrls:
+                    type: "array"
+                    items:
+                      type: "string"
                 required:
                   - type
                   - title
                   - body
-                  - thumbnailUrl
+                  - imageUrls
               - type: "object"
                 properties:
                   type:
@@ -891,13 +893,15 @@ paths:
                     format: "int64"
                   playerRecord:
                     type: "string"
-                  thumbnailUrl:
-                    type: "string"
+                  imageUrls:
+                    type: "array"
+                    items:
+                      type: "string"
                 required:
                   - type
                   - playerId
                   - playerRecord
-                  - thumbnailUrl
+                  - imageUrls
       responses:
         200:
           description: "성공적인 응답"
@@ -944,13 +948,15 @@ paths:
                     type: "string"
                   body:
                     type: "string"
-                  thumbnailUrl:
+                  imageUrls:
                     type: "string"
+                    items:
+                      type: "string"
                 required:
                   - type
                   - title
                   - body
-                  - thumbnailUrl
+                  - imageUrls
               - type: "object"
                 properties:
                   type:
@@ -961,13 +967,15 @@ paths:
                     format: "int64"
                   playerRecord:
                     type: "string"
-                  thumbnailUrl:
-                    type: "string"
+                  imageUrls:
+                    type: "array"
+                    items:
+                      type: "string"
                 required:
                   - type
                   - playerId
                   - playerRecord
-                  - thumbnailUrl
+                  - imageUrls
       responses:
         200:
           description: "성공적인 응답"
@@ -1391,7 +1399,71 @@ paths:
                   presignedUrl:
                     type: "string"
                     example: "http://example.com"
-
+/api-utils/matchInfo:
+    get:
+      tags:
+        - "api-utils"
+      summary: "매치 정보 조회"
+      description: "주어진 날짜에 대한 매치 정보를 조회합니다."
+      parameters:
+        - name: "date"
+          in: "query"
+          required: true
+          type: "string"
+          format: "date"
+      responses:
+        200:
+          description: "성공적인 응답"
+          schema:
+            type: "object"
+            properties:
+              isSuccess:
+                type: "boolean"
+                example: true
+              code:
+                type: "string"
+                example: "200"
+              message:
+                type: "string"
+                example: "성공!"
+              result:
+                type: "array"
+                items:
+                  type: "object"
+                  properties:
+                    match_date:
+                      type: "string"
+                      format: "date-time"
+                    match_id:
+                      type: "integer"
+                      format: "int64"
+                    home_team_id:
+                      type: "integer"
+                      format: "int64"
+                    away_team_id:
+                      type: "integer"
+                      format: "int64"
+                    home_team_name:
+                      type: "string"
+                    away_team_name:
+                      type: "string"
+                    home_team_icon_flag:
+                      type: "string"
+                      nullable: true
+                    away_team_icon_flag:
+                      type: "string"
+                      nullable: true
+                    home_team_score:
+                      type: "integer"
+                      format: "int32"
+                    away_team_score:
+                      type: "integer"
+                      format: "int32"
+            required:
+              - isSuccess
+              - code
+              - message
+              - result
 securityDefinitions:
   Authorization:
     type: apiKey

@@ -1,5 +1,6 @@
 export const postSql = {
     postBlog: "INSERT INTO blog(title, body, thumbnail_url, user_id) VALUES (?, ?, ?, ?)",
+    postImg: "INSERT INTO image (url, post_id, post_type) VALUES (?, ?, ?)",
     postMvp: "INSERT INTO mvp (player_id, player_record, thumbnail_url, user_id) VALUES (?, ?, ?, ?)",
     patchBlog: `
         UPDATE blog

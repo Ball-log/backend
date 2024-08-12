@@ -36,7 +36,7 @@ const verify = (token: string) => {
             ok: false
         };
     }
-  
+
 };
 
 const refresh = () => {
@@ -63,14 +63,14 @@ const refreshVerify = async (token: string, userId: string) => {
     } catch (err) {
         throw new ApiError(status.REDIS_ERROR);
 
-  } 
+    }
 };
 
-const login = async (req: string) => {
-  const accessToken = sign(req);
-  const refreshToken = refresh();
-  redisClient.set(req, refreshToken);
-  return [accessToken, refreshToken];
+const login = async (user_id: string) => {
+    const accessToken = sign(user_id);
+    const refreshToken = refresh();
+    redisClient.set(user_id, refreshToken);
+    return [ accessToken, refreshToken ];
 };
 
 export { login, sign, verify, refresh, refreshVerify };

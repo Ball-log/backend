@@ -32,10 +32,10 @@ export const postDao = {
 
         const connection = await getPool().getConnection();
         try {
-            const [ [ blog ] ] = await connection.query<RowDataPacket[]>(tempPostSql.getBlog, [ post_id, user_id ]);
+            const [ [ blog ] ] = await connection.query<RowDataPacket[]>(tempPostSql.getBlog, [ user_id, post_id  ]);
             const [ [ imgUrls ] ] = await connection.query<RowDataPacket[]>(tempPostSql.getImgUrls, [ post_id ]);
-            const [ comment ] = await connection.query<RowDataPacket[]>(tempPostSql.getComment, [ post_id ]);
-            const [ reply ] = await connection.query<RowDataPacket[]>(tempPostSql.getRepyl, [ post_id ]);
+            const [ comment ] = await connection.query<RowDataPacket[]>(tempPostSql.getComment, [ user_id, post_id ]);
+            const [ reply ] = await connection.query<RowDataPacket[]>(tempPostSql.getRepyl, [ user_id, post_id ]);
             const [ [ likeCount ] ] = await connection.query<RowDataPacket[]>(tempPostSql.getLikeCount, [ post_id ]);
             const [ [ hasLike ] ] = await connection.query<RowDataPacket[]>(tempPostSql.getHasliked, 
                 [ post_id, user_id ]);
@@ -49,7 +49,7 @@ export const postDao = {
     getMvp: async (post_id: number, user_id: string) => {
         const connection = await getPool().getConnection();
         try {
-            const [ mvp ] = await connection.query<RowDataPacket[]>(tempPostSql.getMvp, [ post_id, user_id ]);
+            const [ mvp ] = await connection.query<RowDataPacket[]>(tempPostSql.getMvp, [ user_id, post_id  ]);
             const [ imgUrls ] = await connection.query<RowDataPacket[]>(tempPostSql.getImgUrls, [ post_id ]);
             const [ comment ] = await connection.query<RowDataPacket[]>(tempPostSql.getComment, [ post_id ]);
             const [ reply ] = await connection.query<RowDataPacket[]>(tempPostSql.getRepyl, [ post_id ]);

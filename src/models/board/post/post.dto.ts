@@ -21,10 +21,14 @@ export interface getBlogDto {
     body: string,
     create_at: Date,
     updated_at: Date,
-    author: string,
     user_id: string,
-    match_id: number
+    user_name: string,
+    user_icon_url: string,
+    match_id: number,
     img_urls: string[],
+    like_count: number,
+    has_liked: boolean,
+    isMine: boolean,
     match_info: {
         match_date: Date,
         home_team_icon_flag: string,
@@ -36,31 +40,38 @@ export interface getBlogDto {
         comment_id: string,
         comment_user_id: string,
         comment_user_name: string,
+        comment_user_icon_url: string,
         comment_body: string,
-        comment_date: Date
+        comment_date: Date,
+        comment_isMine: boolean
     }[],
     reply_list: {
         reply_id: string,
         reply_user_id: string,
         reply_user_name: string,
+        reply_user_icon_url: string,
         reply_body: string,
         reply_date: Date,
-        commented_id: string
-    }[],
-    like_count: number,
-    has_liked: boolean
+        commented_id: string,
+        reply_isMine: boolean
+    }[]
 }
 
 
-
 export interface getBlogDto_ {
+    post_type: "blog",
     title: string,
     body: string,
     create_at: Date,
     updated_at: Date,
-    author: string,
     user_id: string,
-    match_id: number
+    user_name: string,
+    user_icon_url: string,
+    match_id: number,
+    img_urls: string[],
+    like_count: number,
+    has_liked: boolean,
+    isMine: boolean
 }
 
 export interface matchDto {
@@ -75,8 +86,10 @@ export interface Comment {
     comment_id: string,
     comment_user_id: string,
     comment_user_name: string,
+    comment_user_icon_url: string,
     comment_body: string,
-    comment_date: Date
+    comment_date: Date,
+    comment_isMine: boolean
 }
 
 export interface CommentList extends Iterable<Comment> {
@@ -89,9 +102,11 @@ export interface Reply {
     reply_id: string,
     reply_user_id: string,
     reply_user_name: string,
+    reply_user_icon_url: string,
     reply_body: string,
     reply_date: Date,
-    commented_id: string
+    commented_id: string,
+    reply_isMine: boolean
 }
 
 export interface ReplyList extends Iterable<Reply> {
@@ -99,9 +114,5 @@ export interface ReplyList extends Iterable<Reply> {
     length: number,
     [Symbol.iterator](): Iterator<Reply>
 }
-
-
-
-
 
 

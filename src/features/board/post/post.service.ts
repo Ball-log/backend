@@ -22,12 +22,14 @@ export const postService = {
         const res5 = result[5] as { ex: number };
         const match_id = res0.match_id;
         const matchInfo = await postDao.getMatch(match_id) as matchDto;
+        
         let imgUrl;
-        if (res1) {
-            imgUrl = JSON.parse(res1.img_url).img_urls;
+        if (res1 !== null) {
+            imgUrl = JSON.parse(res1.img_url);
         } else {
             imgUrl = [];
         }
+        console.log(imgUrl)
         const body: BaseApiResponse<getBlogDto> = {
             ...status.SUCCESS.body,
             result: {

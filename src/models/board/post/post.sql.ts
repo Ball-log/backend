@@ -27,7 +27,7 @@ export const tempPostSql = {
     getType: "SELECT type from global_post_id WHERE id = ?",
     getMvp: `
         SELECT
-            "blog" as post_type,
+            
             p.name as player_name,
             m.player_record as player_record,
             m.created_at as created_at,
@@ -44,6 +44,7 @@ export const tempPostSql = {
         where m.id = ?`,
     getBlog: `
         SELECT
+            "blog" as post_type,
             b.title as title,
             b.body as body,
             b.created_at as created_at,

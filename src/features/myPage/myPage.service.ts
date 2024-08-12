@@ -6,7 +6,6 @@ import { getMyPageResDto } from "../../models/myPage/myPage.dto";
 
 export const getMyPageService = async (userId: string) => {
     const result = await getMyPageDao(userId);
-    console.log(result);
     const res_result: getMyPageResDto = {
         team_id: result[0].team_id,
         team_icon_round: result[0].team_icon_round,
@@ -17,7 +16,7 @@ export const getMyPageService = async (userId: string) => {
         opposition_icon_flag: result[0].opposition_team_icon_flag,
         user_team_score: result[0].user_team_score,
         opposition_score: result[0].opposition_team_score,
-        writed_date_list: result[0].writed_date_list ? result.map((row) => new Date(row.writed_date_list)) : null
+        writed_date_list: result[0].writed_date_list ? result.map((row) => row.writed_date_list) : null
     };
     const body: BaseApiResponse<getMyPageResDto> = {
         ...status.SUCCESS.body,

@@ -14,30 +14,34 @@ export const postService = {
             result = await postDao.getMvp(post_id, user_id);
             console.log(result);
         }
-        const res0 = result[0] as getBlogDto_;
-        const res1 = result[1] as { img_url: string };
+        const res0 = result[0] as getBlogDto_
+        const res1 = result[1] ? (result[1] as { img_url: string }) : null;
         const res2 = result[2] as CommentList;
         const res3 = result[3] as ReplyList;
         const res4 = result[4] as { like_count: number };
         const res5 = result[5] as { ex: number };
         const match_id = res0.match_id;
         const matchInfo = await postDao.getMatch(match_id) as matchDto;
-        const imgUrl = JSON.parse(res1.img_url);
+        let imgUrl;
+        if (res1) {
+            imgUrl = JSON.parse(res1.img_url).img_urls;
+        } else {
+            imgUrl = [];
+        }
         const body: BaseApiResponse<getBlogDto> = {
             ...status.SUCCESS.body,
             result: {
-                post_type: "blog",
                 ...res0,
-                img_urls: imgUrl.img_urls as string[],
+                like_count: res4.like_count,
+                has_liked: Boolean(res5.ex),
+                img_urls: imgUrl,
                 match_info: matchInfo,
                 comment_list: [
-                    ...res2
+                    ...res2,
                 ],
                 reply_list: [
                     ...res3
-                ],
-                like_count: res4.like_count,
-                has_liked: Boolean(res5.ex)
+                ]
             }
         };
         return body;

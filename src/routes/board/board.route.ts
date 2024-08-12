@@ -1,9 +1,9 @@
 import { Router } from "express";
 import asyncHandler from "express-async-handler";
-import { commentRouter } from "./comment/comment.route";
+import { commentRouter } from "../api-util/comment/comment.route";
 import { postRouter } from "./post/post.route";
-import { post_likeRouter } from "./post_like/post_like.route";
-import { replyRouter } from "./reply/reply.route";
+import { post_likeRouter } from "../api-util/post_like/post_like.route";
+import { replyRouter } from "../api-util/reply/reply.route";
 
 export const boardRouter = Router();
 boardRouter.use("/comment", asyncHandler(commentRouter))

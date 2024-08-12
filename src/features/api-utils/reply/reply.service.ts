@@ -1,7 +1,7 @@
 import { BaseApiResponse } from "../../../../config/response";
 import { status } from "../../../../config/response.status";
-import { replyDao } from "../../../models/board/reply/reply.dao";
-import { replyPostDto, replyPatchDto, replyDeleteDto } from "../../../models/board/reply/reply.dto";
+import { replyDao } from "../../../models/api-util/reply/reply.dao";
+import { replyPostDto, replyPatchDto, replyDeleteDto } from "../../../models/api-util/reply/reply.dto";
 
 export const replyService = {
     post: async (req: replyPostDto, user_id: string) => {

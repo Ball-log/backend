@@ -71,7 +71,8 @@ export const tempPostSql = {
     getComment: `
         SELECT
             c.id as comment_id,
-            u.name as comment_writer,
+            u.id as comment_user_id,
+            u.name as comment_user_name,
             c.body as comment_body,
             c.created_at as comment_date
         FROM comment c join user u on c.user_id = u.id
@@ -79,7 +80,8 @@ export const tempPostSql = {
     getRepyl: `
         SELECT
             r.id as reply_id,
-            u.name as reply_writer,
+            u.id as reply_user_id,
+            u.name as reply_user_name,
             r.body as reply_body,
             r.created_at as reply_date,
             r.comment_id as commented_id

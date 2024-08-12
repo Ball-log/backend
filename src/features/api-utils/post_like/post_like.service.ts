@@ -1,7 +1,7 @@
 import { BaseApiResponse } from "../../../../config/response";
 import { status } from "../../../../config/response.status";
-import { post_likeDao } from "../../../models/board/post_like/post_like.dao";
-import { post_likeDto } from "../../../models/board/post_like/post_like.dto";
+import { post_likeDao } from "../../../models/api-util/post_like/post_like.dao";
+import { post_likeDto } from "../../../models/api-util/post_like/post_like.dto";
 
 export const post_likeService = {
     post: async (req: post_likeDto, user_id: string) => {

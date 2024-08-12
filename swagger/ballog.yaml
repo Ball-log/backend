@@ -867,7 +867,7 @@ paths:
             oneOf:
               - type: "object"
                 properties:
-                  type:
+                  post_type:
                     type: "string"
                     enum: ["blog"]
                   title:
@@ -881,14 +881,14 @@ paths:
                   match_id:
                     type: "integer"
                 required:
-                  - type
+                  - post_type
                   - title
                   - body
                   - imgUrls
                   - match_id
               - type: "object"
                 properties:
-                  type:
+                  post_type:
                     type: "string"
                     enum: ["mvp"]
                   playerId:
@@ -903,7 +903,7 @@ paths:
                   match_id:
                     type: "integer"
                 required:
-                  - type
+                  - post_type
                   - playerId
                   - playerRecord
                   - imgUrls
@@ -947,7 +947,7 @@ paths:
             oneOf:
               - type: "object"
                 properties:
-                  type:
+                  post_type:
                     type: "string"
                     enum: ["blog"]
                   title:
@@ -961,14 +961,14 @@ paths:
                   match_id:
                     type: "integer"
                 required:
-                  - type
+                  - post_type
                   - title
                   - body
                   - imgUrls
                   - match_id
               - type: "object"
                 properties:
-                  type:
+                  post_type:
                     type: "string"
                     enum: ["mvp"]
                   playerId:
@@ -983,7 +983,7 @@ paths:
                   match_id:
                     type: "integer"
                 required:
-                  - type
+                  - post_type
                   - playerId
                   - playerRecord
                   - imgUrls
@@ -1036,6 +1036,9 @@ paths:
               result:
                 type: "object"
                 properties:
+                  post_type: 
+                    type: "string"
+                    example: "blog"
                   title:
                     type: "string"
                     example: "string"
@@ -1103,7 +1106,10 @@ paths:
                         comment_id:
                           type: "integer"
                           example: 22
-                        comment_writer:
+                        comment_user_id:
+                          type: "string"
+                          example: "test1"
+                        comment_user_name:
                           type: "string"
                           example: "테스터1"
                         comment_body:
@@ -1121,7 +1127,10 @@ paths:
                         reply_id:
                           type: "integer"
                           example: 11
-                        reply_writer:
+                        reply_user_id:
+                          type: "string"
+                          example: "test1"
+                        reply_user_name:
                           type: "string"
                           example: "테스터1"
                         reply_body:
@@ -1159,14 +1168,14 @@ paths:
             oneOf:
               - type: "object"
                 properties:
-                  type:
+                  post_type:
                     type: "string"
                     enum: ["blog"]
                 required:
                   - type
               - type: "object"
                 properties:
-                  type:
+                  post_type:
                     type: "string"
                     enum: ["mvp"]
                 required:
@@ -1190,10 +1199,10 @@ paths:
                 type: "integer"
                 example: 0
 
-  /board/comment:
+  /api-utils/comment:
     post:
       tags:
-        - "board"
+        - "api-utils"
       summary: "새 댓글 생성"
       description: "게시물에 댓글을 추가합니다."
       security:
@@ -1238,7 +1247,7 @@ paths:
 
     patch:
       tags:
-        - "board"
+        - "api-utils"
       summary: "댓글 수정"
       description: "제공된 id에 따라 댓글을 수정합니다."
       security:
@@ -1279,7 +1288,7 @@ paths:
 
     delete:
       tags:
-        - "board"
+        - "api-utils"
       summary: "댓글 삭제"
       description: "제공된 id에 따라 댓글을 삭제합니다."
       security:
@@ -1315,10 +1324,10 @@ paths:
                 type: "integer"
                 example: 0
 
-  /board/reply:
+  /api-utils/reply:
     post:
       tags:
-        - "board"
+        - "api-utils"
       summary: "새 답글 생성"
       description: "댓글에 답글을 추가합니다."
       security:
@@ -1367,7 +1376,7 @@ paths:
 
     patch:
       tags:
-        - "board"
+        - "api-utils"
       summary: "답글 수정"
       description: "제공된 id에 따라 답글을 수정합니다."
       security:
@@ -1408,7 +1417,7 @@ paths:
 
     delete:
       tags:
-        - "board"
+        - "api-utils"
       summary: "답글 삭제"
       description: "제공된 id에 따라 답글을 삭제합니다."
       security:
@@ -1444,10 +1453,10 @@ paths:
                 type: "integer"
                 example: 0
 
-  /board/post_like:
+  /api-utils/post_like:
     post:
       tags:
-        - "board"
+        - "api-utils"
       summary: "게시물 좋아요"
       description: "게시물에 좋아요를 추가하거나 제거합니다."
       security:

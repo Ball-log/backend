@@ -1,7 +1,7 @@
 import { BaseApiResponse } from "../../../../config/response";
 import { status } from "../../../../config/response.status";
-import { commentDao } from "../../../models/board/comment/comment.dao";
-import { commentPostDto, commentPatchDto, commentDeleteDto } from "../../../models/board/comment/comment.dto";
+import { commentDao } from "../../../models/api-util/comment/comment.dao";
+import { commentPostDto, commentPatchDto, commentDeleteDto } from "../../../models/api-util/comment/comment.dto";
 
 export const commentService = {
     post: async (req: commentPostDto, user_id: string) => {

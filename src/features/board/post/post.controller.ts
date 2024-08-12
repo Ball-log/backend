@@ -3,10 +3,9 @@ import { postService } from "./post.service";
 
 export const postController =  {
     post: async (req: Request, res: Response) => {
-        console.log(req.body)
         const user_id = res.locals.id;
         let result;
-        if (req.body.type === "blog") {
+        if (req.body.post_type === "blog") {
             result = await postService.postBlog(req.body, user_id);
         } else {
             result = await postService.postMvp(req.body, user_id);

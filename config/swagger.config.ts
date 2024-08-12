@@ -8,7 +8,7 @@ const options = {
       description: "Ballog API v1",
     },
     basePath: "/",  // basepath를 basePath로 수정
-    schemes: ["http", "https"],
+    schemes: ["https" ,"http" ],
     securityDefinitions: {
       Authorization: {
         type: 'apiKey',

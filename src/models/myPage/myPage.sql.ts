@@ -48,12 +48,12 @@ MATCH_AND_CONTENT AS (
 ),
 USER_CONTENT AS (
     SELECT 
-        DATE(CONVERT_TZ(created_at, '+00:00', @@session.time_zone)) AS writed_date_list
+        created_at AS writed_date_list
     FROM blog
     WHERE user_id = ?
     UNION
     SELECT 
-        DATE(CONVERT_TZ(created_at, '+00:00', @@session.time_zone)) AS writed_date_list
+        created_at AS writed_date_list
     FROM mvp
     WHERE user_id = ?
 )

@@ -3,7 +3,7 @@ const CommunitySQL = {
     SELECT 
         COUNT(*) AS totalCount
     FROM 
-        article a
+        community a
     JOIN
         user u 
         ON a.user_id = u.id
@@ -19,7 +19,7 @@ const CommunitySQL = {
         COALESCE(c.comment_count, 0) AS comment_count,
         COALESCE(pl.like_count, 0) AS like_count
     FROM
-        article a
+        community a
     JOIN
         user u 
         ON a.user_id = u.id
@@ -57,7 +57,7 @@ const CommunitySQL = {
         GROUP_CONCAT(i.url SEPARATOR ', ') AS image_urls,
         COALESCE(pl.like_count, 0) AS like_count
     FROM 
-        article a
+        community a
     JOIN
         user u
         ON a.user_id = u.id
@@ -76,7 +76,7 @@ const CommunitySQL = {
   `,
     getPostComments: `
     SELECT
-        c.post_id AS comment_id,
+        c.id AS comment_id,
         c.body AS comment,
         c.created_at AS date,
         u.id AS author_id,
@@ -119,7 +119,7 @@ const CommunitySQL = {
   `,
     insertPost: `
     INSERT INTO
-        article
+        community
         (title, content, team_id, user_id)
     VALUES
         (?, ?, ?, ?)
@@ -129,7 +129,7 @@ const CommunitySQL = {
         image
         (url, post_id, post_type)
     VALUES
-        (?, ?, 'article')
+        (?, ?, 'community')
 
   `,
     getUserLikeStatus: `
@@ -144,7 +144,7 @@ const CommunitySQL = {
     INSERT INTO
         post_like (user_id, post_id, post_type)
     VALUES
-        (?, ?, 'article')
+        (?, ?, 'community')
   `,
     deleteLike: `
     DELETE FROM
@@ -157,31 +157,31 @@ const CommunitySQL = {
     INSERT INTO
         comment (post_id, user_id, body, post_type)
     VALUES
-        (?, ?, ?, 'article')
+        (?, ?, ?, 'community')
   `,
     insertPostReply: `
     INSERT INTO
         reply (post_id, comment_id, user_id, body, post_type)
     VALUES
-        (?, ?, ?, ?, 'article')
+        (?, ?, ?, ?, 'community')
   `,
     getPostAuthorId: `
     SELECT
         user_id
     FROM
-        article
+        community
     WHERE
         id = ?
   `,
     deletePost: `
     DELETE FROM
-        article
+        community
     WHERE
         id = ?
   `,
     updatePost: `
     UPDATE 
-        article
+        community
     SET 
         title = ?, content = ?, updated_at = NOW()
     WHERE
@@ -192,7 +192,7 @@ const CommunitySQL = {
         image
     WHERE
         post_id = ? 
-        AND post_type = 'article'
+        AND post_type = 'community'
         AND id IN (?)
   `
 };

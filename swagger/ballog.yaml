@@ -179,70 +179,6 @@ paths:
               result: 
                 type: "string"
                 example: "NULL"
-
-  /community/comment:
-    post:
-      security:
-        - Authorization: []
-      tags:
-        - "community"
-      summary: "커뮤니티 댓글 작성"
-      parameters:
-        - in: "body"
-          name: "body"
-          required: true
-          schema:
-            type: "object"
-            properties:
-              postId:
-                type: "integer"
-              body:
-                type: "string"
-      responses:
-        "200":
-          description: "댓글 작성 성공"
-          schema:
-            type: "object"
-            properties:
-              isSuccess:
-                type: "boolean"
-              code:
-                type: "string"
-              message:
-                type: "string"
-              result:
-                type: "object"
-
-  /community/like/{post_id}:
-    patch:
-      security:
-        - Authorization: []
-      tags:
-        - "community"
-      summary: "커뮤니티 좋아요 토글"
-      parameters:
-        - name: "post_id"
-          in: "path"
-          required: true
-          type: "integer"
-      responses:
-        "200":
-          description: "좋아요 성공"
-          schema:
-            type: "object"
-            properties:
-              isSuccess:
-                type: "boolean"
-              code:
-                type: "string"
-              message:
-                type: "string"
-              result:
-                type: "object"
-                properties:
-                  like:
-                    type: "boolean"
-
   /community/post:
     post:
       security:
@@ -261,7 +197,7 @@ paths:
                 type: "string"
               content:
                 type: "string"
-              imageUrls:
+              img_urls:
                 type: "array"
                 items:
                   type: "string"
@@ -281,7 +217,7 @@ paths:
               message:
                 type: "string"
               result:
-                type: "object"
+                type: "integer"
 
   /community/post/{post_id}:
     get:
@@ -296,8 +232,8 @@ paths:
           required: true
           type: "integer"
       responses:
-        "200":
-          description: "글 조회 성공"
+        200:
+          description: "성공적인 응답"
           schema:
             type: "object"
             properties:
@@ -313,91 +249,109 @@ paths:
               result:
                 type: "object"
                 properties:
-                  postId:
+                  post_type: 
+                    type: "string"
+                    example: "community"
+                  post_id:
                     type: "integer"
-                    example: 7
+                    example: 130
                   title:
                     type: "string"
-                    example: "123"
-                  authorId:
+                    example: "string"
+                  content:
                     type: "string"
-                    example: "google107022130803262620129"
-                  authorName:
-                    type: "string"
-                    example: "현우"
-                  authorProfileUrl:
-                    type: "string"
-                    nullable: true
-                    example: null
-                  date:
+                    example: "string"
+                  created_at:
                     type: "string"
                     format: "date-time"
-                    example: "2024-07-27T02:32:12.000Z"
-                  likeCount:
+                    example: "2024-08-11T08:30:14.000Z"
+                  updated_at:
+                    type: "string"
+                    format: "date-time"
+                    example: "2024-08-11T08:34:35.000Z"
+                  user_id:
+                    type: "string"
+                    example: "test1"
+                  user_name:
+                    type: "string"
+                    example: "테스터1"
+                  user_icon_url:
+                    type: "string"
+                    example: "https://example.com/user_icon.png"
+                  isMine:
+                    type: boolen
+                    example: false
+                  like_count:
                     type: "integer"
                     example: 1
-                  commentCount:
-                    type: "integer"
-                    example: 3
-                  imageUrl:
+                  has_liked:
+                    type: "boolean"
+                    example: true
+                  img_urls:
                     type: "array"
                     items:
                       type: "string"
-                    example: []
-                  isMine:
-                    type: "boolean"
-                    example: true
-                  comments:
+                      example : "https://example.com/user_icon.png"
+                  comment_count:
+                    type: "integer"
+                    example: 2
+                  comment_list:
                     type: "array"
                     items:
                       type: "object"
                       properties:
-                        commentId:
+                        comment_id:
                           type: "integer"
-                          example: 1
-                        comment:
+                          example: 22
+                        comment_user_id:
                           type: "string"
-                          example: "zzz good"
-                        authorId:
+                          example: "test1"
+                        comment_user_name:
                           type: "string"
-                          example: "naver6E5PtxWLMHHdEKeZUptmD6F53J63qJtjLb7pStMfFQU"
-                        authorName:
+                          example: "테스터1"
+                        comment_user_icon_url:
                           type: "string"
-                          example: "김성준"
-                        date:
+                          example: "https://example.com/user_icon.png"
+                        comment_body:
+                          type: "string"
+                          example: "테스트 댓글"
+                        comment_date:
                           type: "string"
                           format: "date-time"
-                          example: "2024-07-27T02:58:48.000Z"
-                        isMine:
+                          example: "2024-08-11T08:35:43.000Z"
+                        comment_isMine:
                           type: "boolean"
-                          example: false
-                        replies:
-                          type: "array"
-                          items:
-                            type: "object"
-                            properties:
-                              replyId:
-                                type: "integer"
-                                example: 1
-                              commentId:
-                                type: "integer"
-                                example: 1
-                              comment:
-                                type: "string"
-                                example: "thx!"
-                              authorId:
-                                type: "string"
-                                example: "google107022130803262620129"
-                              authorName:
-                                type: "string"
-                                example: "현우"
-                              date:
-                                type: "string"
-                                format: "date-time"
-                                example: "2024-07-27T02:59:07.000Z"
-                              isMine:
-                                type: "boolean"
-                                example: true
+                          example: true
+                  reply_list:
+                    type: "array"
+                    items:
+                      type: "object"
+                      properties:
+                        reply_id:
+                          type: "integer"
+                          example: 11
+                        reply_user_id:
+                          type: "string"
+                          example: "test1"
+                        reply_user_name:
+                          type: "string"
+                          example: "테스터1"
+                        reply_user_icon_url:
+                          type: "string"
+                          example: "https://example.com/user_icon.png"
+                        reply_body:
+                          type: "string"
+                          example: "답글 테스트"
+                        reply_date:
+                          type: "string"
+                          format: "date-time"
+                          example: "2024-08-11T08:36:14.000Z"
+                        commented_id:
+                          type: "integer"
+                          example: 22
+                        reply_isMine:
+                          type: "boolean"
+                          example: true
 
     patch:
       security:
@@ -536,43 +490,6 @@ paths:
                           type: "array"
                           items:
                             type: "string"
-
-  /community/reply:
-    post:
-      security:
-        - Authorization: []
-      tags:
-        - "community"
-      summary: "커뮤니티 대댓글 작성"
-      parameters:
-        - in: "body"
-          name: "body"
-          required: true
-          schema:
-            type: "object"
-            properties:
-              postId:
-                type: "integer"
-              commentId:
-                type: "integer"
-              body:
-                type: "string"
-
-      responses:
-        "200":
-          description: "대댓글 작성 성공"
-          schema:
-            type: "object"
-            properties:
-              isSuccess:
-                type: "boolean"
-              code:
-                type: "string"
-              message:
-                type: "string"
-              result:
-                type: "object"
-
   /myPage:
     get:
       security:
@@ -856,7 +773,26 @@ paths:
       tags:
         - "board"
       summary: "새 게시물 생성"
-      description: "제공된 타입에 따라 새 게시물을 생성합니다."
+      description: |
+        아래 형식에 맞춰 글을 작성하시면 됩니다.
+        interface blogDto 
+        {
+        post_type: "blog",
+        title: string,
+        body: string,
+        imgUrls: string[],
+        match_id: number
+        }
+
+        interface mvpDto 
+        {
+            post_type: "mvp",
+            playerId: number,
+            playerRecord: string,
+            imgUrls: string[],
+            match_id: number
+        }
+
       security:
         - Authorization: []
       parameters:
@@ -867,28 +803,28 @@ paths:
             oneOf:
               - type: "object"
                 properties:
-                  type:
+                  post_type:
                     type: "string"
                     enum: ["blog"]
                   title:
                     type: "string"
                   body:
                     type: "string"
-                  imgUrls:
+                  img_urls:
                     type: "array"
                     items:
                       type: "string"
                   match_id:
                     type: "integer"
                 required:
-                  - type
+                  - post_type
                   - title
                   - body
-                  - imgUrls
+                  - img_urls
                   - match_id
               - type: "object"
                 properties:
-                  type:
+                  post_type:
                     type: "string"
                     enum: ["mvp"]
                   playerId:
@@ -896,17 +832,17 @@ paths:
                     format: "int64"
                   playerRecord:
                     type: "string"
-                  imgUrls:
+                  img_urls:
                     type: "array"
                     items:
                       type: "string"
                   match_id:
                     type: "integer"
                 required:
-                  - type
+                  - post_type
                   - playerId
                   - playerRecord
-                  - imgUrls
+                  - img_urls
                   - match_id
       responses:
         200:
@@ -947,28 +883,28 @@ paths:
             oneOf:
               - type: "object"
                 properties:
-                  type:
+                  post_type:
                     type: "string"
                     enum: ["blog"]
                   title:
                     type: "string"
                   body:
                     type: "string"
-                  imgUrls:
+                  img_urls:
                     type: "string"
                     items:
                       type: "string"
                   match_id:
                     type: "integer"
                 required:
-                  - type
+                  - post_type
                   - title
                   - body
-                  - imgUrls
+                  - img_urls
                   - match_id
               - type: "object"
                 properties:
-                  type:
+                  post_type:
                     type: "string"
                     enum: ["mvp"]
                   playerId:
@@ -976,17 +912,17 @@ paths:
                     format: "int64"
                   playerRecord:
                     type: "string"
-                  imgUrls:
+                  img_urls:
                     type: "array"
                     items:
                       type: "string"
                   match_id:
                     type: "integer"
                 required:
-                  - type
+                  - post_type
                   - playerId
                   - playerRecord
-                  - imgUrls
+                  - img_urls
                   - match_id
       responses:
         200:
@@ -1036,6 +972,12 @@ paths:
               result:
                 type: "object"
                 properties:
+                  post_type: 
+                    type: "string"
+                    example: "blog"
+                  post_id:
+                    type: "integer"
+                    example: 131
                   title:
                     type: "string"
                     example: "string"
@@ -1050,15 +992,32 @@ paths:
                     type: "string"
                     format: "date-time"
                     example: "2024-08-11T08:34:35.000Z"
-                  author:
-                    type: "string"
-                    example: "테스터1"
                   user_id:
                     type: "string"
                     example: "test1"
+                  user_name:
+                    type: "string"
+                    example: "테스터1"
+                  user_icon_url:
+                    type: "string"
+                    example: "https://example.com/user_icon.png"
                   match_id:
                     type: "integer"
                     example: 0
+                  isMine:
+                    type: boolen
+                    example: false
+                  like_count:
+                    type: "integer"
+                    example: 1
+                  has_liked:
+                    type: "boolean"
+                    example: true
+                  img_urls:
+                    type: "array"
+                    items:
+                      type: "string"
+                      example : "https://example.com/user_icon.png"
                   match_info:
                     type: "object"
                     properties:
@@ -1095,6 +1054,9 @@ paths:
                       away_team_score:
                         type: "integer"
                         example: 0
+                  comment_count:
+                    type: "integer"
+                    example: 2
                   comment_list:
                     type: "array"
                     items:
@@ -1103,9 +1065,15 @@ paths:
                         comment_id:
                           type: "integer"
                           example: 22
-                        comment_writer:
+                        comment_user_id:
+                          type: "string"
+                          example: "test1"
+                        comment_user_name:
                           type: "string"
                           example: "테스터1"
+                        comment_user_icon_url:
+                          type: "string"
+                          example: "https://example.com/user_icon.png"
                         comment_body:
                           type: "string"
                           example: "테스트 댓글"
@@ -1113,6 +1081,9 @@ paths:
                           type: "string"
                           format: "date-time"
                           example: "2024-08-11T08:35:43.000Z"
+                        comment_isMine:
+                          type: "boolean"
+                          example: true
                   reply_list:
                     type: "array"
                     items:
@@ -1121,9 +1092,15 @@ paths:
                         reply_id:
                           type: "integer"
                           example: 11
-                        reply_writer:
+                        reply_user_id:
+                          type: "string"
+                          example: "test1"
+                        reply_user_name:
                           type: "string"
                           example: "테스터1"
+                        reply_user_icon_url:
+                          type: "string"
+                          example: "https://example.com/user_icon.png"
                         reply_body:
                           type: "string"
                           example: "답글 테스트"
@@ -1134,12 +1111,10 @@ paths:
                         commented_id:
                           type: "integer"
                           example: 22
-                  like_count:
-                    type: "integer"
-                    example: 1
-                  has_liked:
-                    type: "boolean"
-                    example: true
+                        reply_isMine:
+                          type: "boolean"
+                          example: true
+                  
     delete:
       tags:
         - "board"
@@ -1159,14 +1134,14 @@ paths:
             oneOf:
               - type: "object"
                 properties:
-                  type:
+                  post_type:
                     type: "string"
                     enum: ["blog"]
                 required:
                   - type
               - type: "object"
                 properties:
-                  type:
+                  post_type:
                     type: "string"
                     enum: ["mvp"]
                 required:
@@ -1190,10 +1165,10 @@ paths:
                 type: "integer"
                 example: 0
 
-  /board/comment:
+  /api-utils/comment:
     post:
       tags:
-        - "board"
+        - "api-utils"
       summary: "새 댓글 생성"
       description: "게시물에 댓글을 추가합니다."
       security:
@@ -1238,7 +1213,7 @@ paths:
 
     patch:
       tags:
-        - "board"
+        - "api-utils"
       summary: "댓글 수정"
       description: "제공된 id에 따라 댓글을 수정합니다."
       security:
@@ -1279,7 +1254,7 @@ paths:
 
     delete:
       tags:
-        - "board"
+        - "api-utils"
       summary: "댓글 삭제"
       description: "제공된 id에 따라 댓글을 삭제합니다."
       security:
@@ -1315,10 +1290,10 @@ paths:
                 type: "integer"
                 example: 0
 
-  /board/reply:
+  /api-utils/reply:
     post:
       tags:
-        - "board"
+        - "api-utils"
       summary: "새 답글 생성"
       description: "댓글에 답글을 추가합니다."
       security:
@@ -1367,7 +1342,7 @@ paths:
 
     patch:
       tags:
-        - "board"
+        - "api-utils"
       summary: "답글 수정"
       description: "제공된 id에 따라 답글을 수정합니다."
       security:
@@ -1408,7 +1383,7 @@ paths:
 
     delete:
       tags:
-        - "board"
+        - "api-utils"
       summary: "답글 삭제"
       description: "제공된 id에 따라 답글을 삭제합니다."
       security:
@@ -1444,10 +1419,10 @@ paths:
                 type: "integer"
                 example: 0
 
-  /board/post_like:
+  /api-utils/post_like:
     post:
       tags:
-        - "board"
+        - "api-utils"
       summary: "게시물 좋아요"
       description: "게시물에 좋아요를 추가하거나 제거합니다."
       security:

@@ -27,24 +27,37 @@ export const tempPostSql = {
     getType: "SELECT type from global_post_id WHERE id = ?",
     getMvp: `
         SELECT
+            "mvp" as post_type,
             p.name as player_name,
             m.player_record as player_record,
             m.created_at as created_at,
             m.updated_at as updated_at,
-            u.name as author,
             m.user_id as user_id,
+            u.name as user_name,
+            u.icon_url as user_icon_url,
             m.match_info as match_info
+            CASE 
+                WHEN u.id = ? THEN true
+                ELSE false
+            END AS isMine
         FROM mvp m join user u on m.user_id = u.id join player p on m.player_id = p.id
         where m.id = ?`,
     getBlog: `
         SELECT
+            "blog" as post_type,
+            b.id as post_id,
             b.title as title,
             b.body as body,
             b.created_at as created_at,
             b.updated_at as updated_at,
-            u.name as author,
             b.user_id as user_id,
-            b.match_info as match_id
+            u.name as user_name,
+            u.icon_url as user_icon_url,
+            b.match_info as match_id,
+            CASE 
+                WHEN u.id = ? THEN true
+                ELSE false
+            END AS isMine
         FROM blog b join user u on b.user_id = u.id
         where b.id = ?`,
     getImgUrls: `
@@ -71,24 +84,36 @@ export const tempPostSql = {
     getComment: `
         SELECT
             c.id as comment_id,
-            u.name as comment_writer,
+            u.id as comment_user_id,
+            u.name as comment_user_name,
+            u.icon_url as comment_user_icon_url,
             c.body as comment_body,
-            c.created_at as comment_date
+            c.created_at as comment_date,
+            CASE 
+                WHEN u.id = ? THEN true
+                ELSE false
+            END AS comment_isMine
         FROM comment c join user u on c.user_id = u.id
         WHERE c.post_id = ?`,
     getRepyl: `
         SELECT
             r.id as reply_id,
-            u.name as reply_writer,
+            u.id as reply_user_id,
+            u.name as reply_user_name,
+            u.icon_url as reply_user_icon_url,
             r.body as reply_body,
             r.created_at as reply_date,
-            r.comment_id as commented_id
+            r.comment_id as commented_id,
+            CASE 
+                WHEN u.id = ? THEN true
+                ELSE false
+            END AS reply_isMine
         FROM reply r join user u on r.user_id = u.id
         WHERE r.post_id = ?`,
     getLikeCount: `
         SELECT COUNT(*) as like_count
         FROM post_like
-        WHERE post_id =?`,
+        WHERE post_id = ?`,
     getHasliked: `
         SELECT EXISTS (SELECT 1 FROM post_like WHERE post_id =? AND user_id =?) as ex`
 

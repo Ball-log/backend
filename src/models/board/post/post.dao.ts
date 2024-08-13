@@ -70,7 +70,7 @@ export const postDao = {
             const [ result ] = await connection.query<ResultSetHeader>(postSql.postBlog, [
                 req.title,
                 req.body,
-                req.imgUrls[0],
+                req.img_urls[0],
                 user_id,
                 req.match_id
             ]);
@@ -87,7 +87,7 @@ export const postDao = {
             const [ result ] = await connection.query<ResultSetHeader>(postSql.postMvp, [
                 req.playerId,
                 req.playerRecord,
-                req.imgUrls[0],
+                req.img_urls[0],
                 user_id,
                 req.match_id
             ]);
@@ -121,7 +121,7 @@ export const postDao = {
             const [ result ] = await connection.query<ResultSetHeader>(postSql.patchBlog, [
                 req.title,
                 req.body,
-                req.imgUrls[0],
+                req.img_urls[0],
                 post_id,
                 user_id
             ]);
@@ -137,7 +137,7 @@ export const postDao = {
             const [ result ] = await connection.query<ResultSetHeader>(postSql.patchMvp, [
                 req.playerId,
                 req.playerRecord,
-                req.imgUrls[0],
+                req.img_urls[0],
                 post_id,
                 user_id
             ]);

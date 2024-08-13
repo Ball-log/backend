@@ -38,8 +38,9 @@ export const postService = {
                 has_liked: Boolean(res5.ex),
                 img_urls: imgUrl,
                 match_info: matchInfo,
+                comment_count: res2.length + res3.length,
                 comment_list: [
-                    ...res2,
+                    ...res2
                 ],
                 reply_list: [
                     ...res3
@@ -50,7 +51,7 @@ export const postService = {
     },
     postBlog: async (req: blogDto, user_id: string) => {
         const result = await postDao.postBlog(req, user_id);
-        const imgArr = { imgUrls: req.imgUrls };
+        const imgArr = { imgUrls: req.img_urls };
         const imgInfoArr = JSON.stringify(imgArr);
         await postDao.postImg(imgInfoArr, result, req.post_type);
         const body: BaseApiResponse<number> = {
@@ -61,7 +62,7 @@ export const postService = {
     },
     postMvp: async (req: mvpDto, user_id: string) => {
         const result = await postDao.postMvp(req, user_id);
-        const imgArr = { imgUrls: req.imgUrls };
+        const imgArr = { imgUrls: req.img_urls };
         const imgInfoArr = JSON.stringify(imgArr);
         await postDao.postImg(imgInfoArr, result, req.post_type);
         const body: BaseApiResponse<number> = {

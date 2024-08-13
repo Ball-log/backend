@@ -2,7 +2,7 @@ export interface blogDto {
     post_type: "blog",
     title: string,
     body: string,
-    imgUrls: string[],
+    img_urls: string[],
     match_id: number
 }
 
@@ -11,12 +11,13 @@ export interface mvpDto {
     post_type: "mvp",
     playerId: number,
     playerRecord: string,
-    imgUrls: string[],
+    img_urls: string[],
     match_id: number
 }
 
 export interface getBlogDto {
     post_type: "blog",
+    post_id: number,
     title: string,
     body: string,
     create_at: Date,
@@ -29,6 +30,7 @@ export interface getBlogDto {
     like_count: number,
     has_liked: boolean,
     isMine: boolean,
+    comment_count: number,
     match_info: {
         match_date: Date,
         home_team_icon_flag: string,
@@ -60,6 +62,7 @@ export interface getBlogDto {
 
 export interface getBlogDto_ {
     post_type: "blog",
+    post_id: number,
     title: string,
     body: string,
     create_at: Date,
@@ -71,7 +74,8 @@ export interface getBlogDto_ {
     img_urls: string[],
     like_count: number,
     has_liked: boolean,
-    isMine: boolean
+    isMine: boolean,
+    comment_count: number
 }
 
 export interface matchDto {

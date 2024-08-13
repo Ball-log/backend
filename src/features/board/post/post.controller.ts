@@ -16,9 +16,19 @@ export const postController = {
   get: async (req: Request, res: Response) => {
     const user_id = res.locals.id;
     const post_id = parseInt(req.params.post_id);
-    const result = await postService.getType(post_id, user_id);
+    const post_type = req.query.post_type;
+    let result;
+
+    if (post_type === "blog") {
+      result = await postService.getBlog(post_id, user_id);
+    } else if (post_type === "mvp") {
+      result = await postService.getMvp(post_id, user_id);
+    } else {
+      return res.status(400).json({ error: "유효하지 않은 type입니다." });
+    }
     res.json(result);
   },
+
   patch: async (req: Request, res: Response) => {
     const post_id = parseInt(req.params.post_id);
     const user_id = res.locals.id;

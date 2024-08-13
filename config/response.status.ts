@@ -25,6 +25,7 @@ export type ResponseType =
   | "UNAUTHORIZED"
   | "THERE_IS_NO_CONTENT_IN_COMMENT"
   | "DATA_INSERTED_SQL_ERROR"
+  | "DATA_NOT_FOUND"
   | "REQUEST_BODY_INVALID"
   | "FORBIDDEN"
   | "GENERATING_PRESIGNED_URL_ERROR"
@@ -217,6 +218,14 @@ export const status: Record<ResponseType, ResponseWithStatus> = {
       isSuccess: false,
       code: "404",
       message: "there is an error in the SQL syntax for inserting data.",
+    },
+  },
+  DATA_NOT_FOUND: {
+    status: StatusCodes.BAD_REQUEST,
+    body: {
+      isSuccess: false,
+      code: "404",
+      message: "해당 데이터가 존재하지 않습니다.",
     },
   },
   UNAUTHORIZED: {

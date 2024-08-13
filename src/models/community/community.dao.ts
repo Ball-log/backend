@@ -2,6 +2,7 @@ import { ResultSetHeader, RowDataPacket } from "mysql2";
 import CommunitySQL from "./community.sql";
 import { getPool } from "../../../config/db.pool";
 import { PostThumbnail } from "./community.dto";
+import { tempPostSql } from "../board/post/post.sql";
 
 const CommunityDao = {
     getPosts: async (
@@ -57,13 +58,20 @@ const CommunityDao = {
             title: row.title,
             content: row.body,
             authorName: row.user_name,
-            date: row.created_at,
+            created_at: row.created_at,
+            updated_at: row.updated_at,
             likeCount: row.like_count,
             commentCount: row.comment_count,
             imageUrls: row.image_urls ? row.image_urls.split(", ") : []
         }));
 
         return { totalCount, posts: posts };
+    },
+    getHasLiked: async (post_id: number, user_id: string) => {
+        const pool = getPool();
+        const [ [ hasLike ] ] = await pool.query<RowDataPacket[]>(tempPostSql.getHasliked, 
+            [ post_id, user_id ]);
+        return hasLike;
     },
 
     getPostDetail: async (postId: string): Promise<RowDataPacket> => {

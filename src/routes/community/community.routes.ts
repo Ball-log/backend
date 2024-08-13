@@ -15,20 +15,6 @@ communityRouter.get(
 
 communityRouter.post("/post", asyncHandler(CommunityController.postPost));
 
-communityRouter.patch(
-    "/like/:postId",
-    asyncHandler(CommunityController.patchToggleLikeController)
-);
-
-communityRouter.post(
-    "/comment",
-    asyncHandler(CommunityController.postCommentController)
-);
-
-communityRouter.post(
-    "/reply",
-    asyncHandler(CommunityController.postReplyController)
-);
 
 communityRouter.delete(
     "/post/:postId",

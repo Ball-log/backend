@@ -7,7 +7,6 @@ import {
     getPostsResDto,
     PostComments,
     PostReplies,
-    patchToggleLikeResDto
 } from "../../models/community/community.dto";
 import { emptyDto } from "../../models/empty.dto";
 
@@ -36,62 +35,53 @@ const CommunityService = {
         if (postDetail == undefined) {
             throw new ApiError(status.WRONG_POST_ID);
         }
-
         const postComments = await CommunityDao.getPostComments(postId);
         const postReplies = await CommunityDao.getPostReplies(postId);
-
+        const has_liked = await CommunityDao.getHasLiked(parseInt(postId), userId);
+        console.log(has_liked)
         const comments: PostComments[] = postComments.map((row) => ({
-            commentId: row.comment_id,
-            comment: row.comment,
-            authorId: row.author_id,
-            authorName: row.author_name,
-            authorProfileUrl: row.author_profile_url,
-            date: row.date,
-            isMine: row.author_id === userId,
-            replies: []
+            comment_id: row.comment_id,
+            comment_user_id: row.author_id,
+            comment_user_name: row.author_name,
+            comment_user_icon_url: row.author_profile_url,
+            comment_body: row.comment,
+            comment_date: row.date,
+            comment_isMine: row.author_id === userId,
         }));
 
         const replies: PostReplies[] = postReplies.map((row) => ({
-            replyId: row.reply_id,
-            commentId: row.comment_id,
-            comment: row.comment,
-            authorId: row.author_id,
-            authorName: row.author_name,
-            authorProfileUrl: row.author_profile_url,
-            date: row.date,
-            isMine: row.author_id === userId
+            reply_id: row.reply_id,
+            reply_user_id: row.author_id,
+            reply_user_name: row.author_name,
+            reply_user_icon_url: row.author_profile_url,
+            reply_body: row.comment,
+            reply_date: row.date,
+            commented_id: row.comment_id,
+            reply_isMine: row.author_id === userId
         }));
-
-        // 댓글에 대댓글 삽입
-        replies.forEach((reply) => {
-            const comment = comments.find((c) => c.commentId === reply.commentId);
-            if (comment) {
-                comment.replies.push(reply);
-            } else {
-                // 만약 reply의 부모 comment가 존재 하지 않을 경우 무시
-                console.log(
-                    `Comment ID ${reply.commentId} not found for reply ID ${reply.replyId}`
-                );
-            }
-        });
 
         const body: BaseApiResponse<getPostDetailDto> = {
             ...status.SUCCESS.body,
             result: {
-                postId: postDetail.id,
+                post_type: "community",
+                post_id: postDetail.id,
                 title: postDetail.title,
                 content: postDetail.cotent,
-                authorId: postDetail.author_id,
-                authorName: postDetail.author_name,
-                authorProfileUrl: postDetail.author_profile_url,
-                date: postDetail.date,
-                likeCount: postDetail.like_count,
-                commentCount: postComments.length + postReplies.length,
-                imageUrl: postDetail.image_urls
+                created_at: postDetail.created_at,
+                updated_at: postDetail.update_at,
+                user_id: postDetail.author_id,
+                user_name: postDetail.author_name,
+                user_icon_url: postDetail.author_profile_url,
+                isMine: userId == postDetail.author_id,
+                like_count: postDetail.like_count,
+                has_liked: Boolean(has_liked.ex),
+                img_urls: postDetail.image_urls
                     ? postDetail.image_urls.split(", ")
                     : [],
-                isMine: userId == postDetail.author_id,
-                comments: comments
+                comment_count: postComments.length + postReplies.length,
+                comment_list: comments,
+                reply_list: replies
+
             }
         };
 
@@ -101,7 +91,7 @@ const CommunityService = {
         title: string,
         content: string,
         userId: string,
-        imageUrls: [string],
+        img_urls: string[],
         type: string
     ) => {
         const postId = await CommunityDao.inserPost(title, content, userId, type);
@@ -110,7 +100,7 @@ const CommunityService = {
             throw new ApiError(status.THERE_IS_NO_TITLE_OR_CONTENT_IN_POST);
         }
 
-        if (!title || !content || !imageUrls || !type) {
+        if (!title || !content || !img_urls || !type) {
             throw new ApiError(status.WRONG_BODY);
         }
 
@@ -119,63 +109,20 @@ const CommunityService = {
         }
 
         if (postId) {
-            const imageInsertPromises = imageUrls.map((url) => {
+            const imageInsertPromises = img_urls.map((url) => {
                 return CommunityDao.insertImageIntoPost(url, postId.toString());
             });
             await Promise.all(imageInsertPromises);
 
-            const response: BaseApiResponse<emptyDto> = {
+            const response: BaseApiResponse<number> = {
                 ...status.SUCCESS.body,
-                result: {}
+                result: postId
             };
 
             return response;
         } else {
             throw new ApiError(status.UNKNOWN_ERROR);
         }
-    },
-    toggleLike: async (userId: string, postId: string) => {
-        const currentState = await CommunityDao.getUserLikeStatus(userId, postId);
-        if (currentState) {
-            await CommunityDao.deleteLike(userId, postId);
-            const body: BaseApiResponse<patchToggleLikeResDto> = {
-                ...status.SUCCESS.body,
-                result: {
-                    like: false
-                }
-            };
-            return body;
-        } else {
-            await CommunityDao.insertLike(userId, postId);
-            const body: BaseApiResponse<patchToggleLikeResDto> = {
-                ...status.SUCCESS.body,
-                result: {
-                    like: true
-                }
-            };
-            return body;
-        }
-    },
-    postComment: async (userId: string, postId: string, body: string) => {
-        await CommunityDao.insertPostComment(userId, postId, body);
-        const response: BaseApiResponse<emptyDto> = {
-            ...status.SUCCESS.body,
-            result: {}
-        };
-        return response;
-    },
-    postReply: async (
-        userId: string,
-        commentId: string,
-        postId: string,
-        body: string
-    ) => {
-        await CommunityDao.insertPostReply(userId, commentId, postId, body);
-        const response: BaseApiResponse<emptyDto> = {
-            ...status.SUCCESS.body,
-            result: {}
-        };
-        return response;
     },
     deletePost: async (userId: string, postId: string) => {
         const authorId = await CommunityDao.getPostAuthorId(postId);

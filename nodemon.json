@@ -1,5 +1,5 @@
 {
-  "watch": ["src", "swagger", "config"],
-  "ext" : "ts, yaml",
+  "watch": ["src", "swagger", "config", "public"],
+  "ext" : "ts, yaml, html",
   "exec": "ts-node ./src/main.ts"
   }

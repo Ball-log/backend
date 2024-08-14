@@ -11,59 +11,43 @@
   <h1>Socket.IO Example</h1>
   <input type="text" id="userId" placeholder="Enter user ID">
   <button onclick="connect()">Connect</button>
-  <br><br>
-  <input type="text" id="message" placeholder="Enter message">
-  <button onclick="sendMessage()">Send Message</button>
-  <br><br>
-  <div id="messages"></div>
+
 
   <script>
     let socket;
 
+    // 페이지 로드 시 이벤트 핸들러 등록
+    const registerSocketHandlers = () => {
+      console.log('Registering socket handlers...');
+      socket.on('ararm', (data) => {
+        console.log('Received message:', data);
+      });
+    };
+
+    // 소켓 연결 함수
     const connect = () => {
       const userId = document.getElementById('userId').value;
       if (userId) {
-        socket = io();
-        socket.emit('register', userId);
+        socket = io({
+          query: { user_id: userId }
+        });
 
-        socket.on('message', (data) => {
-          const messagesDiv = document.getElementById('messages');
-          const newMessage = document.createElement('div');
-          newMessage.textContent = `${data.type}: ${data.message}`;
-          messagesDiv.appendChild(newMessage);
+        // 소켓이 연결된 후 핸들러를 등록합니다.
+        socket.on('connect', () => {
+          console.log('Socket connected');
+          registerSocketHandlers();
+        });
+
+        socket.on('connect_error', (err) => {
+          console.error('Socket connection error:', err);
+        });
+
+        socket.on('disconnect', () => {
+          console.log('Socket disconnected');
         });
       }
     };
-
-    const sendMessage = () => {
-      const userId = document.getElementById('userId').value;
-      const message = document.getElementById('message').value;
-      if (userId && message) {
-        axios.post('/api-utils/comment', 
-          {
-            "body": message,
-            "post_id": 120,
-            "type": "blog"
-          },
-          {
-            headers: { 
-              'Content-Type': 'application/json',
-              'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL2FwaS5iYWxsb2cuc3RvcmUiLCJzdWIiOiJ0ZXN0NCIsImlhdCI6MTcyMzU1Njg1NywiZXhwIjoxNzIzNTY0MDU3fQ.9QaddvW6Mjo8pM1fn1of6S7styx-yxEevtdWyTaLh8A' // 예시로 Authorization 헤더 추가
-            }
-          }
-        )
-        .then(response => {
-          console.log('Message sent successfully:', response.data);
-        })
-        .catch(error => {
-          console.error('Error sending message:', error);
-        });
-        socket.emit("send_message", { user_id: userId, message });
-      }
-    };
-
     window.connect = connect;
-    window.sendMessage = sendMessage;
   </script>
 </body>
 </html>

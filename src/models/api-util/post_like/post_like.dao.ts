@@ -12,7 +12,7 @@ export const post_likeDao = {
             const [ result ] = await connection.query<ResultSetHeader>(post_likeSql.post, [
                 req.post_id,
                 user_id,
-                req.type
+                req.post_type
             ]);
             connection.release();
             return result.insertId;

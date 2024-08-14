@@ -69,7 +69,7 @@ const refreshVerify = async (token: string, userId: string) => {
 const login = async (user_id: string) => {
     const accessToken = sign(user_id);
     const refreshToken = refresh();
-    redisClient.set(user_id, refreshToken);
+    await redisClient.set(user_id, refreshToken);
     return [ accessToken, refreshToken ];
 };
 

@@ -24,6 +24,14 @@ export default function App() {
     app.use(express.json()); // request의 본문을 json으로 해석할 수 있도록 함 (JSON 형태의 요청 body를 파싱하기 위함)
     app.use(express.urlencoded({ extended: false }));
 
+    // firebase setting
+    const admin = require("firebase-admin");
+    let serviceAccount = require("../firebase-admin.json");
+
+    admin.initializeApp({
+        credential: admin.credential.cert(serviceAccount),
+    });
+
     app.get("/", (req, res) => {
         res.send(process.env.PORT);
     });

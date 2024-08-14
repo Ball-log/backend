@@ -14,11 +14,12 @@ export const replyDao = {
                 req.post_id,
                 user_id,
                 req.comment_id,
-                req.type
+                req.post_type
             ]);
             connection.release();
             return result.insertId;
         } catch (error) {
+            console.log(error);
             throw new ApiError(status.DATA_INSERTED_SQL_ERROR);
         }
     },

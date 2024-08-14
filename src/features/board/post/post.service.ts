@@ -73,6 +73,9 @@ export const postService = {
     },
     patchBlog: async (req: blogDto, post_id: number, user_id: string) => {
         const result = await postDao.patchBlog(req, post_id, user_id);
+        const imgArr = { imgUrls: req.img_urls };
+        const imgInfoArr = JSON.stringify(imgArr);
+        await postDao.postImg(imgInfoArr, result, req.post_type);
         const body: BaseApiResponse<number> = {
             ...status.SUCCESS.body,
             result: result
@@ -81,6 +84,9 @@ export const postService = {
     },
     patchMvp: async (req: mvpDto, post_id: number, user_id: string) => {
         const result = await postDao.patchMvp(req, post_id, user_id);
+        const imgArr = { imgUrls: req.img_urls };
+        const imgInfoArr = JSON.stringify(imgArr);
+        await postDao.postImg(imgInfoArr, result, req.post_type);
         const body: BaseApiResponse<number> = {
             ...status.SUCCESS.body,
             result: result

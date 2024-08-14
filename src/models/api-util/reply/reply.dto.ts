@@ -1,8 +1,9 @@
 export interface replyPostDto {
     body: string,
     post_id: number,
+    post_user_id: string,
     comment_id: number,
-    type: "blog" | "mvp"
+    post_type: "blog" | "mvp" | "community"
 }
 
 export interface replyPatchDto {

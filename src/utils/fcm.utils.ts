@@ -1,6 +1,79 @@
 import admin from "firebase-admin";
 import redisClient from "../../config/db.redis";
 import { DeviceToken } from "../models/device_token.dto";
+import { fcmDto } from "../models/api-util/fcm/fcm.dto";
+
+export const pushCommentAlarm = async function (
+  req: fcmDto,
+  type: "blog" | "mvp" | "community"
+) {
+  const options: Intl.DateTimeFormatOptions = {
+    month: "long",
+    day: "numeric",
+  };
+
+  const formattedDate = req.created_at.toLocaleDateString("ko-KR", options);
+
+  let message: string = "";
+  switch (type) {
+    case "community":
+      message = `${formattedDate} [커뮤니티] 내가 쓴 글에 댓글이 달렸어요.`;
+    case "blog":
+      message = `${formattedDate} 나의 [블로그] 게시물에 댓글이 달렸어요.`;
+    case "mvp":
+      message = `${formattedDate} 나의 [MVP] 게시물에 댓글이 달렸어요.`;
+  }
+
+  pushAlarm(req.user_id, "", message);
+};
+
+export const pushLikeAlarm = async function (
+  req: fcmDto,
+  type: "blog" | "mvp" | "community"
+) {
+  const options: Intl.DateTimeFormatOptions = {
+    month: "long",
+    day: "numeric",
+  };
+
+  const formattedDate = req.created_at.toLocaleDateString("ko-KR", options);
+
+  let message: string = "";
+  switch (type) {
+    case "community":
+      message = `${formattedDate} [커뮤니티] 내가 쓴 글에 좋아요 반응이 있어요.`;
+    case "blog":
+      message = `${formattedDate} 나의 [블로그] 게시물에 좋아요 반응이 있어요.`;
+    case "mvp":
+      message = `${formattedDate} 나의 [MVP] 게시물에 좋아요 반응이 있어요.`;
+  }
+
+  pushAlarm(req.user_id, "", message);
+};
+
+export const pushReplyAlarm = async function (
+  req: fcmDto,
+  type: "blog" | "mvp" | "community"
+) {
+  const options: Intl.DateTimeFormatOptions = {
+    month: "long",
+    day: "numeric",
+  };
+
+  const formattedDate = req.created_at.toLocaleDateString("ko-KR", options);
+
+  let message: string = "";
+  switch (type) {
+    case "community":
+      message = `${formattedDate} [커뮤니티] 나의 댓글에 대댓글이 달렸어요.`;
+    case "blog":
+      message = `${formattedDate} [블로그] 나의 댓글에 대댓글이 달렸어요.`;
+    case "mvp":
+      message = `${formattedDate} [MVP] 나의 댓글에 대댓글이 달렸어요.`;
+  }
+
+  pushAlarm(req.user_id, "", message);
+};
 
 export const pushAlarm = async function (
   userId: string,

@@ -1,15 +1,15 @@
 export interface replyPostDto {
-    body: string,
-    post_id: number,
-    comment_id: number,
-    type: "blog" | "mvp"
+  body: string;
+  post_id: number;
+  comment_id: number;
+  type: "blog" | "mvp" | "community";
 }
 
 export interface replyPatchDto {
-    id: number,
-    body: string
+  id: number;
+  body: string;
 }
 
 export interface replyDeleteDto {
-    id: number
+  id: number;
 }

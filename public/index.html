@@ -28,7 +28,7 @@
     const connect = () => {
       const userId = document.getElementById('userId').value;
       if (userId) {
-        socket = io({
+        socket = io("awseb--AWSEB-sNYLI5PVE4Y7-459491560.ap-northeast-2.elb.amazonaws.com", {
           query: { user_id: userId }
         });
 

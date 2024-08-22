@@ -114,6 +114,21 @@ export const postDao = {
             throw new ApiError(status.DATA_INSERTED_SQL_ERROR);
         }
     },
+    patchImg: async (imgSet: Json, post_id: number) => {
+        const connection = await getPool().getConnection();
+
+        try {
+            const [ result ] = await connection.query<ResultSetHeader>(postSql.patchImg, [
+                imgSet,
+                post_id
+            ]);
+            connection.release();
+            return result.insertId;
+        } catch (error) {
+            console.log(error);
+            throw new ApiError(status.DATA_INSERTED_SQL_ERROR);
+        }
+    },
 
     patchBlog: async (req: blogDto, post_id: number, user_id: string): Promise<number> => {
         const connection = await getPool().getConnection();

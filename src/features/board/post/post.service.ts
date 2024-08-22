@@ -75,7 +75,8 @@ export const postService = {
         const result = await postDao.patchBlog(req, post_id, user_id);
         const imgArr = { imgUrls: req.img_urls };
         const imgInfoArr = JSON.stringify(imgArr);
-        await postDao.postImg(imgInfoArr, result, req.post_type);
+        console.log(imgInfoArr, post_id)
+        await postDao.patchImg(imgInfoArr, post_id);
         const body: BaseApiResponse<number> = {
             ...status.SUCCESS.body,
             result: result

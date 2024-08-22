@@ -23,7 +23,7 @@ export const postController =  {
         const post_id = parseInt(req.params.post_id);
         const user_id = res.locals.id;
         let result;
-        if (req.body.type === "blog") {
+        if (req.body.post_type === "blog") {
             result = await postService.patchBlog(req.body, post_id, user_id);
         } else {
             result = await postService.patchMvp(req.body, post_id, user_id);

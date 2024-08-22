@@ -891,7 +891,7 @@ paths:
                   body:
                     type: "string"
                   img_urls:
-                    type: "string"
+                    type: "array"
                     items:
                       type: "string"
                   match_id:

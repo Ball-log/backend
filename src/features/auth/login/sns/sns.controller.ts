@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { loginGoogleService, loginKakaoService, loginNaverService } from "./sns.service";
-import { getLoginController } from "../login.controller";
+//import { getLoginController } from "../login.controller";
 
 
 export const loginGoogleController = async (req: Request, res: Response) => {
@@ -18,8 +18,8 @@ export const loginNaverController = async (req: Request, res: Response) => {
     res.redirect(result);
 };
 
-export const loginTestController = async (req: Request, res: Response) => {
+/*export const loginTestController = async (req: Request, res: Response) => {
     res.locals.id = req.body.id;
     const result = await getLoginController(req, res);
     res.json(result);
-};
+};*/

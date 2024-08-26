@@ -5,7 +5,7 @@ import asyncHandler from "express-async-handler";
 
 export const loginRedirectRouter = Router();
 
-loginRedirectRouter.get("/google/redirect", asyncHandler(tokenGoogleMiddleware), asyncHandler(getLoginController));
-loginRedirectRouter.get("/kakao/redirect", asyncHandler(tokenKakaoMiddleware), asyncHandler(getLoginController));
-loginRedirectRouter.get("/naver/redirect", asyncHandler(tokenNaverMiddleware), asyncHandler(getLoginController));
+loginRedirectRouter.get("/google/token", asyncHandler(tokenGoogleMiddleware), asyncHandler(getLoginController));
+loginRedirectRouter.get("/kakao/token/", asyncHandler(tokenKakaoMiddleware), asyncHandler(getLoginController));
+loginRedirectRouter.get("/naver/token", asyncHandler(tokenNaverMiddleware), asyncHandler(getLoginController));
 

@@ -42,7 +42,6 @@ export const tokenGoogleMiddleware = async (
     } else {
         redirectUri = process.env.GOOGLE_REDIRECT_URI_LOGIN;
     }
-    console.log(redirectUri);
     const { code } = req.query;
     const token = await axios.post(process.env.GOOGLE_TOKEN_URL as string, {
         code,

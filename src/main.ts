@@ -9,7 +9,7 @@ config();
 initPool();
 
 const app = App();
-const server = app.listen(3000, () => {
+const server = app.listen(3000, "0.0.0.0", () => {
     console.log("Server is running on port 3000 test");
 });
 setupSocketIO(server);

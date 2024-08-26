@@ -7,5 +7,6 @@ export const loginRouter = Router();
 loginRouter.get("/google", asyncHandler(loginGoogleController));
 loginRouter.get("/kakao", asyncHandler(loginKakaoController));
 loginRouter.get("/naver", asyncHandler(loginNaverController));
+
 loginRouter.post("/test", asyncHandler(loginTestController));
 loginRouter.use("/", asyncHandler(loginRedirectRouter));

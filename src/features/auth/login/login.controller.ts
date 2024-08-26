@@ -6,18 +6,5 @@ export const getLoginController = async (req: Request, res: Response) => {
     const result = await getLoginService(res.locals.id);
     res.setHeader("AccessToken", result[0]); // 액세스 토큰을 헤더에 설정
     res.setHeader("RefreshToken", result[1]); // 리프레시 토큰을 헤더에 설정
-    // 성공 응답
     res.send("Tokens sent in headers");
-};
-
-export const loginTokenController = {
-    post: async (req: Request, res: Response) => {
-        console.log(req.headers);
-    },
-    get: async (req: Request, res: Response) => {
-        res.json({
-            Authorization: req.headers.authorization,
-            refreshtoken: req.headers.refreshtoken
-        });
-    }
 };

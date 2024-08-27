@@ -1,7 +1,7 @@
 import { BaseApiResponse } from "../../../../config/response";
 import { status } from "../../../../config/response.status";
 import { postDao } from "../../../models/board/post/post.dao";
-import { mvpDto, blogDto, getBlogDto, CommentList, ReplyList, matchDto, getBlogDto_ } from "../../../models/board/post/post.dto";
+import { mvpDto, blogDto, getBlogDto, CommentList, ReplyList, matchDto, getBlogDto_, getMvpDto_, getMvpDto } from "../../../models/board/post/post.dto";
 
 export const postService = {
     getType: async (post_id: number, user_id: string) => {
@@ -9,12 +9,10 @@ export const postService = {
         let result;
         if (type === "blog") {
             result = await postDao.getBlog(post_id, user_id);
-            console.log(result);
         } else {
             result = await postDao.getMvp(post_id, user_id);
-            console.log(result);
         }
-        const res0 = result[0] as getBlogDto_
+        const res0 = result[0] as getBlogDto_ | getMvpDto_
         const res1 = result[1] ? (result[1] as { img_url: string }) : null;
         const res2 = result[2] as CommentList;
         const res3 = result[3] as ReplyList;
@@ -29,8 +27,7 @@ export const postService = {
         } else {
             imgUrl = [];
         }
-        console.log(imgUrl)
-        const body: BaseApiResponse<getBlogDto> = {
+        const body: BaseApiResponse<getBlogDto | getMvpDto> = {
             ...status.SUCCESS.body,
             result: {
                 ...res0,

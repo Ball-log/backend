@@ -29,6 +29,8 @@ export const tempPostSql = {
     getMvp: `
         SELECT
             "mvp" as post_type,
+            m.id as post_id,
+            p.id as player_id,
             p.name as player_name,
             m.player_record as player_record,
             m.created_at as created_at,
@@ -36,7 +38,7 @@ export const tempPostSql = {
             m.user_id as user_id,
             u.name as user_name,
             u.icon_url as user_icon_url,
-            m.match_info as match_info
+            m.match_info as match_id,
             CASE 
                 WHEN u.id = ? THEN true
                 ELSE false

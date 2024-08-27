@@ -1619,7 +1619,7 @@ paths:
                   presignedUrl:
                     type: "string"
                     example: "http://example.com"
-/api-utils/matchInfo:
+  /api-utils/matchInfo:
     get:
       security:
         - Authorization: []
@@ -1681,6 +1681,65 @@ paths:
                     away_team_score:
                       type: "integer"
                       format: "int32"
+            required:
+              - isSuccess
+              - code
+              - message
+              - result
+  /api-utils/player_info/{match_id}:
+    get:
+      security:
+        - Authorization: []
+      tags:
+        - "api-utils"
+      summary: "매치에 참여한 선수 정보 조회"
+      description: "매치에 참여한 선수 정보를 조회합니다."
+      parameters:
+        - name: "match_id"
+          in: "path"
+          required: true
+          type: "integer"
+      responses:
+        200:
+          description: "성공적인 응답"
+          schema:
+            type: "object"
+            properties:
+              isSuccess:
+                type: "boolean"
+                example: true
+              code:
+                type: "string"
+                example: "200"
+              message:
+                type: "string"
+                example: "성공!"
+              result:
+                type: "array"
+                items:
+                  type: "object"
+                  properties:
+                    player_id:
+                      type: "integer"
+                      example: 67
+                    player_name:
+                      type: "string"
+                      example: "곽도규"
+                    player_number:
+                      type: "integer"
+                      example: 0
+                    player_position:
+                      type: "string"
+                      example: "투수"
+                    player_profile_img:
+                      type: "string"
+                      example: "//i.namu.wiki/i/MkuMN3s9KC-8hmBK5XkmUWXr4k-9RLIqa2EmygGHbrxqTMsR-Z-0Y4cPSNJ8Os2o_k-kAgNZnV1eE9RTm2XLAx2y_EqnX2Caunc2jbckUk-v_2g2uLWI5LOKc0jqqDqk_wY8eaPv0giGrwMXWrO8kA.webp"
+                    player_team_id:
+                      type: "integer"
+                      example: 4
+                    player_team_name:
+                      type: "string"
+                      example: "KIA"
             required:
               - isSuccess
               - code

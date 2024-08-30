@@ -4,9 +4,9 @@ export const myPageSql = {
     SELECT 
         u.team_id, 
         t.icon_round AS team_icon_round, 
-        u.profile_background_img_url AS user_background_img, 
-        u.name AS user_name,
-        u.icon_url as user_icon_url
+        u.profile_background_img_url AS user_background_img,
+        u.icon_url AS user_icon_url,
+        u.name AS user_name
     FROM user u
     JOIN team t ON u.team_id = t.id
     WHERE u.id = ?
@@ -31,11 +31,16 @@ MATCH_AND_CONTENT AS (
         ut.team_icon_round, 
         ut.user_background_img, 
         ut.user_name,
+        ut.user_icon_url,
         mi.match_date,
         CASE 
             WHEN ut.team_id = mi.home_team_id THEN mi.home_team_score 
             ELSE mi.away_team_score 
         END AS user_team_score,
+        CASE 
+            WHEN ut.team_id = mi.home_team_id THEN mi.home_team_icon_flag 
+            ELSE mi.away_team_icon_flag
+        END AS user_team_icon_flag,
         CASE 
             WHEN ut.team_id = mi.home_team_id THEN mi.away_team_icon_flag 
             ELSE mi.home_team_icon_flag 
@@ -63,8 +68,10 @@ SELECT
     mac.team_icon_round,
     mac.user_background_img,
     mac.user_name,
+    mac.user_icon_url,
     mac.match_date,
     mac.user_team_score,
+    mac.user_team_icon_flag,
     mac.opposition_team_icon_flag,
     mac.opposition_team_score,
     uc.writed_date_list

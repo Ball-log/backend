@@ -5,7 +5,8 @@ export const myPageSql = {
         u.team_id, 
         t.icon_round AS team_icon_round, 
         u.profile_background_img_url AS user_background_img, 
-        u.name AS user_name
+        u.name AS user_name,
+        u.icon_url as user_icon_url
     FROM user u
     JOIN team t ON u.team_id = t.id
     WHERE u.id = ?

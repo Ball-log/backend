@@ -11,6 +11,7 @@ export const getMyPageService = async (userId: string) => {
         team_icon_round: result[0].team_icon_round,
         user_background_img: result[0].user_background_img,
         user_name: result[0].user_name,
+        user_icon_url: result[0].user_icon_url,
         match_date: result[0].match_date,
         user_team_icon_flag: result[0].user_team_icon_flag,
         opposition_icon_flag: result[0].opposition_team_icon_flag,

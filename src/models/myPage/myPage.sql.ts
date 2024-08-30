@@ -71,6 +71,7 @@ SELECT
     mac.user_icon_url,
     mac.match_date,
     mac.user_team_score,
+    mac.user_team_icon_flag,
     mac.opposition_team_icon_flag,
     mac.opposition_team_score,
     uc.writed_date_list

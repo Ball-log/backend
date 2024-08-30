@@ -8,7 +8,6 @@ import {
     PostComments,
     PostReplies,
 } from "../../models/community/community.dto";
-import { emptyDto } from "../../models/empty.dto";
 
 const CommunityService = {
     getPosts: async (type: string, page: number, cursor?: number) => {
@@ -132,9 +131,9 @@ const CommunityService = {
         }
 
         await CommunityDao.deletePost(postId);
-        const response: BaseApiResponse<emptyDto> = {
+        const response: BaseApiResponse<null> = {
             ...status.SUCCESS.body,
-            result: {}
+            result: null
         };
         return response;
     },
@@ -158,9 +157,9 @@ const CommunityService = {
             return CommunityDao.insertImageIntoPost(url, postId.toString());
         });
         await Promise.all(imageInsertPromises);
-        const response: BaseApiResponse<emptyDto> = {
+        const response: BaseApiResponse<null> = {
             ...status.SUCCESS.body,
-            result: {}
+            result: null
         };
 
         return response;

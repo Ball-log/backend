@@ -3,6 +3,7 @@ export interface getMyPageResDto {
     team_icon_round: string,
     user_background_img: string,
     user_name: string,
+    user_icon_url: string,
     match_date: Date,
     user_team_icon_flag: string,
     opposition_icon_flag: string,

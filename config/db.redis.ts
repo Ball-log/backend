@@ -8,7 +8,7 @@ const redisHost = process.env.REDIS_HOST || "localhost";
 
 const redisClient = createClient({
   url: `redis://${redisHost}:${redisPort}`,
-  //password: process.env.REDIS_PASSWORD
+  password: process.env.REDIS_PASSWORD
 });
 
 redisClient.on("error", (err) => console.log("Redis Client Error", err));

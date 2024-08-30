@@ -19,6 +19,7 @@ export const getMyPageService = async (userId: string) => {
         opposition_score: result[0].opposition_team_score,
         writed_date_list: result[0].writed_date_list ? result.map((row) => row.writed_date_list) : null
     };
+    console.log(res_result);
     const body: BaseApiResponse<getMyPageResDto> = {
         ...status.SUCCESS.body,
         result: {

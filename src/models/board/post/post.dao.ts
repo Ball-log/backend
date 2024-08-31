@@ -102,7 +102,6 @@ export const postDao = {
 
     postImg: async (imgSet: Json, post_id: number, post_type: string) => {
         const connection = await getPool().getConnection();
-
         try {
             const [ result ] = await connection.query<ResultSetHeader>(postSql.postImg, [
                 imgSet,

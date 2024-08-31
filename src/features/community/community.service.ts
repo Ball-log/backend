@@ -33,6 +33,7 @@ const CommunityService = {
 
     getPostDetail: async (userId: string, postId: string) => {
         const postDetail = await CommunityDao.getPostDetail(postId);
+        console.log(postDetail);
         if (postDetail == undefined) {
             throw new ApiError(status.WRONG_POST_ID);
         }
@@ -94,7 +95,7 @@ const CommunityService = {
         type: string
     ) => {
         const postId = await CommunityDao.inserPost(title, content, userId, type);
-
+        console.log(postId);
         if (title === "" || content === "") {
             throw new ApiError(status.THERE_IS_NO_TITLE_OR_CONTENT_IN_POST);
         }
@@ -106,13 +107,11 @@ const CommunityService = {
         if (!(type === "team" || type === "league")) {
             throw new ApiError(status.TEAM_TYPE_ERROR);
         }
-
+        
         if (postId) {
-            const imageInsertPromises = img_urls.map((url) => {
-                return CommunityDao.insertImageIntoPost(url, postId.toString());
-            });
-            await Promise.all(imageInsertPromises);
-
+            const imgArr = { imgUrls: img_urls };
+            const imgInfoArr = JSON.stringify(imgArr);
+            await postDao.postImg(imgInfoArr, postId, "community");
             const response: BaseApiResponse<number> = {
                 ...status.SUCCESS.body,
                 result: postId

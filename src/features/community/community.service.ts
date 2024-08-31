@@ -1,10 +1,12 @@
 import { ApiError } from "../../../config/error";
 import { BaseApiResponse } from "../../../config/response";
 import { status } from "../../../config/response.status";
+import { postDao } from "../../models/board/post/post.dao";
 import CommunityDao from "../../models/community/community.dao";
 import {
     getPostDetailDto,
     getPostsResDto,
+    patchCommunity,
     PostComments,
     PostReplies,
 } from "../../models/community/community.dto";
@@ -74,9 +76,7 @@ const CommunityService = {
                 isMine: userId == postDetail.author_id,
                 like_count: postDetail.like_count,
                 has_liked: Boolean(has_liked.ex),
-                img_urls: postDetail.image_urls
-                    ? postDetail.image_urls.split(", ")
-                    : [],
+                img_urls: JSON.parse(postDetail.img_urls).imgUrls,
                 comment_count: postComments.length + postReplies.length,
                 comment_list: comments,
                 reply_list: replies
@@ -123,46 +123,36 @@ const CommunityService = {
             throw new ApiError(status.UNKNOWN_ERROR);
         }
     },
-    deletePost: async (userId: string, postId: string) => {
-        const authorId = await CommunityDao.getPostAuthorId(postId);
+    deletePost: async (userId: string, post_id: number) => {
+        const authorId = await CommunityDao.getPostAuthorId(post_id);
 
         if (userId !== authorId) {
             throw new ApiError(status.ONLY_AUTHOR_CAN_DELETE_OR_EDIT);
         }
 
-        await CommunityDao.deletePost(postId);
+        await CommunityDao.deletePost(post_id);
         const response: BaseApiResponse<null> = {
             ...status.SUCCESS.body,
             result: null
         };
         return response;
     },
-    updatePost: async (
-        userId: string,
-        postId: string,
-        title: string,
-        content: string,
-        deleteImageIds: [string],
-        newImageUrls: [string]
-    ) => {
-        const authorId = await CommunityDao.getPostAuthorId(postId);
+    updatePost: async (user_id: string, post_id: number, req: patchCommunity) => {
+        const authorId = await CommunityDao.getPostAuthorId(post_id);
 
-        if (userId !== authorId) {
+        if (user_id !== authorId) {
             throw new ApiError(status.ONLY_AUTHOR_CAN_DELETE_OR_EDIT);
         }
 
-        await CommunityDao.updatePost(title, content, postId);
-        await CommunityDao.deletePostImages(postId, deleteImageIds);
-        const imageInsertPromises = newImageUrls.map((url) => {
-            return CommunityDao.insertImageIntoPost(url, postId.toString());
-        });
-        await Promise.all(imageInsertPromises);
-        const response: BaseApiResponse<null> = {
+        const result = await CommunityDao.updatePost(req.title, req.content, post_id);
+        const imgArr = { imgUrls: req.img_urls };
+        const imgInfoArr = JSON.stringify(imgArr);
+        await postDao.patchImg(imgInfoArr, post_id);
+        const body: BaseApiResponse<number> = {
             ...status.SUCCESS.body,
-            result: null
+            result: result
         };
-
-        return response;
+        return body;
     }
 };
 

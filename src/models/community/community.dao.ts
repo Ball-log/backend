@@ -182,22 +182,24 @@ const CommunityDao = {
             body
         ]);
     },
-    getPostAuthorId: async (postId: string): Promise<string> => {
+    getPostAuthorId: async (post_id: number): Promise<string> => {
         const pool = getPool();
         const [ result ] = await pool.query<RowDataPacket[]>(
             CommunitySQL.getPostAuthorId,
-            [ postId ]
+            [ post_id ]
         );
-
         return (result[0] as RowDataPacket).user_id;
     },
-    deletePost: async (postId: string) => {
+    deletePost: async (post_id: number) => {
         const pool = getPool();
-        await pool.query(CommunitySQL.deletePost, [ postId ]);
+        await pool.query(CommunitySQL.deletePost, [ post_id ]);
     },
-    updatePost: async (title: string, content: string, articleId: string) => {
-        const pool = getPool();
-        await pool.query(CommunitySQL.updatePost, [ title, content, articleId ]);
+    updatePost: async (title: string, content: string, post_id: number ) => {
+        const connection = await getPool().getConnection();
+        const [ result ] = await connection.query<ResultSetHeader>(CommunitySQL.updatePost, [ 
+            title, content, post_id ]);
+        connection.release();
+        return result.insertId;
     },
     deletePostImages: async (postId: string, imageIds: [string]) => {
         const pool = getPool();

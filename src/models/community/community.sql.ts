@@ -54,7 +54,7 @@ const CommunitySQL = {
         u.id AS author_id,
         u.name AS author_name,
         u.icon_url AS author_profile_url,
-        GROUP_CONCAT(i.url SEPARATOR ', ') AS image_urls,
+        i.url AS img_urls,
         COALESCE(pl.like_count, 0) AS like_count
     FROM 
         community a
@@ -183,7 +183,8 @@ const CommunitySQL = {
     UPDATE 
         community
     SET 
-        title = ?, content = ?, updated_at = NOW()
+        title = ?,
+        content = ?
     WHERE
         id = ?
   `,

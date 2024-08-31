@@ -17,11 +17,11 @@ communityRouter.post("/post", asyncHandler(CommunityController.postPost));
 
 
 communityRouter.delete(
-    "/post/:postId",
+    "/post/:post_id",
     asyncHandler(CommunityController.deletePost)
 );
 
 communityRouter.patch(
-    "/post/:postId",
+    "/post/:post_id",
     asyncHandler(CommunityController.updatePost)
 );

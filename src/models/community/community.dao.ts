@@ -54,15 +54,15 @@ const CommunityDao = {
 
         // post 썸네일 타입으로 매핑
         const posts: PostThumbnail[] = rows.map((row) => ({
-            postId: row.id,
+            post_id: row.id,
             title: row.title,
             content: row.body,
-            authorName: row.user_name,
+            user_name: row.user_name,
             created_at: row.created_at,
             updated_at: row.updated_at,
-            likeCount: row.like_count,
-            commentCount: row.comment_count,
-            imageUrls: row.image_urls ? row.image_urls.split(", ") : []
+            like_count: row.like_count,
+            comment_count: row.comment_count,
+            img_urls: row.image_urls ? row.image_urls.split(", ") : []
         }));
 
         return { totalCount, posts: posts };

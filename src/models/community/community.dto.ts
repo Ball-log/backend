@@ -5,15 +5,15 @@ export interface getPostsResDto {
 }
 
 export interface PostThumbnail {
-    postId: number,
+    post_id: number,
     title: string,
     content: string,
-    authorName: string,
+    user_name: string,
     created_at: string,
     updated_at: string,
-    likeCount: number,
-    commentCount: number,
-    imageUrls: [string]
+    like_count: number,
+    comment_count: number,
+    img_urls: [string]
 }
 
 // getPostDetail

@@ -70,7 +70,7 @@ const CommunityService = {
                 title: postDetail.title,
                 content: postDetail.content,
                 created_at: postDetail.created_at,
-                updated_at: postDetail.update_at,
+                updated_at: postDetail.updated_at,
                 user_id: postDetail.author_id,
                 user_name: postDetail.author_name,
                 user_icon_url: postDetail.author_profile_url,

@@ -62,9 +62,9 @@ const CommunityController = {
     deletePost: async (req: Request, res: Response) => {
         try {
             const userId = res.locals.id;
-            const postId = req.params.postId;
+            const post_id = parseInt(req.params.post_id)
 
-            const result = await CommunityService.deletePost(userId, postId);
+            const result = await CommunityService.deletePost(userId, post_id);
 
             res.json(result);
         } catch (err) {
@@ -77,22 +77,10 @@ const CommunityController = {
         }
     },
     updatePost: async (req: Request, res: Response) => {
+        const post_id = parseInt(req.params.post_id)
         try {
-            const userId = res.locals.id;
-            const postId = req.params.postId;
-            const title = req.body.title;
-            const content = req.body.content;
-            const deleteImageIds = req.body.deleteImageIds;
-            const newImageUrls = req.body.newImageUrls;
-
-            const result = await CommunityService.updatePost(
-                userId,
-                postId,
-                title,
-                content,
-                deleteImageIds,
-                newImageUrls
-            );
+            const user_id = res.locals.id;
+            const result = await CommunityService.updatePost(user_id, post_id, req.body)
 
             res.json(result);
         } catch (err) {

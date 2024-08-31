@@ -4,6 +4,15 @@ export interface getPostsResDto {
     data: PostThumbnail[]
 }
 
+export interface patchCommunity {
+
+    title: string,
+    content: string,
+    img_urls: string[]
+
+}
+
+
 export interface PostThumbnail {
     post_id: number,
     title: string,

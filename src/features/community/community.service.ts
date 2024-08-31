@@ -68,7 +68,7 @@ const CommunityService = {
                 post_type: "community",
                 post_id: postDetail.id,
                 title: postDetail.title,
-                content: postDetail.cotent,
+                content: postDetail.content,
                 created_at: postDetail.created_at,
                 updated_at: postDetail.update_at,
                 user_id: postDetail.author_id,

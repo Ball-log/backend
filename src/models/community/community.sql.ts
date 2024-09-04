@@ -82,6 +82,7 @@ const CommunitySQL = {
         c.created_at AS date,
         u.id AS author_id,
         u.name AS author_name
+        u.icon_url as comment_user_icon_url
     FROM
         comment c
     JOIN
@@ -100,6 +101,7 @@ const CommunitySQL = {
         r.created_at AS date,
         u.id AS author_id,
         u.name AS author_name
+        u.icon_url as reply_user_icon_url
     FROM
         reply r
     JOIN

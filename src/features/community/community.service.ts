@@ -81,7 +81,6 @@ const CommunityService = {
                 comment_count: postComments.length + postReplies.length,
                 comment_list: comments,
                 reply_list: replies
-
             }
         };
 

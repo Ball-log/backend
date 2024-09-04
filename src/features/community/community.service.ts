@@ -77,7 +77,7 @@ const CommunityService = {
                 isMine: userId == postDetail.author_id,
                 like_count: postDetail.like_count,
                 has_liked: Boolean(has_liked.ex),
-                img_urls: postDetail.img_urls,
+                img_urls: JSON.parse(postDetail.img_urls).imgUrls,
                 comment_count: postComments.length + postReplies.length,
                 comment_list: comments,
                 reply_list: replies

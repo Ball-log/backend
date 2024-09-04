@@ -36,6 +36,7 @@ export const commentDao = {
         }
     },
     delete: async (req: commentDeleteDto, user_id: string) => {
+        console.log("DAO req: ", req, " user_id: ", user_id);
         const connection = await getPool().getConnection();
         try {
             const [ result ] = await connection.query<ResultSetHeader>(commentSql.delete, [

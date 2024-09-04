@@ -13,6 +13,7 @@ export const commentController =  {
     },
     delete: async (req: Request, res: Response) =>{
         const user_id = res.locals.id;
+        console.log("in controll, req: ", req, "user_id: ", user_id);
         const result = await commentService.delete(req.body, user_id);
         res.json(result);
     }

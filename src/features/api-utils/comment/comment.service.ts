@@ -33,6 +33,7 @@ export const commentService = {
         return body;
     },
     delete: async (req: commentDeleteDto, user_id: string) => {
+        console.log("in service, req: ", req, "user_id: ", user_id);
         const result = await commentDao.delete(req, user_id);
         const body: BaseApiResponse<number> = {
             ...status.SUCCESS.body,

@@ -62,7 +62,7 @@ const CommunityDao = {
             updated_at: row.updated_at,
             like_count: row.like_count,
             comment_count: row.comment_count,
-            img_urls: row.image_urls ? row.image_urls.split(", ") : []
+            img_urls: JSON.parse(row.img_urls)
         }));
 
         return { totalCount, posts: posts };

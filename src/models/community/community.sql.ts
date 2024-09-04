@@ -15,7 +15,7 @@ const CommunitySQL = {
     SELECT 
         a.*,
         u.name AS user_name,
-        GROUP_CONCAT(i.url SEPARATOR ', ') AS image_urls,
+        i.url AS img_urls,
         COALESCE(c.comment_count, 0) AS comment_count,
         COALESCE(pl.like_count, 0) AS like_count
     FROM

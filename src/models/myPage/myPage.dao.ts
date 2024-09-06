@@ -11,6 +11,7 @@ export const getMyPageDao = async (userId: string): Promise<RowDataPacket[]> => 
         connection.release();
         return result;
     } catch (err) {
+        console.log(err);
         throw new ApiError(status.DATA_INSERTED_SQL_ERROR);
     }
 };

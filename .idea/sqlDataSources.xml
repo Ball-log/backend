@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DdlMappings">
+    <mapping uuid="ada6c3fc-365c-42b6-acfb-5734e67e19ab" name="@ballog-db.cns0smew0pvm.ap-northeast-2.rds.amazonaws.com Mapping">
+      <data-sources db="ce9f10cb-6880-4986-9ea1-1454154abf6b" />
+      <scope>
+        <node kind="database" negative="1">
+          <node kind="schema" negative="1" />
+        </node>
+      </scope>
+    </mapping>
+  </component>
+</project>

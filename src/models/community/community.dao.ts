@@ -1,3 +1,4 @@
+import moment from "moment-timezone";
 import { ResultSetHeader, RowDataPacket } from "mysql2";
 import CommunitySQL from "./community.sql";
 import { getPool } from "../../../config/db.pool";
@@ -58,8 +59,10 @@ const CommunityDao = {
             title: row.title,
             content: row.body,
             user_name: row.user_name,
-            created_at: row.created_at,
-            updated_at: row.updated_at,
+            created_at: moment.utc(row.created_at).tz("Asia/Seoul")
+                .format("YYYY-MM-DD HH:mm:ss"),
+            updated_at: moment.utc(row.updated_at).tz("Asia/Seoul")
+                .format("YYYY-MM-DD HH:mm:ss"),
             like_count: row.like_count,
             comment_count: row.comment_count,
             img_urls: JSON.parse(row.img_urls)
@@ -69,7 +72,7 @@ const CommunityDao = {
     },
     getHasLiked: async (post_id: number, user_id: string) => {
         const pool = getPool();
-        const [ [ hasLike ] ] = await pool.query<RowDataPacket[]>(tempPostSql.getHasliked, 
+        const [ [ hasLike ] ] = await pool.query<RowDataPacket[]>(tempPostSql.getHasliked,
             [ post_id, user_id ]);
         return hasLike;
     },
@@ -194,9 +197,9 @@ const CommunityDao = {
         const pool = getPool();
         await pool.query(CommunitySQL.deletePost, [ post_id ]);
     },
-    updatePost: async (title: string, content: string, post_id: number ) => {
+    updatePost: async (title: string, content: string, post_id: number) => {
         const connection = await getPool().getConnection();
-        const [ result ] = await connection.query<ResultSetHeader>(CommunitySQL.updatePost, [ 
+        const [ result ] = await connection.query<ResultSetHeader>(CommunitySQL.updatePost, [
             title, content, post_id ]);
         connection.release();
         return result.insertId;

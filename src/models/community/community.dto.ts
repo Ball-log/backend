@@ -51,7 +51,7 @@ export interface PostComments {
     comment_user_name: string,
     comment_user_icon_url: string,
     comment_body: string,
-    comment_date: Date,
+    comment_date: string,
     comment_isMine: boolean
 }
 
@@ -61,7 +61,7 @@ export interface PostReplies {
     reply_user_name: string,
     reply_user_icon_url: string,
     reply_body: string,
-    reply_date: Date,
+    reply_date: string,
     commented_id: string,
     reply_isMine: boolean
 }

@@ -1,3 +1,4 @@
+import moment from "moment-timezone";
 import { ApiError } from "../../../config/error";
 import { BaseApiResponse } from "../../../config/response";
 import { status } from "../../../config/response.status";
@@ -8,7 +9,7 @@ import {
     getPostsResDto,
     patchCommunity,
     PostComments,
-    PostReplies,
+    PostReplies
 } from "../../models/community/community.dto";
 
 const CommunityService = {
@@ -40,15 +41,15 @@ const CommunityService = {
         const postComments = await CommunityDao.getPostComments(postId);
         const postReplies = await CommunityDao.getPostReplies(postId);
         const has_liked = await CommunityDao.getHasLiked(parseInt(postId), userId);
-        console.log(has_liked)
         const comments: PostComments[] = postComments.map((row) => ({
             comment_id: row.comment_id,
             comment_user_id: row.author_id,
             comment_user_name: row.author_name,
             comment_user_icon_url: row.comment_user_icon_url,
             comment_body: row.comment,
-            comment_date: row.date,
-            comment_isMine: row.author_id === userId,
+            comment_date: moment.utc(row.date).tz("Asia/Seoul")
+                .format("YYYY-MM-DD HH:mm:ss"),
+            comment_isMine: row.author_id === userId
         }));
 
         const replies: PostReplies[] = postReplies.map((row) => ({
@@ -57,7 +58,8 @@ const CommunityService = {
             reply_user_name: row.author_name,
             reply_user_icon_url: row.reply_user_icon_url,
             reply_body: row.comment,
-            reply_date: row.date,
+            reply_date: moment.utc(row.date).tz("Asia/Seoul")
+                .format("YYYY-MM-DD HH:mm:ss"),
             commented_id: row.comment_id,
             reply_isMine: row.author_id === userId
         }));
@@ -69,8 +71,10 @@ const CommunityService = {
                 post_id: postDetail.id,
                 title: postDetail.title,
                 content: postDetail.content,
-                created_at: postDetail.created_at,
-                updated_at: postDetail.updated_at,
+                created_at: moment.utc(postDetail.created_at).tz("Asia/Seoul")
+                    .format("YYYY-MM-DD HH:mm:ss"),
+                updated_at: moment.utc(postDetail.updated_at).tz("Asia/Seoul")
+                    .format("YYYY-MM-DD HH:mm:ss"),
                 user_id: postDetail.author_id,
                 user_name: postDetail.author_name,
                 user_icon_url: postDetail.author_profile_url,
@@ -106,7 +110,7 @@ const CommunityService = {
         if (!(type === "team" || type === "league")) {
             throw new ApiError(status.TEAM_TYPE_ERROR);
         }
-        
+
         if (postId) {
             const imgArr = { imgUrls: img_urls };
             const imgInfoArr = JSON.stringify(imgArr);

@@ -18,12 +18,14 @@ MATCH_INFO AS (
         m.away_team_id,
         m.home_team_score,
         m.away_team_score,
+        m.id,
+        m.note,
         ht.icon_flag AS home_team_icon_flag,
         at.icon_flag AS away_team_icon_flag
     FROM matchinfo m
     LEFT JOIN team ht ON m.home_team_id = ht.id
     LEFT JOIN team at ON m.away_team_id = at.id
-    WHERE DATE(CONVERT_TZ(m.match_date, '+00:00', @@session.time_zone)) = CURDATE()
+    WHERE DATE(m.match_date) = DATE(NOW())
 ),
 MATCH_AND_CONTENT AS (
     SELECT 
@@ -33,6 +35,8 @@ MATCH_AND_CONTENT AS (
         ut.user_name,
         ut.user_icon_url,
         mi.match_date,
+        mi.id,
+        mi.note,
         CASE 
             WHEN ut.team_id = mi.home_team_id THEN mi.home_team_score 
             ELSE mi.away_team_score 
@@ -54,12 +58,12 @@ MATCH_AND_CONTENT AS (
 ),
 USER_CONTENT AS (
     SELECT 
-        created_at AS writed_date_list
+        DATE(created_at) AS writed_date_list
     FROM blog
     WHERE user_id = ?
     UNION
     SELECT 
-        created_at AS writed_date_list
+        DATE(created_at) AS writed_date_list
     FROM mvp
     WHERE user_id = ?
 )
@@ -69,6 +73,8 @@ SELECT
     mac.user_background_img,
     mac.user_name,
     mac.user_icon_url,
+    mac.id as match_id,
+    mac.note as match_state,
     mac.match_date,
     mac.user_team_score,
     mac.user_team_icon_flag,

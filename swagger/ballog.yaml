@@ -780,16 +780,16 @@ paths:
         post_type: "blog",
         title: string,
         body: string,
-        imgUrls: string[],
+        img_urls: string[],
         match_id: number
         }
 
         interface mvpDto 
         {
             post_type: "mvp",
-            playerId: number,
-            playerRecord: string,
-            imgUrls: string[],
+            player_id: number,
+            player_record: string,
+            img_urls: string[],
             match_id: number
         }
 
@@ -827,10 +827,10 @@ paths:
                   post_type:
                     type: "string"
                     enum: ["mvp"]
-                  playerId:
+                  player-id:
                     type: "integer"
                     format: "int64"
-                  playerRecord:
+                  player_record:
                     type: "string"
                   img_urls:
                     type: "array"
@@ -840,8 +840,8 @@ paths:
                     type: "integer"
                 required:
                   - post_type
-                  - playerId
-                  - playerRecord
+                  - player-id
+                  - player_record
                   - img_urls
                   - match_id
       responses:
@@ -907,10 +907,10 @@ paths:
                   post_type:
                     type: "string"
                     enum: ["mvp"]
-                  playerId:
+                  player-id:
                     type: "integer"
                     format: "int64"
-                  playerRecord:
+                  player_record:
                     type: "string"
                   img_urls:
                     type: "array"
@@ -920,8 +920,8 @@ paths:
                     type: "integer"
                 required:
                   - post_type
-                  - playerId
-                  - playerRecord
+                  - player-id
+                  - player_record
                   - img_urls
                   - match_id
       responses:

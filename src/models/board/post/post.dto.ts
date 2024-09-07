@@ -9,8 +9,8 @@ export interface blogDto {
 export interface mvpDto {
 
     post_type: "mvp",
-    playerId: number,
-    playerRecord: string,
+    player_id: number,
+    player_record: string,
     img_urls: string[],
     match_id: number
 }
@@ -20,8 +20,8 @@ export interface getBlogDto {
     post_id: number,
     title: string,
     body: string,
-    create_at: Date,
-    updated_at: Date,
+    created_at: string,
+    updated_at: string,
     user_id: string,
     user_name: string,
     user_icon_url: string,
@@ -32,7 +32,7 @@ export interface getBlogDto {
     isMine: boolean,
     comment_count: number,
     match_info: {
-        match_date: Date,
+        match_date: string,
         home_team_icon_flag: string,
         away_team_icon_flag: string,
         home_team_score: number,
@@ -44,7 +44,7 @@ export interface getBlogDto {
         comment_user_name: string,
         comment_user_icon_url: string,
         comment_body: string,
-        comment_date: Date,
+        comment_date: string,
         comment_isMine: boolean
     }[],
     reply_list: {
@@ -53,7 +53,7 @@ export interface getBlogDto {
         reply_user_name: string,
         reply_user_icon_url: string,
         reply_body: string,
-        reply_date: Date,
+        reply_date: string,
         commented_id: string,
         reply_isMine: boolean
     }[]
@@ -65,8 +65,8 @@ export interface getMvpDto {
     player_id: number,
     player_name: string,
     player_record: string,
-    create_at: Date,
-    updated_at: Date,
+    created_at: string,
+    updated_at: string,
     user_id: string,
     user_name: string,
     user_icon_url: string,
@@ -77,7 +77,7 @@ export interface getMvpDto {
     isMine: boolean,
     comment_count: number,
     match_info: {
-        match_date: Date,
+        match_date: string,
         home_team_icon_flag: string,
         away_team_icon_flag: string,
         home_team_score: number,
@@ -89,7 +89,7 @@ export interface getMvpDto {
         comment_user_name: string,
         comment_user_icon_url: string,
         comment_body: string,
-        comment_date: Date,
+        comment_date: string,
         comment_isMine: boolean
     }[],
     reply_list: {
@@ -98,7 +98,7 @@ export interface getMvpDto {
         reply_user_name: string,
         reply_user_icon_url: string,
         reply_body: string,
-        reply_date: Date,
+        reply_date: string,
         commented_id: string,
         reply_isMine: boolean
     }[]
@@ -109,8 +109,8 @@ export interface getBlogDto_ {
     post_id: number,
     title: string,
     body: string,
-    create_at: Date,
-    updated_at: Date,
+    created_at: string,
+    updated_at: string,
     user_id: string,
     user_name: string,
     user_icon_url: string,
@@ -128,8 +128,8 @@ export interface getMvpDto_ {
     player_id: number,
     player_name: string,
     player_record: string,
-    create_at: Date,
-    updated_at: Date,
+    created_at: string,
+    updated_at: string,
     user_id: string,
     user_name: string,
     user_icon_url: string,
@@ -142,7 +142,7 @@ export interface getMvpDto_ {
 }
 
 export interface matchDto {
-    match_date: Date,
+    match_date: string,
     home_team_icon_flag: string,
     away_team_icon_flag: string,
     home_team_score: number,
@@ -155,7 +155,7 @@ export interface Comment {
     comment_user_name: string,
     comment_user_icon_url: string,
     comment_body: string,
-    comment_date: Date,
+    comment_date: string,
     comment_isMine: boolean
 }
 
@@ -171,7 +171,7 @@ export interface Reply {
     reply_user_name: string,
     reply_user_icon_url: string,
     reply_body: string,
-    reply_date: Date,
+    reply_date: string,
     commented_id: string,
     reply_isMine: boolean
 }

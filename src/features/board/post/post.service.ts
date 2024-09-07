@@ -1,7 +1,8 @@
 import { BaseApiResponse } from "../../../../config/response";
 import { status } from "../../../../config/response.status";
 import { postDao } from "../../../models/board/post/post.dao";
-import { mvpDto, blogDto, getBlogDto, CommentList, ReplyList, matchDto, getBlogDto_, getMvpDto_, getMvpDto } from "../../../models/board/post/post.dto";
+import { mvpDto, blogDto, getBlogDto, CommentList, ReplyList, matchDto, getBlogDto_, getMvpDto_, getMvpDto, Comment, Reply } from "../../../models/board/post/post.dto";
+import moment from "moment-timezone";
 
 export const postService = {
     getType: async (post_id: number, user_id: string) => {
@@ -12,15 +13,24 @@ export const postService = {
         } else {
             result = await postDao.getMvp(post_id, user_id);
         }
-        const res0 = result[0] as getBlogDto_ | getMvpDto_
+        const res0 = result[0] as getBlogDto_ | getMvpDto_;
+        res0.updated_at = moment.utc(res0.updated_at).tz("Asia/Seoul")
+            .format("YYYY-MM-DD HH:mm:ss");
+        res0.created_at = moment.utc(res0.created_at).tz("Asia/Seoul")
+            .format("YYYY-MM-DD HH:mm:ss");
         const res1 = result[1] ? (result[1] as { img_url: string }) : null;
-        const res2 = result[2] as CommentList;
-        const res3 = result[3] as ReplyList;
+        const res2 = Array.from(result[2] as CommentList);
+        res2.map((comment: Comment) => comment.comment_date = moment.utc(comment.comment_date).tz("Asia/Seoul")
+            .format("YYYY-MM-DD HH:mm:ss"));
+        const res3 = Array.from(result[3] as ReplyList);
+        res3.map((reply: Reply) => reply.reply_date = moment.utc(reply.reply_date).tz("Asia/Seoul")
+            .format("YYYY-MM-DD HH:mm:ss"));
         const res4 = result[4] as { like_count: number };
         const res5 = result[5] as { ex: number };
         const match_id = res0.match_id;
         const matchInfo = await postDao.getMatch(match_id) as matchDto;
-        
+        matchInfo.match_date = moment.utc(matchInfo.match_date).tz("Asia/Seoul")
+            .format("YYYY-MM-DD HH:mm:ss");
         let imgUrl;
         if (res1 !== null) {
             imgUrl = JSON.parse(res1.img_url);
@@ -72,7 +82,7 @@ export const postService = {
         const result = await postDao.patchBlog(req, post_id, user_id);
         const imgArr = { imgUrls: req.img_urls };
         const imgInfoArr = JSON.stringify(imgArr);
-        console.log(imgInfoArr, post_id)
+        console.log(imgInfoArr, post_id);
         await postDao.patchImg(imgInfoArr, post_id);
         const body: BaseApiResponse<number> = {
             ...status.SUCCESS.body,

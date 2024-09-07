@@ -18,7 +18,7 @@ export const commentService = {
         await alarmDao.post(req, message);
         const target: string | null = await redisClient.get(req.post_user_id + "_socket")
         if (target) {
-            console.log(target);
+            console.log("target", target);
             const io = getSocketIO();
             io.to(target).emit("ararm", message)
         }

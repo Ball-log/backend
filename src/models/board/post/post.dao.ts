@@ -84,11 +84,12 @@ export const postDao = {
         }
     },
     postMvp: async (req: mvpDto, user_id: string): Promise<number> => {
+        console.log(req)
         const connection = await getPool().getConnection();
         try {
             const [ result ] = await connection.query<ResultSetHeader>(postSql.postMvp, [
-                req.playerId,
-                req.playerRecord,
+                req.player_id,
+                req.player_record,
                 req.img_urls[0],
                 user_id,
                 req.match_id
@@ -96,6 +97,7 @@ export const postDao = {
             connection.release();
             return result.insertId;
         } catch (error) {
+            console.log(error);
             throw new ApiError(status.DATA_INSERTED_SQL_ERROR);
         }
     },
@@ -151,8 +153,8 @@ export const postDao = {
         const connection = await getPool().getConnection();
         try {
             const [ result ] = await connection.query<ResultSetHeader>(postSql.patchMvp, [
-                req.playerId,
-                req.playerRecord,
+                req.player_id,
+                req.player_record,
                 req.img_urls[0],
                 post_id,
                 user_id

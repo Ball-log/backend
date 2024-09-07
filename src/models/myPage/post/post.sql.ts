@@ -19,6 +19,7 @@ export const postSql = {
             m.id AS mvp_id,
             m.thumbnail_url AS mvp_thumbnail,
             pl.name AS mvp_player_name,
+            pl.profile_img as mvp_player_profile,
             m.player_record AS mvp_player_record,
             m.created_at AS mvp_created_at,
             COUNT(DISTINCT p.id) AS mvp_count_like,

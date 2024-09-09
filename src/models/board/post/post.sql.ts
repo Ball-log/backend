@@ -32,6 +32,7 @@ export const tempPostSql = {
             m.id as post_id,
             p.id as player_id,
             p.name as player_name,
+            p.profile_img as player_profile_img,
             m.player_record as player_record,
             m.created_at as created_at,
             m.updated_at as updated_at,

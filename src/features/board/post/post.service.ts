@@ -16,7 +16,7 @@ export const postService = {
         const res0 = result[0] as getBlogDto_ | getMvpDto_;
         res0.updated_at = moment.utc(res0.updated_at).tz("Asia/Seoul")
             .format("YYYY-MM-DD HH:mm:ss");
-        res0.create_at = moment.utc(res0.create_at).tz("Asia/Seoul")
+        res0.created_at = moment.utc(res0.created_at).tz("Asia/Seoul")
             .format("YYYY-MM-DD HH:mm:ss");
         const res1 = result[1] ? (result[1] as { img_url: string }) : null;
         const res2 = Array.from(result[2] as CommentList);

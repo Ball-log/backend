@@ -2,10 +2,8 @@ import { getSignUpLocalsDto } from "./signUp.dto";
 import { getSignUpSql, checkEmailSql } from "./signUp.sql";
 import { getPool }  from "./../../../../config/db.pool";
 import { ResultSetHeader, RowDataPacket } from "mysql2/promise";
-
-// import { status } from "../../../../config/response.status";
-
-// import { ApiError } from "../../../config/error";
+import { ApiError } from "../../../../config/error";
+import { status } from "../../../../config/response.status";
 
 export const getSignUpDao = async (user: getSignUpLocalsDto): Promise<number> => {
     const connection = await getPool().getConnection();
@@ -18,12 +16,11 @@ export const getSignUpDao = async (user: getSignUpLocalsDto): Promise<number> =>
             return -1;
         }
         const [ result ] = await connection.query<ResultSetHeader>(getSignUpSql,
-            [ user.id, user.email, user.name ]);
+            [ user.id, user.email, user.name, user.icon ]);
         connection.release();
         return result.insertId;
 
     } catch (e) {
-        console.log(e);
-        throw new Error();
+        throw new ApiError(status.DATA_INSERTED_SQL_ERROR);
     }
 };

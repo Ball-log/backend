@@ -3,6 +3,7 @@ import { Request, Response, NextFunction } from "express";
 import { status } from "../../config/response.status";
 import { config } from "dotenv";
 import axios from "axios";
+import { ApiError } from "../../config/error";
 
 config();
 
@@ -15,13 +16,14 @@ export const authAccessTokenMiddleware = (
         const accessToken = req.headers.authorization as string;
         const token = accessToken.split(" ")[1];
         const result = verify(token); // token을 검증합니다.
-
         if (result.ok) {
-            res.locals.userId = result.sub;
+            res.locals.id = result.sub;
             next();
         } else {
-            res.status(401).send(status.ACCESS_TOKEN_EXPIRED.body);
+            throw new ApiError(status.ACCESS_TOKEN_EXPIRED);
         }
+    } else {
+        throw new ApiError(status.THERE_IS_NO_ACCESS_TOKEN);
     }
 };
 
@@ -30,14 +32,18 @@ export const tokenGoogleMiddleware = async (
     res: Response,
     next: NextFunction
 ) => {
-    const path = req.path;
+    
+    const urlPath = req.originalUrl;  // 쿼리스트링을 제외한 경로만 가져옵니다.
+    const signUpRegex = /\/signUp\//;
     let redirectUri = null;
-    if (path === "/signUp/google") {
+
+    if (signUpRegex.test(urlPath)) {
         redirectUri = process.env.GOOGLE_REDIRECT_URI_SIGN_UP;
     } else {
         redirectUri = process.env.GOOGLE_REDIRECT_URI_LOGIN;
     }
     const { code } = req.query;
+    console.log( code)
     const token = await axios.post(process.env.GOOGLE_TOKEN_URL as string, {
         code,
         client_id: process.env.GOOGLE_CLIENT_ID,
@@ -53,7 +59,8 @@ export const tokenGoogleMiddleware = async (
     res.locals = {
         id: "google" + userInfo.data.id,
         email: userInfo.data.email,
-        name: userInfo.data.name
+        name: userInfo.data.name,
+        icon: userInfo.data.picture
     };
     next();
 };
@@ -89,7 +96,8 @@ export const tokenKakaoMiddleware = async (
     res.locals = {
         id: "kakao" + userInfo.data.id,
         email: userInfo.data.kakao_account.email,
-        name: "test"
+        name: "test",
+        icon: userInfo.data.properties.profile_image
     };
     next();
 };
@@ -138,7 +146,9 @@ export const tokenNaverMiddleware = async (
     res.locals = {
         id: "naver" + userInfo.data.response.id,
         email: userInfo.data.response.email,
-        name: userInfo.data.response.name
+        name: userInfo.data.response.name,
+        icon: userInfo.data.response.profile_image
     };
     next();
 };
+

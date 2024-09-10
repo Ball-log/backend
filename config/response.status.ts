@@ -15,14 +15,22 @@ export type ResponseType =
   | "THERE_IS_NO_TOKEN"
   | "UNKNOWN_ERROR"
   | "POST_TYPE_EMPTY"
-  | "FORBIDDEN"
   | "WRONG_POST_ID"
   | "THERE_IS_NO_POSTID_OR_BODY"
   | "THERE_IS_NO_POSTID_OR_COMMENTID_OR_BODY"
   | "THERE_IS_NO_TITLE_OR_CONTENT_IN_POST"
   | "TEAM_TYPE_ERROR"
   | "WRONG_BODY"
-  | "ONLY_AUTHOR_CAN_DELETE_OR_EDIT";
+  | "ONLY_AUTHOR_CAN_DELETE_OR_EDIT"
+  | "UNAUTHORIZED"
+  | "THERE_IS_NO_CONTENT_IN_COMMENT"
+  | "DATA_INSERTED_SQL_ERROR"
+  | "REQUEST_BODY_INVALID"
+  | "FORBIDDEN"
+  | "GENERATING_PRESIGNED_URL_ERROR"
+  | "JWT_SECRET_NOT_FOUND"
+  | "JWT_VERIFICATIN_FAILED"
+  | "REDIS_ERROR";
 
 export type ResponseWithStatus = {
   status: StatusCodes;
@@ -150,8 +158,69 @@ export const status: Record<ResponseType, ResponseWithStatus> = {
       message: "작성자만 수정 혹은 삭제를 할 수 있습니다.",
     },
   },
+  THERE_IS_NO_CONTENT_IN_COMMENT: {
+    status: StatusCodes.BAD_REQUEST,
+    body: {
+      isSuccess: false,
+      code: "400",
+      message: "댓글 내용을 작성해주세요.",
+    },
+  },
+
+  REQUEST_BODY_INVALID: {
+    status: StatusCodes.BAD_REQUEST,
+    body: {
+      isSuccess: false,
+      code: "400",
+      message: "이 게시글을 삭제할 권한이 없습니다.",
+    },
+  },
   FORBIDDEN: {
     status: StatusCodes.FORBIDDEN,
     body: { isSuccess: false, code: "403", message: "접근이 금지되었습니다." },
+  },
+  GENERATING_PRESIGNED_URL_ERROR: {
+    status: StatusCodes.INTERNAL_SERVER_ERROR,
+    body: {
+      isSuccess: false,
+      code: "400",
+      message: "pre-signed URL generation error.",
+    },
+  },
+  JWT_SECRET_NOT_FOUND: {
+    status: StatusCodes.NOT_FOUND,
+    body: {
+      isSuccess: false,
+      code: "400",
+      message: "JWT secret is not defined in environment variables.",
+    },
+  },
+  JWT_VERIFICATIN_FAILED: {
+    status: StatusCodes.FORBIDDEN,
+    body: {
+      isSuccess: false,
+      code: "400",
+      message: "JWT verification failed.",
+    },
+  },
+  REDIS_ERROR: {
+    status: StatusCodes.INTERNAL_SERVER_ERROR,
+    body: {
+      isSuccess: false,
+      code: "400",
+      message: "Redis error occurred.",
+    },
+  },
+  DATA_INSERTED_SQL_ERROR: {
+    status: StatusCodes.BAD_REQUEST,
+    body: {
+      isSuccess: false,
+      code: "404",
+      message: "there is an error in the SQL syntax for inserting data.",
+    },
+  },
+  UNAUTHORIZED: {
+    status: StatusCodes.BAD_REQUEST,
+    body: { isSuccess: false, code: "404", message: "unauthorized" },
   },
 };

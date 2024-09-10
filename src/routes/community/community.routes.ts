@@ -1,6 +1,27 @@
 import { Router } from "express";
 import asyncHandler from "express-async-handler";
-import { getPostsController } from "../../features/community/community.controller";
+import CommunityController from "../../features/community/community.controller";
 
 export const communityRouter = Router();
-communityRouter.get("/posts", asyncHandler(getPostsController));
+communityRouter.get(
+    "/posts",
+    asyncHandler(CommunityController.getPostsController)
+);
+
+communityRouter.get(
+    "/post/:postId",
+    asyncHandler(CommunityController.getPostDetailController)
+);
+
+communityRouter.post("/post", asyncHandler(CommunityController.postPost));
+
+
+communityRouter.delete(
+    "/post/:post_id",
+    asyncHandler(CommunityController.deletePost)
+);
+
+communityRouter.patch(
+    "/post/:post_id",
+    asyncHandler(CommunityController.updatePost)
+);

@@ -1,87 +1,58 @@
-import express, { json, urlencoded } from "express";
-
-import { authRouter } from "./routes/auth/auth.routes";
-
-import { config } from "dotenv";
-import { communityRouter } from "./routes/community/community.routes";
+import express from "express";
+import cors from "cors";
 import asyncHandler from "express-async-handler";
+import { config } from "dotenv";
+
+
+import { healthRoute } from "./routes/health/health.route";
+import { specs } from "../config/swagger.config";
+import SwaggerUi from "swagger-ui-express";
+import { authRouter } from "./routes/auth/auth.routes";
+import { api_utilsRouter } from "./routes/api-util/api-util.route";
+import { communityRouter } from "./routes/community/community.routes";
+import { myPageRouter } from "./routes/myPage/myPage.route";
 import { authAccessTokenMiddleware } from "./utils/jwt.middleware";
+import { boardRouter } from "./routes/board/board.route";
 
 config();
+
 export default function App() {
-  const app = express();
+    const app = express();
 
-  app.get("/login", (req, res) => {
-    res.send(`
-        <h1>Log in</h1>
-        <a href="/login/google">google Log in</a>
-        <a href="/login/kakao">kakao Log in</a>
-        <a href="/login/naver">naver Log in</a>
-        `);
-  });
-  app.get("/signUp", (req, res) => {
-    res.send(`
-        <h1>Sign up</h1>
-        <a href="/signUp/google">google Sign up</a>
-        <a href="/signUp/kakao">kakao Sign pp</a>
-        <a href="/signUp/naver">naver Sign pp</a>
-        `);
-  });
+    app.use(cors()); // cors 방식 허용
+    app.use(express.static("public")); // 정적 파일 접근
+    app.use(express.json()); // request의 본문을 json으로 해석할 수 있도록 함 (JSON 형태의 요청 body를 파싱하기 위함)
+    app.use(express.urlencoded({ extended: false }));
 
-  app.get("/login/google", (req, res) => {
-    let url = "https://accounts.google.com/o/oauth2/v2/auth";
-    url += `?client_id=${process.env.GOOGLE_CLIENT_ID}`;
-    url += `&redirect_uri=${process.env.GOOGLE_REDIRECT_URI_LOGIN}`;
-    url += "&response_type=code";
-    url += "&scope=email profile";
-    res.redirect(url);
-  });
-  app.get("/signUp/google", (req, res) => {
-    let url = "https://accounts.google.com/o/oauth2/v2/auth";
-    url += `?client_id=${process.env.GOOGLE_CLIENT_ID}`;
-    url += `&redirect_uri=${process.env.GOOGLE_REDIRECT_URI_SIGN_UP}`;
-    url += "&response_type=code";
-    url += "&scope=email profile";
-    res.redirect(url);
-  });
-  app.get("/login/kakao", (req, res) => {
-    let url = "https://kauth.kakao.com/oauth/authorize";
-    url += `?client_id=${process.env.KAKAO_CLIENT_ID}`;
-    url += `&redirect_uri=${process.env.KAKAO_REDIRECT_URI_LOGIN}`;
-    url += "&response_type=code";
-    res.redirect(url);
-  });
+    app.get("/", (req, res) => {
+        res.send(process.env.PORT);
+    });
+    app.use("/health", healthRoute);
 
-  app.get("/signUp/kakao", (req, res) => {
-    let url = "https://kauth.kakao.com/oauth/authorize";
-    url += `?client_id=${process.env.KAKAO_CLIENT_ID}`;
-    url += `&redirect_uri=${process.env.KAKAO_REDIRECT_URI_SIGN_UP}`;
-    url += "&response_type=code";
-    res.redirect(url);
-  });
+    // swagger
+    app.use("/api-docs", SwaggerUi.serve, SwaggerUi.setup(specs));
 
-  app.get("/login/naver", (req, res) => {
-    let url = "https://nid.naver.com/oauth2.0/authorize?response_type=code";
-    url += `&client_id=${process.env.NAVER_CLIENT_ID}`;
-    url += `&redirect_uri=${process.env.NAVER_REDIRECT_URI_LOGIN}`;
-    url += "&state=test";
-    res.redirect(url);
-  });
+    app.use("/auth", asyncHandler(authRouter));
+    app.use(
+        "/myPage",
+        asyncHandler(authAccessTokenMiddleware),
+        asyncHandler(myPageRouter)
+    );
+    app.use(
+        "/community",
+        asyncHandler(authAccessTokenMiddleware),
+        asyncHandler(communityRouter)
+    );
+    app.use(
+        "/board",
+        asyncHandler(authAccessTokenMiddleware),
+        asyncHandler(boardRouter)
+    );
+    app.use(
+        "/api-utils",
+        asyncHandler(authAccessTokenMiddleware),
+        asyncHandler(api_utilsRouter)
+    );
 
-  app.get("/signUp/naver", (req, res) => {
-    let url = "https://nid.naver.com/oauth2.0/authorize?response_type=code";
-    url += `&client_id=${process.env.NAVER_CLIENT_ID}`;
-    url += `&redirect_uri=${process.env.NAVER_REDIRECT_URI_SIGN_UP}`;
-    url += "&&state=test";
-    res.redirect(url);
-  });
-
-  app.use(json());
-  app.use(urlencoded({ extended: true }));
-
-  app.use("/auth", authRouter);
-  app.use(asyncHandler(authAccessTokenMiddleware));
-  app.use("/community", communityRouter);
-
-  return app;
+    return app;
 }

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Socket.IO Example</title>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+  <h1>Socket.IO Example</h1>
+  <input type="text" id="userId" placeholder="Enter user ID">
+  <button onclick="connect()">Connect</button>
+
+
+  <script>
+    let socket;
+
+    // 페이지 로드 시 이벤트 핸들러 등록
+    const registerSocketHandlers = () => {
+      console.log('Registering socket handlers...');
+      socket.on('ararm', (data) => {
+        console.log('Received message:', data);
+      });
+    };
+
+    // 소켓 연결 함수
+    const connect = () => {
+      const userId = document.getElementById('userId').value;
+      if (userId) {
+        socket = io("https://api.ballog.store/", {
+          query: { user_id: userId }
+        });
+
+        // 소켓이 연결된 후 핸들러를 등록합니다.
+        socket.on('connect', () => {
+          console.log('Socket connected');
+          registerSocketHandlers();
+        });
+
+        socket.on('connect_error', (err) => {
+          console.error('Socket connection error:', err);
+        });
+
+        socket.on('disconnect', () => {
+          console.log('Socket disconnected');
+        });
+      }
+    };
+    window.connect = connect;
+  </script>
+</body>
+</html>

@@ -1,13 +1,12 @@
 import { sign, verify, refreshVerify } from "./../../../utils/jwt.utils";
 import jwt  from "jsonwebtoken";
-import { postRefreshTokenReqBodyDto as body, postRefreshTokenReqHeadersDto as headers } from "../../../models/auth/refreshToken/refreshToken.dto";
-import { BaseApiResponse } from "../../../../config/response";
+import { postRefreshTokenReqHeadersDto as headers } from "../../../models/auth/refreshToken/refreshToken.dto";
 import { status } from "../../../../config/response.status";
 
 // import { ApiError } from "../../../../config/error";
-import { JWT } from "../../../models/auth/login/login.dto";
+import { ApiError } from "../../../../config/error";
 
-export const postRefreshTokenService = async (body: body, headers: headers) => {
+export const postRefreshTokenService = async (headers: headers) => {
     if (headers.accessToken && headers.refreshToken) {
         const authToken = headers.accessToken.split(" ")[1];
 
@@ -18,37 +17,31 @@ export const postRefreshTokenService = async (body: body, headers: headers) => {
         const decoded = jwt.decode(authToken) as jwt.JwtPayload;
 
         if (decoded === null) {
-            return status.ACCESS_TOKEN_UNMATCHED.body;
+            throw new ApiError(status.ACCESS_TOKEN_UNMATCHED);
         }
 
         const refreshResult = await refreshVerify(refreshToken, decoded.sub as string);
-        if (authResult.ok === false && authResult.message === "jwt expired") {
+        if (authResult.ok === false) {
             // 1. access token이 만료되고, refresh token도 만료 된 경우 => 새로 로그인해야합니다.
             if (refreshResult === false) {
-                return status.REFRESH_TOKEN_UNMATCHED.body;
+                throw new ApiError(status.REFRESH_TOKEN_UNMATCHED);
             } else {
                 // 2. access token이 만료되고, refresh token은 만료되지 않은 경우 => 새로운 access token을 발급
                 const newAccessToken = sign(decoded.sub as string);
-                const body: BaseApiResponse<JWT> = {
-                    ...status.SUCCESS.body,
-                    result: {
-                        accessToken: newAccessToken
-                    }
-                };
-                return body;
+                return newAccessToken;
             }
         } else {
             // 3. access token이 만료되지 않은경우 => refresh 할 필요가 없습니다.
-            return status.ACCESS_TOKEN_IS_VALID.body;
+            throw new ApiError(status.ACCESS_TOKEN_IS_VALID);
         }
 
     } else { // access token 또는 refresh token이 헤더에 없는 경우
         if (!headers.accessToken && !headers.refreshToken) {
-            return status.THERE_IS_NO_TOKEN.body;
+            throw new ApiError(status.THERE_IS_NO_TOKEN);
         } else if (!headers.refreshToken) {
-            return status.THERE_IS_NO_REFRESH_TOKEN.body;
+            throw new ApiError(status.THERE_IS_NO_REFRESH_TOKEN);
         } else {
-            return status.THERE_IS_NO_ACCESS_TOKEN.body;
+            throw new ApiError(status.THERE_IS_NO_ACCESS_TOKEN);
         }
 
     }

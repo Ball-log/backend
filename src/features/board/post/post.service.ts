@@ -43,7 +43,7 @@ export const postService = {
                 ...res0,
                 like_count: res4.like_count,
                 has_liked: Boolean(res5.ex),
-                img_urls: imgUrl,
+                img_urls: imgUrl.imgUrls,
                 match_info: matchInfo,
                 comment_count: res2.length + res3.length,
                 comment_list: [
